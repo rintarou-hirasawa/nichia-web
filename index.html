@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>株式会社日亜パートナーズ | 公式サイト</title>
+  <link rel="icon" type="image/svg+xml" href="vite.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+JP:wght@400;500;600;700&family=Roboto+Slab:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body data-page="home">
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="index.html" class="site-logo">
+        <span class="site-logo__mark" aria-hidden="true"></span>
+        <span>日亜パートナーズ</span>
+      </a>
+      <button type="button" class="nav-toggle" aria-label="メニュー" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" aria-label="グローバルナビ">
+        <a href="index.html" data-nav="home">トップ</a>
+        <a href="business.html" data-nav="business">事業内容</a>
+        <a href="about.html" data-nav="about">会社概要</a>
+        <a href="news.html" data-nav="news">お知らせ</a>
+        <a href="contact.html" data-nav="contact">お問い合わせ</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero hero--home" aria-labelledby="hero-title">
+      <div class="hero__media" aria-hidden="true">
+        <img src="media/forest-aerial.jpg" alt="" width="1920" height="1080" decoding="async" fetchpriority="high">
+        <video autoplay muted loop playsinline poster="media/forest-aerial.jpg">
+          <source src="media/hero-home-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div class="hero__overlay hero__overlay--home"></div>
+      <div class="hero__content hero__content--home wrap">
+        <p class="hero__eyebrow">NICHIA PARTNERS</p>
+        <h1 id="hero-title" class="hero__title-home">森林から、<br>確かな供給へ。</h1>
+        <p class="hero__lead">南洋材の輸入販売から海外進出支援まで。商品開発と生産拠点開発を軸に、国内のお客様とともに中長期の価値を育てます。</p>
+        <div class="hero__cta">
+          <a href="business.html" class="btn btn--hero-solid">事業内容を見る</a>
+          <a href="contact.html" class="btn btn--hero-line">お問い合わせ</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section home-services" id="services" aria-labelledby="services-heading">
+      <div class="wrap">
+        <header class="home-section-head home-section-head--center">
+          <p class="home-section-head__en">Services</p>
+          <h2 id="services-heading" class="home-section-head__title">事業内容</h2>
+          <p class="home-section-head__sub">輸入から開発、ネットワークまで。木材ビジネスの核となる機能を、余白とタイポグラフィで整理しています。</p>
+        </header>
+        <div class="services-grid">
+          <article class="service-card fade-in">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+                <path d="M8 36V20l6-8h20l6 8v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M8 36h32M16 28h16M20 12v8M28 12v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="service-card__title">輸入販売</h3>
+            <p class="service-card__text">南洋材合板、LVL、単板、製材品などの輸入販売。インドネシア・ガボン・マレーシア・中国などから安定調達し、国内のお客様へお届けします。</p>
+          </article>
+          <article class="service-card fade-in">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+                <circle cx="24" cy="22" r="9" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M14 38c2.5-6 8-9 10-9s7.5 3 10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M32 14l6-4M32 18l6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="service-card__title">海外進出支援</h3>
+            <p class="service-card__text">製造拠点の移転、海外市場開拓、直輸入化のサポートなど、現地に根ざしたノウハウで海外展開を後押しします。</p>
+          </article>
+          <article class="service-card fade-in">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+                <path d="M10 34L24 12l14 22H10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M18 26h12M24 20v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="service-card__title">開発型事業</h3>
+            <p class="service-card__text">当社の特長は開発型事業が主体であること。商品開発と生産拠点開発を通じて、新しい価値と供給体制をつくります。</p>
+          </article>
+          <article class="service-card fade-in">
+            <div class="service-card__icon" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+                <circle cx="14" cy="30" r="4" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="34" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/>
+                <circle cx="34" cy="34" r="4" stroke="currentColor" stroke-width="1.5"/>
+                <path d="M17.5 28l12-8M30 18l2 12M26 34l-8-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="service-card__title">供給・販売ネットワーク</h3>
+            <p class="service-card__text">仕入れはインドネシア・ガボン・マレーシア・中国など多様な産地から。販売先は国内の有名メーカー・商社が中心です。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--muted home-map-block" id="network" aria-labelledby="map-heading">
+      <div class="wrap">
+        <header class="home-section-head home-section-head--narrow">
+          <p class="home-section-head__en">Network</p>
+          <h2 id="map-heading" class="home-section-head__title">グローバルネットワーク</h2>
+          <p class="home-section-head__sub">本社・主要仕入れエリアの参考位置です。ピンに触れると国名が表示され、クリックで詳細をご覧いただけます。</p>
+        </header>
+        <div class="partner-map partner-map--home" data-partner-map aria-label="拠点マップ"></div>
+      </div>
+    </section>
+
+    <section class="section home-news" id="news" aria-labelledby="news-heading">
+      <div class="wrap">
+        <header class="home-section-head home-section-head--row">
+          <div>
+            <p class="home-section-head__en">News</p>
+            <h2 id="news-heading" class="home-section-head__title">お知らせ</h2>
+          </div>
+          <a href="news.html" class="home-news__viewall">View All<span class="home-news__arrow" aria-hidden="true">→</span></a>
+        </header>
+        <ul class="home-news-list">
+          <li class="fade-in">
+            <a href="news.html" class="home-news-list__link">
+              <time class="home-news-list__date" datetime="2026-03-15">2026.03.15</time>
+              <span class="home-news-list__title">新工場の建設に伴う生産能力増強のお知らせ</span>
+            </a>
+          </li>
+          <li class="fade-in">
+            <a href="news.html" class="home-news-list__link">
+              <time class="home-news-list__date" datetime="2026-03-08">2026.03.08</time>
+              <span class="home-news-list__title">第9期決算のご報告（サンプル）</span>
+            </a>
+          </li>
+          <li class="fade-in">
+            <a href="news.html" class="home-news-list__link">
+              <time class="home-news-list__date" datetime="2026-03-01">2026.03.01</time>
+              <span class="home-news-list__title">環境大臣賞を受賞しました</span>
+            </a>
+          </li>
+          <li class="fade-in">
+            <a href="news.html" class="home-news-list__link">
+              <time class="home-news-list__date" datetime="2026-02-10">2026.02.10</time>
+              <span class="home-news-list__title">「森林と未来」セミナー開催のご案内</span>
+            </a>
+          </li>
+          <li class="fade-in">
+            <a href="news.html" class="home-news-list__link">
+              <time class="home-news-list__date" datetime="2026-01-20">2026.01.20</time>
+              <span class="home-news-list__title">年末年始の営業に関するお知らせ</span>
+            </a>
+          </li>
+        </ul>
+        <p class="home-news__footer">
+          <a href="news.html" class="btn btn--outline home-news__btn">お知らせ一覧へ</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap site-footer__grid">
+      <div>
+        <p class="site-footer__brand">株式会社日亜パートナーズ</p>
+        <p>南洋材の輸入販売と海外進出支援。取引先・協力会社の皆様とともに、供給と開発の価値を高めます。</p>
+      </div>
+      <div>
+        <p class="site-footer__brand" style="font-size:0.875rem;">ページ</p>
+        <ul class="footer-list" style="list-style:none;">
+          <li><a href="business.html">事業内容</a></li>
+          <li><a href="about.html">会社概要</a></li>
+          <li><a href="news.html">お知らせ</a></li>
+          <li><a href="contact.html">お問い合わせ</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="site-footer__brand" style="font-size:0.875rem;">連絡先</p>
+        <ul class="footer-list" style="list-style:none;">
+          <li>〒102-0074<br>東京都千代田区九段南2丁目3番22号 8階</li>
+          <li><a href="tel:0344559297">TEL 03-4455-9297</a></li>
+          <li>FAX 03-6800-6459</li>
+        </ul>
+      </div>
+    </div>
+    <div class="wrap site-footer__copy">
+      <p>&copy; 2026 株式会社日亜パートナーズ. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <button type="button" class="back-top" aria-label="ページ上部へ">↑</button>
+  <script src="js/site.js"></script>
+  <script src="js/world-map.js" defer></script>
+</body>
+</html>

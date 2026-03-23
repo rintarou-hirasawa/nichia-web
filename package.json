@@ -1,0 +1,5 @@
+{
+  "name": "nichia-hp",
+  "private": true,
+  "description": "静的サイト（HTML/CSS/JS）。index.html をブラウザで開くか Live Server で表示してください。"
+}
