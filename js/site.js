@@ -31,9 +31,16 @@
   }
 
   function initHeroVideo() {
-    var video = document.querySelector('.hero__media video');
-    if (!video || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    video.play().catch(function () {});
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('.hero__media video, .business-page-hero__media video').forEach(function (video) {
+      video.muted = true;
+      video.loop = true;
+      video.play().catch(function () {});
+      video.addEventListener('ended', function () {
+        video.currentTime = 0;
+        video.play().catch(function () {});
+      });
+    });
   }
 
   function initFadeIn() {
@@ -76,7 +83,8 @@
   }
 
   function initHomeHeader() {
-    if (document.body.getAttribute('data-page') !== 'home') return;
+    var page = document.body.getAttribute('data-page');
+    if (page !== 'home' && page !== 'business' && page !== 'about') return;
     var header = document.querySelector('.site-header');
     if (!header) return;
     var threshold = 32;

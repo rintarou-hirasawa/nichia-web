@@ -6,7 +6,7 @@
    * leftPct / topPct は表示領域に対するパーセント（0–100）。
    */
   var MAP_SRC = 'media/image_0.png';
-  var MAP_ALT = '世界地図上の主な本社・仕入れエリア（参考表示）';
+  var MAP_ALT = '主要な仕入れエリアの位置';
   var MAP_INTRINSIC_W = 2048;
   var MAP_INTRINSIC_H = 1024;
 
@@ -15,15 +15,15 @@
     {
       id: 'jp',
       leftPct: 48,
-      topPct: 47.3,
+      topPct: 49.1,
       hq: true,
       countryJa: '日本（東京）',
       countryEn: 'Japan (Tokyo)',
       roleEn: 'Headquarters · Sales & overseas coordination',
       detailTitle: '日本（東京）— 本社',
       detailBody:
-        '当社の本社所在地です。海外拠点・仕入れ先との調整、国内メーカー・商社への販売、海外進出支援の企画・実行のハブとなっています。\n\n' +
-        '関連する取扱商品・サービス例：南洋材合板、LVL、単板、製材品の販売、製造拠点移転・市場開拓・直輸入化などの海外進出支援。'
+        '東京に本社を置き、国内向けの販売、海外拠点・仕入れ先との調整、海外進出支援の企画・実行の拠点となっています。\n\n' +
+        '取扱い：南洋材の合板・LVL・単板・製材の販売、製造拠点移転・市場開拓・直輸入化などの海外進出支援。'
     },
     {
       id: 'cn',
@@ -34,20 +34,21 @@
       roleEn: 'Sourcing · panel-grade materials & feedstock',
       detailTitle: '中国 — 仕入れ',
       detailBody:
-        '中国を仕入れ先の一つとして、合板向け基材や関連資材の安定調達ルートの開発・維持に取り組んでいます。\n\n' +
-        '関連する取扱商品例：南洋材合板・LVL向けの基材、関連木質資材（取引内容は案件により異なります）。'
+        '仕入れ先の一つとして、合板向け基材や関連資材の安定調達ルートの開発・維持に取り組んでいます。\n\n' +
+        '取引内容は案件により異なります。'
     },
     {
       id: 'my',
       leftPct: 37.5,
       topPct: 68.1,
+      labelTopGap: '-0.14rem',
       countryJa: 'マレーシア',
       countryEn: 'Malaysia',
       roleEn: 'Sourcing · long-term residency network',
       detailTitle: 'マレーシア — 仕入れ・ネットワーク',
       detailBody:
-        '仕入れ先としての取引に加え、代表をはじめとする長期駐在で培った現地のネットワークを、調達・情報収集・海外支援に活かしています。\n\n' +
-        '関連する取扱商品例：南洋材合板、単板、製材品などの輸入販売に関わる材種・製品。'
+        '仕入れ先としての取引に加え、長期駐在で培った現地ネットワークを、調達・情報収集・海外進出支援に活かしています。\n\n' +
+        '南洋材の合板、単板、製材など、輸入販売に関わる材種・製品が対象となります。'
     },
     {
       id: 'id',
@@ -58,8 +59,8 @@
       roleEn: 'Primary sourcing · on-site production support',
       detailTitle: 'インドネシア — 仕入れ・現地体制',
       detailBody:
-        '主要な仕入れ先の一つです。現地スタッフが在籍しており、生産現場との調整や品質・納期のフォローに加え、製造拠点開発や商品開発など「開発型」の取引を進める上で重要な拠点です。\n\n' +
-        '関連する取扱商品例：南洋材合板、LVL、単板、製材品。海外進出支援（拠点移転・市場開拓等）における現地サポート。'
+        '主要な仕入れ先の一つです。現地スタッフが在籍し、生産現場との調整や品質・納期のフォローに加え、製造拠点開発や商品開発など開発型の取引を進める上で重要な拠点です。\n\n' +
+        '南洋材の合板、LVL、単板、製材、および海外進出支援（拠点移転・市場開拓など）における現地サポート。'
     },
     {
       id: 'ga',
@@ -70,8 +71,8 @@
       roleEn: 'Sourcing · African tropical timber origins',
       detailTitle: 'ガボン — 仕入れ（アフリカ）',
       detailBody:
-        'アフリカ西岸のガボンを含む産地から、南洋材の仕入れルートを確保・拡張しています。多様な産地からの調達が、供給の選択肢と安定性に寄与しています。\n\n' +
-        '関連する取扱商品例：合板・製材向けの南洋材原木・製品（取引内容は案件により異なります）。'
+        'ガボンを含むアフリカ西岸の産地から、南洋材の仕入れルートを確保・拡張しています。多様な産地からの調達が、供給の選択肢と安定性に寄与しています。\n\n' +
+        '合板・製材向けの原木・製品など（取引内容は案件により異なります）。'
     }
   ];
 
@@ -86,6 +87,7 @@
    * @property {string} detailTitle
    * @property {string} detailBody
    * @property {boolean} [hq]
+   * @property {string} [labelTopGap] ピン先端から国名ラベルまでの余白（CSS 長さ、負値でより近く）
    */
 
   var MODAL_Z = 1200;
@@ -309,13 +311,21 @@
       btn.style.left = pin.leftPct + '%';
       btn.style.top = pin.topPct + '%';
       btn.setAttribute('aria-expanded', 'false');
-      btn.setAttribute('aria-label', pin.countryJa + '。クリックで詳細を表示');
+      btn.setAttribute('aria-label', pin.countryJa + '、詳細を開く');
       btn.dataset.pinId = pin.id;
+      if (pin.labelTopGap != null) {
+        btn.style.setProperty('--pm-pin-label-top-gap', pin.labelTopGap);
+      }
 
       var pinWrap = document.createElement('span');
       pinWrap.className = 'partner-map__pin-wrap';
       pinWrap.setAttribute('aria-hidden', 'true');
       pinWrap.appendChild(createPinSvg());
+
+      var staticLabel = document.createElement('span');
+      staticLabel.className = 'partner-map__static-label';
+      staticLabel.textContent = pin.countryEn;
+      staticLabel.setAttribute('aria-hidden', 'true');
 
       var hoverLabel = document.createElement('span');
       hoverLabel.className = 'partner-map__hover-label';
@@ -323,6 +333,7 @@
       hoverLabel.setAttribute('aria-hidden', 'true');
 
       btn.appendChild(pinWrap);
+      btn.appendChild(staticLabel);
       btn.appendChild(hoverLabel);
 
       btn.addEventListener('click', function () {

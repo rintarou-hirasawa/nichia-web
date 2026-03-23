@@ -523,27 +523,6 @@ h3 {
   margin-bottom: 1rem;
 }
 
-/* —— World map block —— */
-.map-block {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
-}
-
-.map-block__text {
-  max-width: 48rem;
-  margin-bottom: 2rem;
-  font-size: 1rem;
-  line-height: 1.85;
-  color: var(--color-text);
-}
-
-.map-block__text--lines p {
-  margin: 0;
-}
-
-.map-block__text--lines p + p {
-  margin-top: 0.65rem;
-}
-
 /* —— Partner map（世界地図＋マップピン・モーダル） —— */
 .partner-map {
   --pm-pin-w: clamp(24px, 3.4vw, 32px);
@@ -551,8 +530,9 @@ h3 {
   --pm-pin-color-hover: var(--color-accent);
   --pm-pin-scale-hover: 1.2;
   --pm-pin-transition: transform 0.3s ease, color 0.3s ease;
-  --pm-hover-label-size: clamp(0.8125rem, 1.15vw, 0.9375rem);
-  --pm-hover-label-color: #111111;
+  --pm-static-label-size: clamp(0.625rem, 0.9vw, 0.75rem);
+  --pm-hover-ja-label-size: clamp(0.6875rem, 1.05vw, 0.8125rem);
+  --pm-hover-label-color: #1a1a1a;
   --pm-hover-label-offset: 0.3rem;
   --pm-hover-label-transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
   width: 100%;
@@ -599,6 +579,7 @@ h3 {
 
 /* 座標 % ＝ ピン先端（SVG 下端中央）。初期はピンのみ表示 */
 .partner-map__marker-btn {
+  --pm-pin-label-top-gap: 0.15rem;
   position: absolute;
   margin: 0;
   padding: 0;
@@ -642,38 +623,67 @@ h3 {
   transform: scale(var(--pm-pin-scale-hover));
 }
 
-/* ホバー／キーボードフォーカス時のみ日本語ラベル（Roboto Slab はページで読込） */
+/* ピン下：英語（常時）／ホバーで非表示→同位置に日本語 */
+.partner-map__static-label {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + var(--pm-pin-label-top-gap));
+  z-index: 2;
+  margin: 0;
+  padding: 0;
+  font-family: "Roboto Slab", Georgia, "Times New Roman", serif;
+  font-size: var(--pm-static-label-size);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1.25;
+  color: var(--pm-hover-label-color);
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateX(-50%);
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 10px #fff,
+    0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.partner-map__marker-btn:hover .partner-map__static-label,
+.partner-map__marker-btn:focus-visible .partner-map__static-label {
+  opacity: 0;
+  visibility: hidden;
+}
+
 .partner-map__hover-label {
   position: absolute;
   left: 50%;
-  top: calc(100% + var(--pm-hover-label-offset));
+  top: calc(100% + var(--pm-pin-label-top-gap));
   z-index: 3;
   margin: 0;
-  padding: 0.28em 0.5em;
+  padding: 0;
   font-family: "Roboto Slab", Georgia, "Times New Roman", serif;
-  font-size: var(--pm-hover-label-size);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  line-height: 1.3;
+  font-size: var(--pm-hover-ja-label-size);
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  line-height: 1.25;
   color: var(--pm-hover-label-color);
   white-space: nowrap;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(-50%) translateY(6px);
-  transition: var(--pm-hover-label-transition);
-  text-shadow: 0 0 8px var(--color-bg), 0 1px 0 var(--color-bg);
-  background: rgba(255, 255, 255, 0.94);
-  border: 1px solid var(--color-border);
-  border-radius: 2px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+  transform: translateX(-50%);
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 10px #fff,
+    0 1px 2px rgba(0, 0, 0, 0.25);
 }
 
 .partner-map__marker-btn:hover .partner-map__hover-label,
 .partner-map__marker-btn:focus-visible .partner-map__hover-label {
   opacity: 1;
   visibility: visible;
-  transform: translateX(-50%) translateY(0);
 }
 
 .partner-map-modal {
@@ -782,59 +792,6 @@ html.partner-map-modal-is-open {
   border: 1px solid var(--color-border);
   border-radius: 2px;
   padding: clamp(1.5rem, 4vw, 2.5rem);
-}
-
-/* —— News —— */
-.news-list {
-  border-top: 1px solid var(--color-border);
-}
-
-.news-item {
-  display: grid;
-  grid-template-columns: auto auto 1fr;
-  gap: 1rem 1.5rem;
-  align-items: baseline;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--color-border);
-  transition: background 0.2s;
-}
-
-.news-item:hover {
-  background: rgba(0, 106, 62, 0.02);
-}
-
-@media (max-width: 700px) {
-  .news-item {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-}
-
-.news-item time {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--color-accent);
-}
-
-.news-item .badge {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 0.25rem 0.5rem;
-  background: var(--color-accent);
-  color: #fff;
-  border-radius: 2px;
-  width: fit-content;
-}
-
-.news-item .badge--muted {
-  background: var(--color-text-muted);
-}
-
-.news-item h3 {
-  font-size: 1rem;
-  font-weight: 500;
 }
 
 /* —— Form —— */
@@ -1160,8 +1117,10 @@ body[data-page="home"] main {
   color: #fff;
 }
 
-/* ホーム：ヒーロー上は曇りガラス透過 → スクロールで動画が見切れたらロゴと同じ深緑の実色 */
-body[data-page="home"] .site-header {
+/* ヒーローメディア上：曇りガラス透過 → スクロールで見切れたらロゴと同じ深緑の実色 */
+body[data-page="home"] .site-header,
+body[data-page="business"] .site-header,
+body[data-page="about"] .site-header {
   background: rgba(255, 255, 255, 0.06);
   border-bottom-color: rgba(255, 255, 255, 0.14);
   backdrop-filter: blur(16px);
@@ -1169,7 +1128,9 @@ body[data-page="home"] .site-header {
   transition: background 0.35s var(--ease), border-color 0.35s var(--ease), backdrop-filter 0.35s var(--ease);
 }
 
-body[data-page="home"] .site-header--scrolled {
+body[data-page="home"] .site-header--scrolled,
+body[data-page="business"] .site-header--scrolled,
+body[data-page="about"] .site-header--scrolled {
   /* 旧「白」相当の状態を、ロゴ円と同一の深緑に */
   background: var(--logo-mark-bg);
   border-bottom-color: rgba(255, 255, 255, 0.12);
@@ -1177,83 +1138,119 @@ body[data-page="home"] .site-header--scrolled {
   -webkit-backdrop-filter: blur(12px);
 }
 
-body[data-page="home"] .site-header .site-logo {
+body[data-page="home"] .site-header .site-logo,
+body[data-page="business"] .site-header .site-logo,
+body[data-page="about"] .site-header .site-logo {
   color: #fff;
   transition: color 0.3s var(--ease);
 }
 
-body[data-page="home"] .site-header--scrolled .site-logo {
+body[data-page="home"] .site-header--scrolled .site-logo,
+body[data-page="business"] .site-header--scrolled .site-logo,
+body[data-page="about"] .site-header--scrolled .site-logo {
   color: rgba(255, 255, 255, 0.96);
 }
 
-body[data-page="home"] .site-header .site-logo:hover {
+body[data-page="home"] .site-header .site-logo:hover,
+body[data-page="business"] .site-header .site-logo:hover,
+body[data-page="about"] .site-header .site-logo:hover {
   color: rgba(255, 255, 255, 0.85);
 }
 
-body[data-page="home"] .site-header--scrolled .site-logo:hover {
+body[data-page="home"] .site-header--scrolled .site-logo:hover,
+body[data-page="business"] .site-header--scrolled .site-logo:hover,
+body[data-page="about"] .site-header--scrolled .site-logo:hover {
   color: #fff;
 }
 
-body[data-page="home"] .site-header:not(.site-header--scrolled) .site-logo__mark {
+body[data-page="home"] .site-header:not(.site-header--scrolled) .site-logo__mark,
+body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo__mark,
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo__mark {
   background: var(--logo-mark-bg);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.15);
 }
 
 /* スクロール後もバーと同色のため、マークは淡いハイライトで輪郭だけ分ける */
-body[data-page="home"] .site-header--scrolled .site-logo__mark {
+body[data-page="home"] .site-header--scrolled .site-logo__mark,
+body[data-page="business"] .site-header--scrolled .site-logo__mark,
+body[data-page="about"] .site-header--scrolled .site-logo__mark {
   background: var(--logo-mark-bg);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.12);
 }
 
-body[data-page="home"] .site-header .site-nav a {
+body[data-page="home"] .site-header .site-nav a,
+body[data-page="business"] .site-header .site-nav a,
+body[data-page="about"] .site-header .site-nav a {
   color: rgba(255, 255, 255, 0.92);
   transition: color 0.3s var(--ease);
 }
 
-body[data-page="home"] .site-header .site-nav a::after {
+body[data-page="home"] .site-header .site-nav a::after,
+body[data-page="business"] .site-header .site-nav a::after,
+body[data-page="about"] .site-header .site-nav a::after {
   background: #fff;
 }
 
-body[data-page="home"] .site-header--scrolled .site-nav a {
+body[data-page="home"] .site-header--scrolled .site-nav a,
+body[data-page="business"] .site-header--scrolled .site-nav a,
+body[data-page="about"] .site-header--scrolled .site-nav a {
   color: rgba(255, 255, 255, 0.92);
 }
 
-body[data-page="home"] .site-header--scrolled .site-nav a::after {
+body[data-page="home"] .site-header--scrolled .site-nav a::after,
+body[data-page="business"] .site-header--scrolled .site-nav a::after,
+body[data-page="about"] .site-header--scrolled .site-nav a::after {
   background: rgba(255, 255, 255, 0.85);
 }
 
-body[data-page="home"] .site-header--scrolled .site-nav a.is-active {
+body[data-page="home"] .site-header--scrolled .site-nav a.is-active,
+body[data-page="business"] .site-header--scrolled .site-nav a.is-active,
+body[data-page="about"] .site-header--scrolled .site-nav a.is-active {
   color: #fff;
 }
 
-body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle span {
+body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle span,
+body[data-page="business"] .site-header:not(.site-header--scrolled) .nav-toggle span,
+body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle span {
   background: #fff;
 }
 
-body[data-page="home"] .site-header--scrolled .nav-toggle span {
+body[data-page="home"] .site-header--scrolled .nav-toggle span,
+body[data-page="business"] .site-header--scrolled .nav-toggle span,
+body[data-page="about"] .site-header--scrolled .nav-toggle span {
   background: #fff;
 }
 
-body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle {
+body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle,
+body[data-page="business"] .site-header:not(.site-header--scrolled) .nav-toggle,
+body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle {
   border-color: rgba(255, 255, 255, 0.35);
   background: rgba(255, 255, 255, 0.08);
 }
 
-body[data-page="home"] .site-header--scrolled .nav-toggle {
+body[data-page="home"] .site-header--scrolled .nav-toggle,
+body[data-page="business"] .site-header--scrolled .nav-toggle,
+body[data-page="about"] .site-header--scrolled .nav-toggle {
   border-color: rgba(255, 255, 255, 0.35);
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* ホーム：モバイルメニュー展開時はパネル内を常に読みやすい濃色テキストに */
-body[data-page="home"] .site-header.is-open .site-nav a {
+/* モバイルメニュー展開時はパネル内を常に読みやすい濃色テキストに */
+body[data-page="home"] .site-header.is-open .site-nav a,
+body[data-page="business"] .site-header.is-open .site-nav a,
+body[data-page="about"] .site-header.is-open .site-nav a {
   color: var(--color-text);
 }
 
-body[data-page="home"] .site-header.is-open .site-nav a.is-active {
+body[data-page="home"] .site-header.is-open .site-nav a.is-active,
+body[data-page="business"] .site-header.is-open .site-nav a.is-active,
+body[data-page="about"] .site-header.is-open .site-nav a.is-active {
   color: var(--color-accent);
 }
 
-body[data-page="home"] .site-header.is-open .site-nav a::after {
+body[data-page="home"] .site-header.is-open .site-nav a::after,
+body[data-page="business"] .site-header.is-open .site-nav a::after,
+body[data-page="about"] .site-header.is-open .site-nav a::after {
   background: var(--color-accent);
 }
 
@@ -1261,6 +1258,11 @@ body[data-page="home"] .site-header.is-open .site-nav a::after {
 .home-services {
   padding-top: clamp(5rem, 12vw, 8rem);
   padding-bottom: clamp(5rem, 12vw, 8rem);
+}
+
+/* 事業内容リードが 1 行に収まるよう幅を確保（地図ブロックの narrow はそのまま） */
+.home-services .home-section-head {
+  max-width: min(46rem, 100%);
 }
 
 .home-section-head {
@@ -1362,6 +1364,116 @@ body[data-page="home"] .site-header.is-open .site-nav a::after {
   color: var(--color-text-muted);
 }
 
+/* 事業内容・会社概要：メディアをヘッダー裏まで伸ばす／見出しは帯の下（通常配色） */
+.business-page-hero,
+.about-page-hero {
+  --subpage-hero-band: clamp(10.5rem, 24vh, 17.5rem);
+  position: relative;
+  margin-top: calc(-1 * var(--header-h));
+  margin-bottom: 0;
+  padding-top: calc(var(--header-h) + var(--subpage-hero-band));
+}
+
+.business-page-hero__media,
+.about-page-hero__media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: calc(var(--header-h) + var(--subpage-hero-band));
+  overflow: hidden;
+  background-color: #111;
+}
+
+.business-page-hero__media > img,
+.business-page-hero__media > video,
+.about-page-hero__media > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.business-page-hero__media > video {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .business-page-hero__media > video {
+    display: none;
+  }
+}
+
+.business-page-hero__inner,
+.about-page-hero__inner {
+  position: relative;
+  z-index: 1;
+  padding-top: clamp(2rem, 4vw, 2.75rem);
+  padding-bottom: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+/* 事業内容：4 枚を同じサイズの箱で 1 行に並べる（狭い幅では折り返し） */
+.business-cards-section .grid-cards {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+@media (max-width: 960px) {
+  .business-cards-section .grid-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .business-cards-section .grid-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+.business-cards-section .card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.business-cards-section .card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  padding: 1.2rem 1.3rem 1.25rem;
+  min-height: 0;
+}
+
+/* 下側の余白だけ伸ばす（本文に flex:1 を付けない＝4枚目で上にずれるのを防ぐ） */
+.business-cards-section .card__body::after {
+  content: "";
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.business-cards-section .card__body h3 {
+  white-space: nowrap;
+  font-size: clamp(0.75rem, 0.55rem + 0.5vw, 0.9375rem);
+  line-height: 1.35;
+}
+
+.business-cards-section .card__body p {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+@media (max-width: 400px) {
+  .business-cards-section .card__body h3 {
+    white-space: normal;
+  }
+}
+
 /* トップの地図：通常グレー緑 → ホバー #2d5a27 */
 .partner-map--home {
   --pm-pin-color: var(--home-map-green);
@@ -1374,90 +1486,4 @@ body[data-page="home"] .site-header.is-open .site-nav a::after {
 
 .home-map-block .partner-map {
   max-width: 56rem;
-}
-
-/* お知らせ */
-.home-news {
-  padding-top: clamp(4.5rem, 10vw, 7rem);
-  padding-bottom: clamp(5rem, 11vw, 8rem);
-}
-
-.home-news__viewall {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-text);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
-}
-
-.home-news__viewall:hover {
-  color: var(--color-accent);
-  border-bottom-color: var(--color-accent);
-}
-
-.home-news__arrow {
-  transition: transform 0.25s var(--ease);
-}
-
-.home-news__viewall:hover .home-news__arrow {
-  transform: translateX(4px);
-}
-
-.home-news-list {
-  list-style: none;
-  border-top: 1px solid var(--color-border);
-}
-
-.home-news-list__link {
-  display: grid;
-  grid-template-columns: 7.5rem 1fr;
-  gap: 1rem 2rem;
-  align-items: baseline;
-  padding: 1.35rem 0;
-  border-bottom: 1px solid var(--color-border);
-  color: inherit;
-  transition: background 0.2s, padding-left 0.25s var(--ease);
-}
-
-@media (max-width: 540px) {
-  .home-news-list__link {
-    grid-template-columns: 1fr;
-    gap: 0.35rem;
-  }
-}
-
-.home-news-list__link:hover {
-  color: inherit;
-  padding-left: 0.35rem;
-  background: rgba(0, 106, 62, 0.03);
-}
-
-.home-news-list__date {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--color-text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.home-news-list__title {
-  font-size: 1.0625rem;
-  font-weight: 500;
-  line-height: 1.55;
-  letter-spacing: 0.02em;
-}
-
-.home-news__footer {
-  margin-top: 2.5rem;
-  text-align: center;
-}
-
-.home-news__btn {
-  min-width: 14rem;
 }

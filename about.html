@@ -24,29 +24,39 @@
         <a href="index.html" data-nav="home">トップ</a>
         <a href="business.html" data-nav="business">事業内容</a>
         <a href="about.html" data-nav="about">会社概要</a>
-        <a href="news.html" data-nav="news">お知らせ</a>
         <a href="contact.html" data-nav="contact">お問い合わせ</a>
       </nav>
     </div>
   </header>
 
   <main>
-    <header class="page-hero wrap">
-      <p class="lead-en">About</p>
-      <h1>会社概要</h1>
-      <p class="sub">株式会社日亜パートナーズ（NICHIA PARTNERS, INC.）の概要、代表メッセージ、会社情報を掲載しています。</p>
-    </header>
+    <div class="about-page-hero">
+      <div class="about-page-hero__media" aria-hidden="true">
+        <img src="media/about-hero-canopy.png" alt="" width="1920" height="1080" decoding="async" fetchpriority="high">
+      </div>
+      <header class="page-hero wrap about-page-hero__inner">
+        <p class="lead-en">About</p>
+        <h1>会社概要</h1>
+        <p class="sub">強み、代表プロフィール、会社情報。</p>
+      </header>
+    </div>
 
     <section class="section">
       <div class="wrap">
         <div style="display:grid; gap:3rem; grid-template-columns:1fr; max-width:48rem;">
           <div class="fade-in prose">
-            <p>当社は、住友林業での経験を経て2013年に設立した木材商社です。南洋材合板・LVL・単板・製材品などの輸入販売に加え、製造拠点移転や海外市場開拓、直輸入化のサポートなど海外進出支援にも取り組んでいます。</p>
-            <p><strong>特長は開発型事業が主体</strong>であることです。商品開発と生産拠点開発を通じて、お客様とともに事業を育てていきます。</p>
+            <p>2013年設立。住友林業での経験を経た木材商社として、南洋材の合板・LVL・単板・製材の輸入販売と、拠点移転・市場開拓・直輸入化などの海外支援を行っています。</p>
+            <p><strong>開発型事業</strong>を軸に、商品と生産拠点の開発を重ねています。</p>
+          </div>
+          <div class="panel fade-in">
+            <h3 style="margin-bottom:1rem;">強み</h3>
+            <p style="margin-bottom:1rem; font-weight:600;">これが本社の強みです。</p>
+            <p>日亜パートナーズの強みは、長年にわたり培ってきた海外仕入ネットワークと、仕入れから販売までを一貫して行う対応力にあります。</p>
+            <p style="margin-top:1rem;">木材は品質・価格・供給の安定性が非常に重要な商品ですが、当社では海外サプライヤーとの長年の信頼関係により、安定した供給体制を構築しております。</p>
           </div>
           <div class="panel fade-in">
             <h3 style="margin-bottom:1rem;">代表プロフィール</h3>
-            <p class="text-muted" style="font-size:0.9375rem;">代表取締役の羽根田 崇は、住友林業を経て2013年に独立。インドネシア・マレーシアで通算13年・3回の海外駐在を経験し、インドネシア住友林業の初代社長を務めました。</p>
+            <p class="text-muted" style="font-size:0.9375rem;">代表取締役 羽根田 崇。住友林業を経て2013年に独立。インドネシア・マレーシアで計13年・3度の駐在、インドネシア住友林業初代社長。</p>
           </div>
           <p class="fade-in">
             <a href="company-profile-2025.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--outline">会社案内PDF（2025年版）を開く</a>
@@ -56,22 +66,16 @@
         <div style="margin-top:3rem; display:grid; gap:2rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
           <div class="fade-in panel">
             <h3 style="font-size:1rem; margin-bottom:0.5rem; color:var(--color-accent);">開発型の事業スタイル</h3>
-            <p class="text-muted" style="font-size:0.875rem;">商品開発・生産拠点開発を軸に、付加価値の高い供給体制を構築します。</p>
+            <p class="text-muted" style="font-size:0.875rem;">商品開発と生産拠点開発を通じて、付加価値の高い供給体制を組み立てます。</p>
           </div>
           <div class="fade-in panel">
             <h3 style="font-size:1rem; margin-bottom:0.5rem; color:var(--color-accent);">現地に強い海外経験</h3>
-            <p class="text-muted" style="font-size:0.875rem;">インドネシア・マレーシアでの長期駐在とネットワークを、輸入・海外支援に活かしています。</p>
+            <p class="text-muted" style="font-size:0.875rem;">代表をはじめ、インドネシア・マレーシアでの長期駐在で培った現地のネットワークを、調達・情報収集・海外進出支援に活かしています。</p>
           </div>
           <div class="fade-in panel">
             <h3 style="font-size:1rem; margin-bottom:0.5rem; color:var(--color-accent);">実績</h3>
-            <p class="text-muted" style="font-size:0.875rem;">2022年4月期（第9期）売上実績 約27億円。国内の有名メーカー・商社への販売が中心です。</p>
+            <p class="text-muted" style="font-size:0.875rem;">2022年4月期（第9期）売上 約27億円。販売先は国内メーカー・商社が中心。</p>
           </div>
-        </div>
-
-        <div class="map-block fade-in" id="map-section">
-          <h2 style="margin-bottom:1rem; font-size:1.25rem;">グローバルネットワーク</h2>
-          <p class="map-block__text">本社および主要な仕入れエリアの参考位置です。事業の詳細は <a href="business.html">事業内容</a> もご覧ください。</p>
-          <div class="partner-map" data-partner-map aria-label="取引関連地域マップ"></div>
         </div>
 
         <div class="fade-in" style="margin-top:3rem;">
@@ -102,14 +106,13 @@
     <div class="wrap site-footer__grid">
       <div>
         <p class="site-footer__brand">株式会社日亜パートナーズ</p>
-        <p>南洋材の輸入販売と海外進出支援。開発型事業で、商品と生産拠点を育てます。</p>
+        <p>南洋材の輸入販売と海外進出支援。</p>
       </div>
       <div>
         <p class="site-footer__brand" style="font-size:0.875rem;">ページ</p>
         <ul class="footer-list" style="list-style:none;">
           <li><a href="index.html">トップ</a></li>
           <li><a href="business.html">事業内容</a></li>
-          <li><a href="news.html">お知らせ</a></li>
           <li><a href="contact.html">お問い合わせ</a></li>
         </ul>
       </div>
@@ -129,6 +132,5 @@
 
   <button type="button" class="back-top" aria-label="ページ上部へ">↑</button>
   <script src="js/site.js"></script>
-  <script src="js/world-map.js" defer></script>
 </body>
 </html>
