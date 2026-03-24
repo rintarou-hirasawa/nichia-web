@@ -99,16 +99,6 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
-  function initContactForm() {
-    var form = document.querySelector('.contact-form');
-    if (!form) return;
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      alert('お問い合わせを受け付けました。ありがとうございます。');
-      form.reset();
-    });
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
     initNavActive();
     initMobileNav();
@@ -116,6 +106,5 @@
     initHeroVideo();
     initFadeIn();
     initBackTop();
-    initContactForm();
   });
 })();

@@ -10,6 +10,9 @@
   var MAP_INTRINSIC_W = 2048;
   var MAP_INTRINSIC_H = 1024;
 
+  /** スマホ用ボタンの国旗（ISO 3166-1 alpha-2 = pin.id）。画像は flagcdn（Wikipedia Commons 由来・無料） */
+  var FLAG_CDN = 'https://flagcdn.com';
+
   /** @type {ReadonlyArray<PartnerPin>} */
   var PINS = [
     {
@@ -75,6 +78,17 @@
         '合板・製材向けの原木・製品など（取引内容は案件により異なります）。'
     }
   ];
+
+  var PIN_BY_ID = {};
+  for (var pi = 0; pi < PINS.length; pi++) {
+    PIN_BY_ID[PINS[pi].id] = PINS[pi];
+  }
+
+  /**
+   * スマホ2列グリッドの DOM 順（行優先）。
+   * 左列: 日本・中国・ガボン / 右列: マレーシア・インドネシア
+   */
+  var MOBILE_LIST_ORDER = ['jp', 'my', 'cn', 'id', 'ga'];
 
   /**
    * @typedef {Object} PartnerPin
@@ -192,16 +206,16 @@
     });
   }
 
-  function setPinsExpanded(mapPins, expandedBtn) {
-    mapPins.forEach(function (btn) {
+  function setRegionTogglesExpanded(toggleButtons, expandedBtn) {
+    toggleButtons.forEach(function (btn) {
       btn.setAttribute('aria-expanded', btn === expandedBtn ? 'true' : 'false');
     });
   }
 
-  function openModal(pin, pinBtn, mapPins) {
+  function openModal(pin, focusedBtn, toggleButtons) {
     var m = ensureModal();
     lastFocusBeforeModal = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    lastFocusedPin = pinBtn;
+    lastFocusedPin = focusedBtn;
 
     m.titleEl.textContent = pin.detailTitle;
     fillModalBody(m.bodyEl, pin.detailBody);
@@ -212,7 +226,7 @@
     document.documentElement.classList.add('partner-map-modal-is-open');
     document.body.style.overflow = 'hidden';
 
-    setPinsExpanded(mapPins, pinBtn);
+    setRegionTogglesExpanded(toggleButtons, focusedBtn);
 
     m.closeBtn.focus();
 
@@ -241,9 +255,11 @@
     document.documentElement.classList.remove('partner-map-modal-is-open');
     document.body.style.overflow = '';
 
-    document.querySelectorAll('.partner-map__marker-btn[aria-expanded="true"]').forEach(function (btn) {
-      btn.setAttribute('aria-expanded', 'false');
-    });
+    document
+      .querySelectorAll('.partner-map__marker-btn[aria-expanded="true"], .partner-map__country-btn[aria-expanded="true"]')
+      .forEach(function (btn) {
+        btn.setAttribute('aria-expanded', 'false');
+      });
 
     if (lastFocusedPin && typeof lastFocusedPin.focus === 'function') {
       lastFocusedPin.focus();
@@ -336,15 +352,73 @@
       btn.appendChild(staticLabel);
       btn.appendChild(hoverLabel);
 
-      btn.addEventListener('click', function () {
-        openModal(pin, btn, mapPins);
-      });
-
       pinsLayer.appendChild(btn);
       mapPins.push(btn);
     });
 
+    var mobileNav = document.createElement('div');
+    mobileNav.className = 'partner-map__mobile-list';
+    mobileNav.setAttribute('aria-label', '国・地域から詳細を開く');
+
+    var mobileItems = [];
+
+    MOBILE_LIST_ORDER.forEach(function (pinId) {
+      var pin = PIN_BY_ID[pinId];
+      if (!pin) {
+        return;
+      }
+
+      var mBtn = document.createElement('button');
+      mBtn.type = 'button';
+      mBtn.className = 'partner-map__country-btn' + (pin.hq ? ' partner-map__country-btn--hq' : '');
+      mBtn.setAttribute('aria-expanded', 'false');
+      mBtn.setAttribute('aria-label', pin.countryJa + '、詳細を開く');
+      mBtn.dataset.pinId = pin.id;
+
+      var flagWrap = document.createElement('span');
+      flagWrap.className = 'partner-map__country-btn__flag';
+      flagWrap.setAttribute('aria-hidden', 'true');
+
+      var flagImg = document.createElement('img');
+      flagImg.className = 'partner-map__country-btn__flag-img';
+      flagImg.src = FLAG_CDN + '/w80/' + pin.id + '.png';
+      flagImg.srcset = FLAG_CDN + '/w160/' + pin.id + '.png 2x';
+      flagImg.sizes = '40px';
+      flagImg.alt = '';
+      flagImg.loading = 'lazy';
+      flagImg.decoding = 'async';
+      flagWrap.appendChild(flagImg);
+
+      var labelEl = document.createElement('span');
+      labelEl.className = 'partner-map__country-btn__label';
+      labelEl.textContent = pin.countryJa;
+
+      mBtn.appendChild(flagWrap);
+      mBtn.appendChild(labelEl);
+      mobileNav.appendChild(mBtn);
+      mobileItems.push({ pin: pin, btn: mBtn });
+    });
+
+    var mobileButtons = mobileItems.map(function (item) {
+      return item.btn;
+    });
+
+    var allToggleButtons = mapPins.concat(mobileButtons);
+
+    mobileItems.forEach(function (item) {
+      item.btn.addEventListener('click', function () {
+        openModal(item.pin, item.btn, allToggleButtons);
+      });
+    });
+
+    mapPins.forEach(function (btn, i) {
+      btn.addEventListener('click', function () {
+        openModal(PINS[i], btn, allToggleButtons);
+      });
+    });
+
     root.appendChild(stage);
+    root.appendChild(mobileNav);
   }
 
   function onKeydown(e) {
