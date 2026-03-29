@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="vite.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Roboto+Slab:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body data-page="about">
@@ -15,15 +15,16 @@
     <div class="site-header__inner">
       <a href="index.html" class="site-logo">
         <span class="site-logo__mark" aria-hidden="true"></span>
-        <span>日亜パートナーズ</span>
+        <span class="site-logo__text">NICHIA PARTNERS, INC.</span>
       </a>
       <button type="button" class="nav-toggle" aria-label="メニュー" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="site-nav" aria-label="グローバルナビ">
-        <a href="index.html" data-nav="home">トップ</a>
-        <a href="business.html" data-nav="business">事業内容</a>
-        <a href="about.html" data-nav="about">会社概要</a>
+        <a href="index.html" data-nav="home">HOME</a>
+        <a href="about.html" data-nav="about">ABOUT US</a>
+        <a href="business.html" data-nav="business">BUSINESS</a>
+        <a href="contact.html" data-nav="contact">CONTACT</a>
       </nav>
     </div>
   </header>
@@ -36,75 +37,25 @@
       <header class="page-hero wrap about-page-hero__inner">
         <p class="lead-en">About</p>
         <h1>会社概要</h1>
-        <p class="sub">強み、代表プロフィール、会社情報、お問い合わせ。</p>
       </header>
     </div>
 
     <section class="section">
       <div class="wrap">
-        <div style="display:grid; gap:3rem; grid-template-columns:1fr; max-width:48rem;">
-          <div class="fade-in prose">
-            <p>2013年設立。住友林業での経験を経た木材商社として、南洋材の合板・LVL・単板・製材の輸入販売と、拠点移転・市場開拓・直輸入化などの海外支援を行っています。</p>
-            <p><strong>開発型事業</strong>を軸に、商品と生産拠点の開発を重ねています。</p>
-          </div>
-          <div class="panel fade-in">
-            <h3 style="margin-bottom:1rem;">当社の特長</h3>
-            <p>日亜パートナーズの強みは、長年にわたり培ってきた海外仕入ネットワークと、仕入れから販売までを一貫して行う対応力にあります。</p>
-            <p style="margin-top:1rem;">木材は品質・価格・供給の安定性が非常に重要な商品ですが、当社では海外サプライヤーとの長年の信頼関係により、安定した供給体制を構築しております。</p>
-          </div>
-          <div class="panel fade-in">
-            <h3 style="margin-bottom:1rem;">代表プロフィール</h3>
-            <p class="text-muted" style="font-size:0.9375rem;">代表取締役 羽根田 崇。住友林業を経て2013年に独立。インドネシア・マレーシアで計13年・3度の駐在、インドネシア住友林業初代社長。</p>
-          </div>
+        <div class="fade-in panel" style="max-width:48rem; margin:0 auto;">
+          <table class="data-table">
+            <tbody>
+              <tr><th scope="row">会社名</th><td>株式会社日亜パートナーズ（NICHIA PARTNERS,INC）</td></tr>
+              <tr><th scope="row">所在地</th><td>東京都千代田区九段南2-3-22, 8F<br>TEL : <a href="tel:0344559297">03-4455-9297</a>　FAX : 03-6800-6459</td></tr>
+              <tr><th scope="row">代表者</th><td>代表取締役　羽根田　崇</td></tr>
+              <tr><th scope="row">設立</th><td>2013年5月</td></tr>
+              <tr><th scope="row">資本金</th><td>999万円</td></tr>
+              <tr><th scope="row">仕入先</th><td>インドネシア、マレーシア、ガボン等</td></tr>
+              <tr><th scope="row">販売先</th><td>有名メーカー、建材販売商社、大手問屋</td></tr>
+              <tr><th scope="row">事業内容</th><td>南洋材製品の輸入販売、海外進出支援等</td></tr>
+            </tbody>
+          </table>
         </div>
-
-        <div style="margin-top:3rem; display:grid; gap:2rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr));">
-          <div class="fade-in panel">
-            <h3 style="font-size:1rem; margin-bottom:0.5rem; color:var(--color-accent);">開発型の事業スタイル</h3>
-            <p class="text-muted" style="font-size:0.875rem;">商品開発と生産拠点開発を通じて、付加価値の高い供給体制を組み立てます。</p>
-          </div>
-          <div class="fade-in panel">
-            <h3 style="font-size:1rem; margin-bottom:0.5rem; color:var(--color-accent);">現地に強い海外経験</h3>
-            <p class="text-muted" style="font-size:0.875rem;">代表をはじめ、インドネシア・マレーシアでの長期駐在で培った現地のネットワークを、調達・情報収集・海外進出支援に活かしています。</p>
-          </div>
-          <div class="fade-in panel">
-            <h3 style="font-size:1rem; margin-bottom:0.5rem; color:var(--color-accent);">実績</h3>
-            <p class="text-muted" style="font-size:0.875rem;">2022年4月期（第9期）売上 約27億円。販売先は国内メーカー・商社が中心。</p>
-          </div>
-        </div>
-
-        <div class="fade-in" style="margin-top:3rem;">
-          <h2 style="margin-bottom:1.5rem; font-size:1.25rem;">会社情報</h2>
-          <div class="panel">
-            <table class="data-table">
-              <tbody>
-                <tr><th scope="row">会社名</th><td>株式会社日亜パートナーズ（NICHIA PARTNERS, INC.）</td></tr>
-                <tr><th scope="row">所在地</th><td>〒102-0074 東京都千代田区九段南2丁目3番22号 8階<br>TEL <a href="tel:0344559297">03-4455-9297</a>　FAX 03-6800-6459</td></tr>
-                <tr><th scope="row">代表者</th><td>代表取締役　羽根田 崇（1967年4月生）</td></tr>
-                <tr><th scope="row">設立</th><td>2013年5月</td></tr>
-                <tr><th scope="row">資本金</th><td>999万円（株主数 1名）</td></tr>
-                <tr><th scope="row">取引銀行</th><td>りそな銀行、みずほ銀行、商工中金、日本政策金融公庫、三井住友銀行</td></tr>
-                <tr><th scope="row">従業員数</th><td>6名（顧問1名、インドネシア現地スタッフ2名を含む）</td></tr>
-                <tr><th scope="row">売上実績</th><td>2022年4月度（第9期）　約27億円</td></tr>
-                <tr><th scope="row">仕入れ先</th><td>インドネシア、ガボン、マレーシア、中国</td></tr>
-                <tr><th scope="row">販売先</th><td>国内の有名メーカー、商社が主体</td></tr>
-                <tr><th scope="row">事業内容</th><td>南洋材合板、LVL、単板、製材品等の輸入販売<br>海外進出支援（製造拠点移転、海外市場開拓、直輸入化サポート等）</td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div class="fade-in panel" id="contact" style="margin-top:3rem;">
-          <h2 style="margin-bottom:1rem; font-size:1.25rem;">お問い合わせ</h2>
-          <p style="font-size:0.9375rem; line-height:1.75; margin:0;">
-            お電話にてお問い合わせを承っております。<br>
-            TEL <a href="tel:0344559297">03-4455-9297</a>　FAX 03-6800-6459
-          </p>
-        </div>
-
-        <p class="fade-in" style="margin-top:3rem;">
-          <a href="company-profile-2025.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--outline">会社案内PDF（2025年版）を開く</a>
-        </p>
       </div>
     </section>
   </main>
@@ -118,8 +69,10 @@
       <div>
         <p class="site-footer__brand" style="font-size:0.875rem;">ページ</p>
         <ul class="footer-list" style="list-style:none;">
-          <li><a href="index.html">トップ</a></li>
+          <li><a href="index.html">HOME</a></li>
           <li><a href="business.html">事業内容</a></li>
+          <li><a href="about.html">会社概要</a></li>
+          <li><a href="contact.html">お問い合わせ</a></li>
         </ul>
       </div>
       <div>

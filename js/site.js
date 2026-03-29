@@ -22,7 +22,7 @@
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
 
-    header.querySelectorAll('.site-nav a').forEach(function (link) {
+    header.querySelectorAll('.site-nav a, .hero__nav a').forEach(function (link) {
       link.addEventListener('click', function () {
         header.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
@@ -84,19 +84,36 @@
 
   function initHomeHeader() {
     var page = document.body.getAttribute('data-page');
-    if (page !== 'home' && page !== 'business' && page !== 'about') return;
     var header = document.querySelector('.site-header');
     if (!header) return;
-    var threshold = 32;
-    function onScroll() {
-      if (window.scrollY > threshold) {
+    var hero = null;
+    if (page === 'home') hero = document.querySelector('.hero--home');
+    else if (page === 'business') hero = document.querySelector('.business-page-hero');
+    else if (page === 'about' || page === 'contact') hero = document.querySelector('.about-page-hero');
+    else return;
+    if (!hero) return;
+    /* ヒーロー下端がこの距離（px）以内に入ったら透明→緑を段階的に変化 */
+    var fadeStartPx = 120;
+    function updateHeader() {
+      var heroBottom = hero.getBoundingClientRect().bottom;
+      var t;
+      if (heroBottom <= 0) {
+        t = 1;
+      } else if (heroBottom >= fadeStartPx) {
+        t = 0;
+      } else {
+        t = 1 - heroBottom / fadeStartPx;
+      }
+      header.style.setProperty('--header-solid', String(t));
+      if (heroBottom <= 0) {
         header.classList.add('site-header--scrolled');
       } else {
         header.classList.remove('site-header--scrolled');
       }
     }
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    updateHeader();
+    window.addEventListener('scroll', updateHeader, { passive: true });
+    window.addEventListener('resize', updateHeader, { passive: true });
   }
 
   document.addEventListener('DOMContentLoaded', function () {

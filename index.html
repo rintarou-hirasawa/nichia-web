@@ -7,23 +7,23 @@
   <link rel="icon" type="image/svg+xml" href="vite.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Noto+Sans+JP:wght@400;500;600;700&family=Roboto+Slab:wght@500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body data-page="home">
-  <header class="site-header">
-    <div class="site-header__inner">
+  <header class="site-header site-header--home">
+    <div class="site-header__inner site-header__inner--home">
       <a href="index.html" class="site-logo">
         <span class="site-logo__mark" aria-hidden="true"></span>
-        <span>日亜パートナーズ</span>
+        <span class="site-logo__text">NICHIA PARTNERS, INC.</span>
       </a>
       <button type="button" class="nav-toggle" aria-label="メニュー" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="site-nav" aria-label="グローバルナビ">
-        <a href="index.html" data-nav="home">トップ</a>
-        <a href="business.html" data-nav="business">事業内容</a>
-        <a href="about.html" data-nav="about">会社概要</a>
+        <a href="about.html" data-nav="about">ABOUT US</a>
+        <a href="business.html" data-nav="business">BUSINESS</a>
+        <a href="contact.html" data-nav="contact">CONTACT</a>
       </nav>
     </div>
   </header>
@@ -33,72 +33,85 @@
       <div class="hero__media" aria-hidden="true">
         <img src="media/forest-aerial.jpg" alt="" width="1920" height="1080" decoding="async" fetchpriority="high">
         <video autoplay muted loop playsinline poster="media/forest-aerial.jpg">
-          <source src="media/hero-home-loop.mp4" type="video/mp4">
+          <source src="media/hero-people.mp4" type="video/mp4">
         </video>
       </div>
       <div class="hero__overlay hero__overlay--home"></div>
-      <div class="hero__content hero__content--home wrap">
-        <p class="hero__eyebrow">NICHIA PARTNERS</p>
-        <h1 id="hero-title" class="hero__title-home">森林から、<br>確かな供給へ。</h1>
-        <p class="hero__lead">南洋材の輸入販売と海外進出支援。長年培った海外仕入ネットワークと、仕入れから販売までの一貫対応で供給の安定性を支え、商品開発と生産拠点開発を重ねて土台をつくります。</p>
-        <div class="hero__cta">
-          <a href="business.html" class="btn btn--hero-solid">事業内容を見る</a>
-          <a href="about.html#contact" class="btn btn--hero-line">お問い合わせ</a>
+      <div class="hero__content hero__content--home">
+        <h1 id="hero-title" class="hero__center-brand">
+          <span class="hero__center-brand__name">NICHIA PARTNERS, INC.</span>
+        </h1>
+        <nav class="hero__nav site-nav site-nav--boxed" aria-label="メインビジュアル内ナビ">
+          <a href="about.html" data-nav="about">ABOUT US</a>
+          <a href="business.html" data-nav="business">BUSINESS</a>
+          <a href="contact.html" data-nav="contact">CONTACT</a>
+        </nav>
+      </div>
+    </section>
+
+    <!-- 会社紹介（文言は about / 会社概要と整合。長文は事業内容ページへ） -->
+    <section class="section home-intro" aria-labelledby="home-intro-heading">
+      <div class="wrap">
+        <div class="home-intro__inner fade-in">
+          <p class="home-intro__eyebrow">About</p>
+          <h2 id="home-intro-heading" class="home-intro__title">南洋材の貿易と、海外とつなぐ支援</h2>
+          <p class="home-intro__lead">
+            株式会社日亜パートナーズは、南洋材の輸入販売を専門とする貿易商社です。インドネシア・ガボン・マレーシア・中国などから合板・LVL・単板・製材を調達し、国内のメーカー・商社のお客様にお届けしています。製造拠点の移転や市場開拓、直輸入化といった海外進出支援に加え、商品開発と生産拠点開発を軸とした開発型の取り組みで、価値と供給体制を組み立てています。
+          </p>
+          <p class="home-intro__more">
+            <a href="about.html" class="home-intro__link">会社概要を見る</a>
+          </p>
         </div>
       </div>
     </section>
 
-    <section class="section home-services" id="services" aria-labelledby="services-heading">
-      <div class="wrap">
-        <header class="home-section-head">
-          <p class="home-section-head__en">Services</p>
-          <h2 id="services-heading" class="home-section-head__title">事業内容</h2>
-          <p class="home-section-head__sub">輸入販売、海外進出支援、開発型の取り組み、国内外のネットワークを中心にご紹介します。</p>
-        </header>
-        <div class="services-grid">
-          <article class="service-card fade-in">
-            <div class="service-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
-                <path d="M8 36V20l6-8h20l6 8v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M8 36h32M16 28h16M20 12v8M28 12v8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <h3 class="service-card__title">輸入販売</h3>
-            <p class="service-card__text">南洋材の合板、LVL、単板、製材などの輸入販売。インドネシア・ガボン・マレーシア・中国などから安定調達し、国内のお客様にお届けします。</p>
-          </article>
-          <article class="service-card fade-in">
-            <div class="service-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
-                <circle cx="24" cy="22" r="9" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M14 38c2.5-6 8-9 10-9s7.5 3 10 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                <path d="M32 14l6-4M32 18l6 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <h3 class="service-card__title">海外進出支援</h3>
-            <p class="service-card__text">拠点移転、市場開拓、直輸入化など。現地の知見を海外展開に。</p>
-          </article>
-          <article class="service-card fade-in">
-            <div class="service-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
-                <path d="M10 34L24 12l14 22H10z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                <path d="M18 26h12M24 20v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <h3 class="service-card__title">開発型事業</h3>
-            <p class="service-card__text">事業の中心は開発型です。商品開発と生産拠点開発の両面から、価値と供給体制を組み立てます。</p>
-          </article>
-          <article class="service-card fade-in">
-            <div class="service-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
-                <circle cx="14" cy="30" r="4" stroke="currentColor" stroke-width="1.5"/>
-                <circle cx="34" cy="16" r="4" stroke="currentColor" stroke-width="1.5"/>
-                <circle cx="34" cy="34" r="4" stroke="currentColor" stroke-width="1.5"/>
-                <path d="M17.5 28l12-8M30 18l2 12M26 34l-8-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-              </svg>
-            </div>
-            <h3 class="service-card__title">供給・販売ネットワーク</h3>
-            <p class="service-card__text">仕入れはインドネシア・ガボン・マレーシア・中国など多様な産地から。販売先は国内のメーカー・商社が中心です。</p>
-          </article>
+    <!--
+      OUR VIEW カルーセル：説明は .home-focus__caption（カルーセルでは非表示・モーダル表示時に下へ出す）
+    -->
+    <section class="home-focus" aria-labelledby="home-view-heading" data-home-focus data-home-focus-interval="6000">
+      <div class="home-focus__bg" aria-hidden="true"></div>
+      <div class="wrap home-focus__wrap">
+        <h2 id="home-view-heading" class="home-focus__heading">Our view</h2>
+        <div class="home-focus__carousel" data-home-focus-viewport>
+          <div class="home-focus__track" data-home-focus-track>
+            <article class="home-focus__slide is-current" data-home-focus-slide>
+              <div class="home-focus__card">
+                <div class="home-focus__media home-focus__media--image">
+                  <img src="media/forest-aerial.jpg" alt="熱帯林の俯瞰" width="1920" height="1080" loading="lazy" decoding="async">
+                </div>
+                <p class="home-focus__caption" data-home-focus-caption>森林の上空からの写真（俯瞰）。</p>
+              </div>
+            </article>
+            <article class="home-focus__slide" data-home-focus-slide>
+              <div class="home-focus__card">
+                <div class="home-focus__media home-focus__media--video">
+                  <video muted playsinline loop preload="metadata" poster="media/forest-aerial.jpg">
+                    <source src="media/focus-01.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <p class="home-focus__caption" data-home-focus-caption>森林と小川が写る、上空からの映像。</p>
+              </div>
+            </article>
+            <article class="home-focus__slide" data-home-focus-slide>
+              <div class="home-focus__card">
+                <div class="home-focus__media home-focus__media--video">
+                  <video muted playsinline loop preload="metadata">
+                    <source src="media/focus-02.mp4" type="video/mp4">
+                  </video>
+                </div>
+                <p class="home-focus__caption" data-home-focus-caption>樹冠が広がる森林を、上空から捉えた映像。</p>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="home-focus__controls">
+          <button type="button" class="home-focus__arrow home-focus__arrow--prev" data-home-focus-prev aria-label="前のスライド">
+            <span aria-hidden="true">‹</span>
+          </button>
+          <div class="home-focus__dots" data-home-focus-dots role="tablist" aria-label="スライドの位置"></div>
+          <button type="button" class="home-focus__arrow home-focus__arrow--next" data-home-focus-next aria-label="次のスライド">
+            <span aria-hidden="true">›</span>
+          </button>
         </div>
       </div>
     </section>
@@ -126,6 +139,7 @@
         <ul class="footer-list" style="list-style:none;">
           <li><a href="business.html">事業内容</a></li>
           <li><a href="about.html">会社概要</a></li>
+          <li><a href="contact.html">お問い合わせ</a></li>
         </ul>
       </div>
       <div>
@@ -144,6 +158,7 @@
 
   <button type="button" class="back-top" aria-label="ページ上部へ">↑</button>
   <script src="js/site.js"></script>
+  <script src="js/home-focus.js" defer></script>
   <script src="js/world-map.js" defer></script>
 </body>
 </html>

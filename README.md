@@ -37,6 +37,6 @@ git config --global user.email "you@example.com"
 ## 含まれる主なファイル
 
 - `index.html` … トップ
-- `about.html` / `business.html`（お問い合わせは会社概要ページ内）
+- `about.html` / `business.html` / `contact.html`（お問い合わせ）
 - `css/site.css` / `js/site.js` / `js/world-map.js`
 - `media/` … 画像・ヒーロー動画など

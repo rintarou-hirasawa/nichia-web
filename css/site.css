@@ -14,10 +14,12 @@
   --max-w: 72rem;
   --space-section: clamp(4rem, 10vw, 7rem);
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
-  --font-display: "Cormorant Garamond", "Times New Roman", Times, serif;
+  --font-display: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
   --home-map-green: #2d5a27;
   /* ロゴ横の円（会社名まわりのフレーム）— 深いグリーン */
   --logo-mark-bg: #1a3d2a;
+  /* ヒーロー見出し＋ナビが右に寄って見えるときの視覚補正（負の値＝左へ） */
+  --hero-optical-shift-x: -0.65rem;
 }
 
 *,
@@ -30,6 +32,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-family: var(--font-sans);
 }
 
 body {
@@ -39,6 +42,12 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
+}
+
+/* メインページは縦スクロールでヒーロー直下のセクションへ（他ページは従来どおり） */
+body[data-page="home"] {
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 img {
@@ -83,11 +92,17 @@ a:hover {
 .site-logo {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
   font-weight: 600;
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
+  font-size: clamp(0.7rem, 1.65vw, 1.05rem);
+  letter-spacing: 0.04em;
   color: var(--color-text);
+  max-width: min(58vw, 20rem);
+  line-height: 1.25;
+}
+
+.site-logo__text {
+  white-space: normal;
 }
 
 .site-logo:hover {
@@ -106,14 +121,14 @@ a:hover {
 .site-nav {
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
 }
 
 .site-nav a {
   color: var(--color-text);
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.04em;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   position: relative;
   padding: 0.25rem 0;
 }
@@ -136,6 +151,75 @@ a:hover {
 
 .site-nav a.is-active {
   color: var(--color-accent);
+}
+
+/* 枠付きナビ（トップは ABOUT US / BUSINESS / CONTACT。他ページのヘッダーは枠なし） */
+.site-nav--boxed {
+  gap: clamp(0.5rem, 1.5vw, 0.85rem);
+}
+
+.site-nav--boxed a {
+  padding: 0.45rem 0.85rem;
+  border: 1px solid rgba(26, 26, 26, 0.2);
+  border-radius: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition:
+    background 0.25s var(--ease),
+    border-color 0.25s var(--ease),
+    color 0.25s var(--ease),
+    box-shadow 0.25s var(--ease);
+}
+
+.site-nav--boxed a::after {
+  display: none;
+}
+
+.site-nav--boxed a:hover {
+  border-color: var(--color-accent);
+  background: rgba(0, 106, 62, 0.06);
+  color: var(--color-accent);
+}
+
+.site-header--home .site-header__inner--home {
+  justify-content: flex-end;
+}
+
+/* トップ：ヒーロー中はロゴ非表示、スクロールでヒーローが終わったら表示 */
+body[data-page="home"] .site-header:not(.site-header--scrolled) .site-logo {
+  display: none;
+}
+
+body[data-page="home"] .site-header--scrolled .site-header__inner--home {
+  justify-content: space-between;
+}
+
+body[data-page="home"] .site-header--scrolled .site-logo {
+  display: flex;
+  animation: homeLogoReveal 0.45s var(--ease) forwards;
+}
+
+@keyframes homeLogoReveal {
+  from {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="home"] .site-header--scrolled .site-logo {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .site-header--home .site-header__inner--home {
+    justify-content: space-between;
+  }
 }
 
 .nav-toggle {
@@ -685,7 +769,7 @@ h3 {
   z-index: 2;
   margin: 0;
   padding: 0;
-  font-family: "Roboto Slab", Georgia, "Times New Roman", serif;
+  font-family: var(--font-sans);
   font-size: var(--pm-static-label-size);
   font-weight: 500;
   letter-spacing: 0.03em;
@@ -716,7 +800,7 @@ h3 {
   z-index: 3;
   margin: 0;
   padding: 0;
-  font-family: "Roboto Slab", Georgia, "Times New Roman", serif;
+  font-family: var(--font-sans);
   font-size: var(--pm-hover-ja-label-size);
   font-weight: 500;
   letter-spacing: 0.03em;
@@ -902,6 +986,23 @@ html.partner-map-modal-is-open {
   }
 }
 
+/* Netlify Forms：スパム対策用ハニーポット（人には見えない） */
+.contact-netlify-form {
+  position: relative;
+}
+
+.contact-netlify-form__honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .checkbox-row {
   display: flex;
   align-items: flex-start;
@@ -1078,14 +1179,20 @@ body[data-page="home"] main {
   padding-top: 0;
 }
 
-/* ヒーロー：画面いっぱい（ヘッダー下に背景が回り込む） */
-.hero--home {
+/* ヒーロー：開いた瞬間から動画がビューポート全体を覆う（100svh が 100dvh より低く、下に隙間が出ていた） */
+.hero.hero--home {
   margin-top: calc(-1 * var(--header-h));
-  min-height: 100dvh;
-  min-height: 100svh;
   padding-top: var(--header-h);
-  align-items: flex-end;
-  justify-content: flex-start;
+  box-sizing: border-box;
+  min-height: 100vh;
+  min-height: 100dvh;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 高さを常に少なくとも 1 画面に（中身が短いときでも動画が縦いっぱい） */
+.hero.hero--home .hero__media {
+  min-height: 100%;
 }
 
 .hero--home .hero__media > img {
@@ -1093,28 +1200,69 @@ body[data-page="home"] main {
 }
 
 .hero__overlay--home {
+  /* 斜めグラデは左右の明暗差で中央が右に寄って見えやすいため、上下対称に */
   background: linear-gradient(
-    105deg,
-    rgba(12, 18, 14, 0.72) 0%,
-    rgba(12, 18, 14, 0.38) 45%,
-    rgba(18, 24, 20, 0.28) 100%
+    180deg,
+    rgba(12, 18, 14, 0.68) 0%,
+    rgba(12, 18, 14, 0.4) 45%,
+    rgba(18, 24, 20, 0.26) 100%
   );
 }
 
 .hero__content--home {
-  max-width: 52rem;
-  margin: 0 auto;
-  text-align: left;
-  padding-top: clamp(4rem, 12vh, 7rem);
-  padding-bottom: clamp(3rem, 8vh, 5rem);
-  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
-  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  max-width: min(56rem, 100%);
+  width: 100%;
+  margin-inline: auto;
+  box-sizing: border-box;
+  text-align: center;
+  padding-block: clamp(2rem, 6vh, 4rem) clamp(2rem, 8vh, 5rem);
+  padding-inline: max(1.5rem, env(safe-area-inset-left, 0px)) max(1.5rem, env(safe-area-inset-right, 0px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* 幾何中心と視覚中心の差（英字大文字・letter-spacing・スクロールバー）を左へ補正 */
+  transform: translateX(var(--hero-optical-shift-x));
+}
+
+/* flex 子が align-items:center で幅が文字分に縮み、行ボックスが画面中央とずれるのを防ぐ */
+.hero__center-brand {
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-weight: inherit;
+  align-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  text-align: center;
+}
+
+.hero__center-brand__name {
+  display: inline;
+  white-space: nowrap;
+  font-size: clamp(2rem, 8.5vw, 4.75rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  /* letter-spacing による行末の余白を相殺（幾何中心の右ズレを抑える） */
+  margin-inline-end: -0.08em;
+  line-height: 1.08;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.96);
 }
 
 @media (max-width: 768px) {
+  :root {
+    --hero-optical-shift-x: -0.4rem;
+  }
+
   .hero__content--home {
     padding-left: max(1.75rem, calc(0.5rem + env(safe-area-inset-left, 0px)));
     padding-right: max(1.75rem, calc(0.5rem + env(safe-area-inset-right, 0px)));
+  }
+
+  .hero__center-brand__name {
+    /* 1 行のまま収まるよう vw をやや抑える */
+    font-size: clamp(1.125rem, 4.2vw, 2.75rem);
   }
 }
 
@@ -1143,6 +1291,8 @@ body[data-page="home"] main {
   line-height: 2;
   color: rgba(255, 255, 255, 0.88);
   max-width: 36rem;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 2.5rem;
 }
 
@@ -1151,6 +1301,7 @@ body[data-page="home"] main {
   flex-wrap: wrap;
   gap: 1rem 1.25rem;
   align-items: center;
+  justify-content: center;
 }
 
 .btn--hero-solid {
@@ -1181,141 +1332,542 @@ body[data-page="home"] main {
   color: #fff;
 }
 
-/* ヒーローメディア上：曇りガラス透過 → スクロールで見切れたらロゴと同じ深緑の実色 */
+/* ヒーローメディア上：バナーは --header-solid（0〜1）で透明→深緑を段階的に（site.js がスクロールで更新） */
 body[data-page="home"] .site-header,
 body[data-page="business"] .site-header,
-body[data-page="about"] .site-header {
-  background: rgba(255, 255, 255, 0.06);
-  border-bottom-color: rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  transition: background 0.35s var(--ease), border-color 0.35s var(--ease), backdrop-filter 0.35s var(--ease);
+body[data-page="about"] .site-header,
+body[data-page="contact"] .site-header {
+  --header-solid: 0;
+  background: rgba(26, 61, 42, var(--header-solid, 0));
+  border-bottom-color: rgba(255, 255, 255, calc(0.12 * var(--header-solid, 0)));
+  backdrop-filter: blur(calc(var(--header-solid, 0) * 12px));
+  -webkit-backdrop-filter: blur(calc(var(--header-solid, 0) * 12px));
 }
 
-body[data-page="home"] .site-header--scrolled,
-body[data-page="business"] .site-header--scrolled,
-body[data-page="about"] .site-header--scrolled {
-  /* 旧「白」相当の状態を、ロゴ円と同一の深緑に */
-  background: var(--logo-mark-bg);
-  border-bottom-color: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-body[data-page="home"] .site-header .site-logo,
-body[data-page="business"] .site-header .site-logo,
-body[data-page="about"] .site-header .site-logo {
+/* サブページ：ヒーロー上はロゴを明るく */
+body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo,
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo,
+body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-logo {
   color: #fff;
   transition: color 0.3s var(--ease);
 }
 
-body[data-page="home"] .site-header--scrolled .site-logo,
-body[data-page="business"] .site-header--scrolled .site-logo,
-body[data-page="about"] .site-header--scrolled .site-logo {
-  color: rgba(255, 255, 255, 0.96);
+body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo:hover,
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo:hover,
+body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-logo:hover {
+  color: rgba(255, 255, 255, 0.85);
 }
 
-body[data-page="home"] .site-header .site-logo:hover,
-body[data-page="business"] .site-header .site-logo:hover,
-body[data-page="about"] .site-header .site-logo:hover {
-  color: rgba(255, 255, 255, 0.85);
+body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo__mark,
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo__mark,
+body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-logo__mark {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+body[data-page="home"] .site-header--scrolled .site-logo,
+body[data-page="business"] .site-header--scrolled .site-logo,
+body[data-page="about"] .site-header--scrolled .site-logo,
+body[data-page="contact"] .site-header--scrolled .site-logo {
+  color: rgba(255, 255, 255, 0.96);
 }
 
 body[data-page="home"] .site-header--scrolled .site-logo:hover,
 body[data-page="business"] .site-header--scrolled .site-logo:hover,
-body[data-page="about"] .site-header--scrolled .site-logo:hover {
+body[data-page="about"] .site-header--scrolled .site-logo:hover,
+body[data-page="contact"] .site-header--scrolled .site-logo:hover {
   color: #fff;
 }
 
-body[data-page="home"] .site-header:not(.site-header--scrolled) .site-logo__mark,
-body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo__mark,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo__mark {
-  background: var(--logo-mark-bg);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.15);
-}
-
-/* スクロール後もバーと同色のため、マークは淡いハイライトで輪郭だけ分ける */
-body[data-page="home"] .site-header--scrolled .site-logo__mark,
-body[data-page="business"] .site-header--scrolled .site-logo__mark,
-body[data-page="about"] .site-header--scrolled .site-logo__mark {
-  background: var(--logo-mark-bg);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), 0 0 0 1px rgba(0, 0, 0, 0.12);
-}
-
 body[data-page="home"] .site-header .site-nav a,
-body[data-page="business"] .site-header .site-nav a,
-body[data-page="about"] .site-header .site-nav a {
+body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a,
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a,
+body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-nav a {
   color: rgba(255, 255, 255, 0.92);
   transition: color 0.3s var(--ease);
 }
 
 body[data-page="home"] .site-header .site-nav a::after,
-body[data-page="business"] .site-header .site-nav a::after,
-body[data-page="about"] .site-header .site-nav a::after {
+body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a::after,
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a::after,
+body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-nav a::after {
   background: #fff;
+}
+
+body[data-page="home"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
+body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
+body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-nav a.is-active {
+  color: #fff;
 }
 
 body[data-page="home"] .site-header--scrolled .site-nav a,
 body[data-page="business"] .site-header--scrolled .site-nav a,
-body[data-page="about"] .site-header--scrolled .site-nav a {
+body[data-page="about"] .site-header--scrolled .site-nav a,
+body[data-page="contact"] .site-header--scrolled .site-nav a {
   color: rgba(255, 255, 255, 0.92);
 }
 
 body[data-page="home"] .site-header--scrolled .site-nav a::after,
 body[data-page="business"] .site-header--scrolled .site-nav a::after,
-body[data-page="about"] .site-header--scrolled .site-nav a::after {
+body[data-page="about"] .site-header--scrolled .site-nav a::after,
+body[data-page="contact"] .site-header--scrolled .site-nav a::after {
   background: rgba(255, 255, 255, 0.85);
 }
 
 body[data-page="home"] .site-header--scrolled .site-nav a.is-active,
 body[data-page="business"] .site-header--scrolled .site-nav a.is-active,
-body[data-page="about"] .site-header--scrolled .site-nav a.is-active {
+body[data-page="about"] .site-header--scrolled .site-nav a.is-active,
+body[data-page="contact"] .site-header--scrolled .site-nav a.is-active {
+  color: #fff;
+}
+
+/* メインビジュアル内の枠付きナビ（トップのみ） */
+body[data-page="home"] .hero__nav.site-nav--boxed a::after {
+  display: none;
+}
+
+body[data-page="home"] .hero__nav.site-nav--boxed a {
+  border-color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+body[data-page="home"] .hero__nav.site-nav--boxed a:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.14);
   color: #fff;
 }
 
 body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle span,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .nav-toggle span,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle span {
+body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle span,
+body[data-page="contact"] .site-header:not(.site-header--scrolled) .nav-toggle span {
   background: #fff;
 }
 
 body[data-page="home"] .site-header--scrolled .nav-toggle span,
 body[data-page="business"] .site-header--scrolled .nav-toggle span,
-body[data-page="about"] .site-header--scrolled .nav-toggle span {
+body[data-page="about"] .site-header--scrolled .nav-toggle span,
+body[data-page="contact"] .site-header--scrolled .nav-toggle span {
   background: #fff;
 }
 
 body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .nav-toggle,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle {
-  border-color: rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.08);
+body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle,
+body[data-page="contact"] .site-header:not(.site-header--scrolled) .nav-toggle {
+  border-color: rgba(255, 255, 255, 0.45);
+  background: transparent;
 }
 
 body[data-page="home"] .site-header--scrolled .nav-toggle,
 body[data-page="business"] .site-header--scrolled .nav-toggle,
-body[data-page="about"] .site-header--scrolled .nav-toggle {
+body[data-page="about"] .site-header--scrolled .nav-toggle,
+body[data-page="contact"] .site-header--scrolled .nav-toggle {
   border-color: rgba(255, 255, 255, 0.35);
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* モバイルメニュー展開時はパネル内を常に読みやすい濃色テキストに */
+/* モバイルメニュー展開時 */
 body[data-page="home"] .site-header.is-open .site-nav a,
 body[data-page="business"] .site-header.is-open .site-nav a,
-body[data-page="about"] .site-header.is-open .site-nav a {
+body[data-page="about"] .site-header.is-open .site-nav a,
+body[data-page="contact"] .site-header.is-open .site-nav a {
   color: var(--color-text);
 }
 
 body[data-page="home"] .site-header.is-open .site-nav a.is-active,
 body[data-page="business"] .site-header.is-open .site-nav a.is-active,
-body[data-page="about"] .site-header.is-open .site-nav a.is-active {
+body[data-page="about"] .site-header.is-open .site-nav a.is-active,
+body[data-page="contact"] .site-header.is-open .site-nav a.is-active {
   color: var(--color-accent);
 }
 
 body[data-page="home"] .site-header.is-open .site-nav a::after,
 body[data-page="business"] .site-header.is-open .site-nav a::after,
-body[data-page="about"] .site-header.is-open .site-nav a::after {
+body[data-page="about"] .site-header.is-open .site-nav a::after,
+body[data-page="contact"] .site-header.is-open .site-nav a::after {
   background: var(--color-accent);
+}
+
+/* デスクトップ：ヒーロー表示中はヘッダー内ナビを隠し、メインビジュアル内ナビのみ */
+@media (min-width: 901px) {
+  body[data-page="home"] .site-header:not(.site-header--scrolled) .site-nav {
+    display: none;
+  }
+}
+
+/* メインビジュアル内ナビ（モバイルはヘッダーメニューのみ） */
+.hero__nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(0.5rem, 1.5vw, 0.85rem);
+  margin-top: clamp(1.25rem, 3vh, 2rem);
+}
+
+@media (max-width: 900px) {
+  .hero__nav {
+    display: none;
+  }
+}
+
+/* —— トップ：会社紹介 —— */
+.home-intro {
+  padding-top: clamp(3.5rem, 9vw, 5.5rem);
+  padding-bottom: clamp(2.5rem, 6vw, 3.5rem);
+}
+
+/* 左寄せ。ラップ幅いっぱいまで本文を伸ばす */
+.home-intro__inner {
+  max-width: none;
+  margin: 0;
+  text-align: left;
+}
+
+.home-intro__eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+}
+
+.home-intro__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 4.2vw, 2.35rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.3;
+  margin-bottom: 1.25rem;
+  color: var(--color-text);
+}
+
+.home-intro__lead {
+  font-size: clamp(0.9375rem, 1.5vw, 1.0625rem);
+  line-height: 1.9;
+  color: var(--color-text-muted);
+  margin: 0 0 1.5rem;
+}
+
+.home-intro__more {
+  margin: 0;
+}
+
+.home-intro__link {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.home-intro__link:hover {
+  color: var(--color-accent-hover);
+}
+
+/* —— トップ：OUR VIEW カルーセル（横スクロール＋矢印・ドット・自動送り） —— */
+.home-focus {
+  --home-focus-green-a: #e4f0e4;
+  --home-focus-green-b: #c8dfc8;
+  --home-focus-green-c: #b2d4b5;
+  position: relative;
+  /* 16:9 メディアに合わせて上下に余白を確保 */
+  padding: clamp(2.35rem, 5.5vw, 3.25rem) 0 clamp(2.5rem, 6vw, 3.5rem);
+  overflow: hidden;
+  color: var(--color-text);
+}
+
+.home-focus__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  /* 横長の見出し・カルーセルに合わせてハイライトを広げる */
+  background:
+    radial-gradient(ellipse 140% 95% at 50% -25%, rgba(255, 255, 255, 0.52) 0%, transparent 58%),
+    radial-gradient(ellipse 100% 70% at 100% 105%, rgba(255, 255, 255, 0.22) 0%, transparent 48%),
+    radial-gradient(ellipse 80% 50% at 0% 80%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+    linear-gradient(168deg, var(--home-focus-green-a) 0%, var(--home-focus-green-b) 42%, var(--home-focus-green-c) 100%);
+  pointer-events: none;
+}
+
+.home-focus__wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.home-focus__heading {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3vw, 1.65rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 0 clamp(1rem, 2.5vw, 1.35rem);
+  color: var(--color-text);
+}
+
+.home-focus__carousel {
+  position: relative;
+  width: 100%;
+  /* 横に複数枚（中央強調・左右に次の一枚が覗く）— 幅はラップ内いっぱい */
+  max-width: min(72rem, 100%);
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  border-radius: 0;
+  box-shadow: none;
+  -webkit-overflow-scrolling: touch;
+  /* 中央スライド強調用の余白 */
+  padding-block: 0.5rem;
+}
+
+.home-focus__carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.home-focus__track {
+  /* gap / padding / 子の幅は home-focus.js が計算 */
+  align-items: center;
+}
+
+.home-focus__slide {
+  flex-shrink: 0;
+  box-sizing: border-box;
+  overflow: visible;
+}
+
+.home-focus__card {
+  width: 100%;
+  margin: 0;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 4px;
+  overflow: hidden;
+  line-height: 0;
+  box-shadow: 0 8px 28px rgba(26, 61, 42, 0.1);
+  transform-origin: center center;
+  transform: scale(0.9);
+  transition: transform 0.45s var(--ease), box-shadow 0.35s var(--ease);
+}
+
+.home-focus__slide.is-current .home-focus__card {
+  transform: scale(1);
+  box-shadow: 0 12px 36px rgba(26, 61, 42, 0.14);
+}
+
+/*
+ * 16:9 を厳密に固定（aspect-ratio 単体では環境によって高さが狂うことがあるため、
+ * 古典的な padding-top 方式で高さを「幅の 56.25%」に固定する）
+ */
+.home-focus__media {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%; /* 9 ÷ 16 × 100% */
+  overflow: hidden;
+  background: #e8ebe6;
+  cursor: pointer;
+}
+
+.home-focus__media:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* カルーセルでは非表示（クリック後のモーダルでのみ表示） */
+.home-focus__caption {
+  display: none;
+  margin: 0;
+}
+
+.home-focus__media img,
+.home-focus__media video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.home-focus__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  margin-top: clamp(0.85rem, 2vw, 1.1rem);
+}
+
+.home-focus__arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.35rem;
+  height: 2.35rem;
+  padding: 0;
+  border: 1px solid rgba(0, 106, 62, 0.28);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--color-accent);
+  font-size: 1.45rem;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  box-shadow: 0 1px 3px rgba(26, 61, 42, 0.06);
+}
+
+.home-focus__arrow:hover {
+  background: #fff;
+  border-color: rgba(0, 106, 62, 0.45);
+  box-shadow: 0 2px 8px rgba(26, 61, 42, 0.08);
+}
+
+.home-focus__arrow:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.home-focus__dots {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.home-focus__dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 106, 62, 0.22);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), background 0.2s var(--ease);
+}
+
+.home-focus__dot.is-active {
+  background: var(--color-accent);
+  transform: scale(1.35);
+}
+
+.home-focus__dot:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media (max-width: 600px) {
+  .home-focus__arrow {
+    width: 2.1rem;
+    height: 2.1rem;
+    font-size: 1.3rem;
+  }
+}
+
+/* OUR VIEW セクション：クリックで拡大（動画はモーダル内で再生） */
+.home-focus-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(1rem, 4vw, 2.5rem);
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.62);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s var(--ease), visibility 0.25s var(--ease);
+}
+
+.home-focus-modal[aria-hidden='false'] {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.home-focus-modal__close {
+  position: absolute;
+  top: clamp(0.75rem, 3vw, 1.25rem);
+  right: clamp(0.75rem, 3vw, 1.25rem);
+  z-index: 2;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 1.75rem;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.home-focus-modal__close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.home-focus-modal__close:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.home-focus-modal__body {
+  position: relative;
+  width: min(92vw, 72rem);
+  max-height: min(90vh, 52rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.65rem, 2vw, 1rem);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.home-focus-modal__img,
+.home-focus-modal__video {
+  max-width: 100%;
+  max-height: min(72vh, 42rem);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+  flex-shrink: 0;
+}
+
+.home-focus-modal__video {
+  width: 100%;
+  background: #000;
+}
+
+.home-focus-modal__caption {
+  margin: 0;
+  max-width: 42rem;
+  padding: 0 0.25rem;
+  font-size: clamp(0.8125rem, 2.1vw, 0.9375rem);
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.88);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.home-focus-modal__caption:empty,
+.home-focus-modal__caption[hidden] {
+  display: none;
 }
 
 /* サービス 4 カード */
@@ -1960,4 +2512,109 @@ body[data-page="about"] .site-header.is-open .site-nav a::after {
     border-top: 1px solid var(--color-border);
     align-items: stretch;
   }
+}
+
+/* —— 依頼文書：BUSINESS 本文ブロック —— */
+.business-doc-section {
+  padding-top: clamp(3rem, 8vw, 5rem);
+  padding-bottom: clamp(3rem, 8vw, 5rem);
+}
+
+.business-doc {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.business-doc p {
+  margin-bottom: 1.25rem;
+}
+
+/* 事業内容：取扱い商品カード */
+.business-products {
+  max-width: min(56rem, 100%);
+  margin: clamp(2.5rem, 6vw, 3.5rem) auto 0;
+  padding-top: clamp(2rem, 5vw, 2.75rem);
+  border-top: 1px solid var(--color-border);
+}
+
+.business-products__heading {
+  margin: 0 0 clamp(1.25rem, 3vw, 1.75rem);
+  font-size: clamp(1.125rem, 2vw, 1.35rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.business-products__grid {
+  display: grid;
+  gap: clamp(1rem, 2.5vw, 1.35rem);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.business-product-card {
+  height: 100%;
+}
+
+.business-product-card__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  padding: clamp(1.15rem, 2.5vw, 1.4rem);
+}
+
+.business-product-card .card__icon {
+  margin-bottom: 0.85rem;
+  flex-shrink: 0;
+}
+
+.business-product-card__cat {
+  margin: 0 0 0.4rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+}
+
+.business-product-card h3 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1rem, 1.8vw, 1.125rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+.business-product-card__en {
+  margin: 0;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.business-product-card:hover .card__icon {
+  background: rgba(0, 106, 62, 0.12);
+}
+
+/* スマホ（〜768px）も 2 列のまま（6 枚 → 2×3）。480px 以下で 1 列に落とさない */
+@media (max-width: 768px) {
+  .business-products__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* CONTACT：埋め込み地図 */
+.contact-map-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  aspect-ratio: 16 / 10;
+}
+
+.contact-map {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
 }
