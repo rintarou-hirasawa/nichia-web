@@ -89,7 +89,7 @@
     var hero = null;
     if (page === 'home') hero = document.querySelector('.hero--home');
     else if (page === 'business') hero = document.querySelector('.business-page-hero');
-    else if (page === 'about' || page === 'contact') hero = document.querySelector('.about-page-hero');
+    else if (page === 'about') hero = document.querySelector('.about-page-hero');
     else return;
     if (!hero) return;
     /* ヒーロー下端がこの距離（px）以内に入ったら透明→緑を段階的に変化 */

@@ -216,11 +216,8 @@ body[data-page="home"] .site-header--scrolled .site-logo {
   }
 }
 
-@media (max-width: 900px) {
-  .site-header--home .site-header__inner--home {
-    justify-content: space-between;
-  }
-}
+/* モバイルでヒーロー中はロゴ非表示のため flex 子がトグルだけになり、
+   space-between だとトグルが左端に寄る。flex-end のまま右上に置く（スクロール後は下のルールで space-between）。 */
 
 .nav-toggle {
   display: none;
@@ -1335,8 +1332,7 @@ body[data-page="home"] main {
 /* ヒーローメディア上：バナーは --header-solid（0〜1）で透明→深緑を段階的に（site.js がスクロールで更新） */
 body[data-page="home"] .site-header,
 body[data-page="business"] .site-header,
-body[data-page="about"] .site-header,
-body[data-page="contact"] .site-header {
+body[data-page="about"] .site-header {
   --header-solid: 0;
   background: rgba(26, 61, 42, var(--header-solid, 0));
   border-bottom-color: rgba(255, 255, 255, calc(0.12 * var(--header-solid, 0)));
@@ -1344,80 +1340,129 @@ body[data-page="contact"] .site-header {
   -webkit-backdrop-filter: blur(calc(var(--header-solid, 0) * 12px));
 }
 
+/* お問い合わせ・送信完了：ヒーローなしでも最初から深緑ヘッダー（事業／会社のスクロール後に近い見た目） */
+body[data-page="contact"] .site-header {
+  --header-solid: 1;
+  background: rgb(26, 61, 42);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+body[data-page="contact"] .site-logo {
+  color: rgba(255, 255, 255, 0.96);
+  transition: color 0.3s var(--ease);
+}
+
+body[data-page="contact"] .site-logo:hover {
+  color: #fff;
+}
+
+body[data-page="contact"] .site-logo__mark {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+body[data-page="contact"] .site-nav a {
+  color: rgba(255, 255, 255, 0.92);
+  transition: color 0.3s var(--ease);
+}
+
+body[data-page="contact"] .site-nav a:hover {
+  color: #fff;
+}
+
+body[data-page="contact"] .site-nav a::after {
+  background: rgba(255, 255, 255, 0.85);
+}
+
+body[data-page="contact"] .site-nav a.is-active {
+  color: #fff;
+}
+
+body[data-page="contact"] .nav-toggle span {
+  background: #fff;
+}
+
+body[data-page="contact"] .nav-toggle {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body[data-page="contact"] .site-header.is-open .site-nav a {
+  color: var(--color-text);
+}
+
+body[data-page="contact"] .site-header.is-open .site-nav a.is-active {
+  color: var(--color-accent);
+}
+
+body[data-page="contact"] .site-header.is-open .site-nav a::after {
+  background: var(--color-accent);
+}
+
 /* サブページ：ヒーロー上はロゴを明るく */
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo,
-body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-logo {
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo {
   color: #fff;
   transition: color 0.3s var(--ease);
 }
 
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo:hover,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo:hover,
-body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-logo:hover {
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo:hover {
   color: rgba(255, 255, 255, 0.85);
 }
 
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo__mark,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo__mark,
-body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-logo__mark {
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo__mark {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.15);
 }
 
 body[data-page="home"] .site-header--scrolled .site-logo,
 body[data-page="business"] .site-header--scrolled .site-logo,
-body[data-page="about"] .site-header--scrolled .site-logo,
-body[data-page="contact"] .site-header--scrolled .site-logo {
+body[data-page="about"] .site-header--scrolled .site-logo {
   color: rgba(255, 255, 255, 0.96);
 }
 
 body[data-page="home"] .site-header--scrolled .site-logo:hover,
 body[data-page="business"] .site-header--scrolled .site-logo:hover,
-body[data-page="about"] .site-header--scrolled .site-logo:hover,
-body[data-page="contact"] .site-header--scrolled .site-logo:hover {
+body[data-page="about"] .site-header--scrolled .site-logo:hover {
   color: #fff;
 }
 
 body[data-page="home"] .site-header .site-nav a,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a,
-body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-nav a {
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a {
   color: rgba(255, 255, 255, 0.92);
   transition: color 0.3s var(--ease);
 }
 
 body[data-page="home"] .site-header .site-nav a::after,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a::after,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a::after,
-body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-nav a::after {
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a::after {
   background: #fff;
 }
 
 body[data-page="home"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
-body[data-page="contact"] .site-header:not(.site-header--scrolled) .site-nav a.is-active {
+body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a.is-active {
   color: #fff;
 }
 
 body[data-page="home"] .site-header--scrolled .site-nav a,
 body[data-page="business"] .site-header--scrolled .site-nav a,
-body[data-page="about"] .site-header--scrolled .site-nav a,
-body[data-page="contact"] .site-header--scrolled .site-nav a {
+body[data-page="about"] .site-header--scrolled .site-nav a {
   color: rgba(255, 255, 255, 0.92);
 }
 
 body[data-page="home"] .site-header--scrolled .site-nav a::after,
 body[data-page="business"] .site-header--scrolled .site-nav a::after,
-body[data-page="about"] .site-header--scrolled .site-nav a::after,
-body[data-page="contact"] .site-header--scrolled .site-nav a::after {
+body[data-page="about"] .site-header--scrolled .site-nav a::after {
   background: rgba(255, 255, 255, 0.85);
 }
 
 body[data-page="home"] .site-header--scrolled .site-nav a.is-active,
 body[data-page="business"] .site-header--scrolled .site-nav a.is-active,
-body[data-page="about"] .site-header--scrolled .site-nav a.is-active,
-body[data-page="contact"] .site-header--scrolled .site-nav a.is-active {
+body[data-page="about"] .site-header--scrolled .site-nav a.is-active {
   color: #fff;
 }
 
@@ -1439,30 +1484,26 @@ body[data-page="home"] .hero__nav.site-nav--boxed a:hover {
 
 body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle span,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .nav-toggle span,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle span,
-body[data-page="contact"] .site-header:not(.site-header--scrolled) .nav-toggle span {
+body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle span {
   background: #fff;
 }
 
 body[data-page="home"] .site-header--scrolled .nav-toggle span,
 body[data-page="business"] .site-header--scrolled .nav-toggle span,
-body[data-page="about"] .site-header--scrolled .nav-toggle span,
-body[data-page="contact"] .site-header--scrolled .nav-toggle span {
+body[data-page="about"] .site-header--scrolled .nav-toggle span {
   background: #fff;
 }
 
 body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .nav-toggle,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle,
-body[data-page="contact"] .site-header:not(.site-header--scrolled) .nav-toggle {
+body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle {
   border-color: rgba(255, 255, 255, 0.45);
   background: transparent;
 }
 
 body[data-page="home"] .site-header--scrolled .nav-toggle,
 body[data-page="business"] .site-header--scrolled .nav-toggle,
-body[data-page="about"] .site-header--scrolled .nav-toggle,
-body[data-page="contact"] .site-header--scrolled .nav-toggle {
+body[data-page="about"] .site-header--scrolled .nav-toggle {
   border-color: rgba(255, 255, 255, 0.35);
   background: rgba(255, 255, 255, 0.1);
 }
@@ -1470,22 +1511,19 @@ body[data-page="contact"] .site-header--scrolled .nav-toggle {
 /* モバイルメニュー展開時 */
 body[data-page="home"] .site-header.is-open .site-nav a,
 body[data-page="business"] .site-header.is-open .site-nav a,
-body[data-page="about"] .site-header.is-open .site-nav a,
-body[data-page="contact"] .site-header.is-open .site-nav a {
+body[data-page="about"] .site-header.is-open .site-nav a {
   color: var(--color-text);
 }
 
 body[data-page="home"] .site-header.is-open .site-nav a.is-active,
 body[data-page="business"] .site-header.is-open .site-nav a.is-active,
-body[data-page="about"] .site-header.is-open .site-nav a.is-active,
-body[data-page="contact"] .site-header.is-open .site-nav a.is-active {
+body[data-page="about"] .site-header.is-open .site-nav a.is-active {
   color: var(--color-accent);
 }
 
 body[data-page="home"] .site-header.is-open .site-nav a::after,
 body[data-page="business"] .site-header.is-open .site-nav a::after,
-body[data-page="about"] .site-header.is-open .site-nav a::after,
-body[data-page="contact"] .site-header.is-open .site-nav a::after {
+body[data-page="about"] .site-header.is-open .site-nav a::after {
   background: var(--color-accent);
 }
 
