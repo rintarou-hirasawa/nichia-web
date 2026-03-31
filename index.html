@@ -66,7 +66,15 @@
     </section>
 
     <!--
-      OUR VIEW カルーセル：説明は .home-focus__caption（カルーセルでは非表示・モーダル表示時に下へ出す）
+      OUR VIEW カルーセル（スライドの追加・削除）
+
+      ・枚数は自由です。下の <article class="home-focus__slide" …> を1枚分まるごとコピーして
+        </article> の直前に貼り付け、中身だけ差し替えてください。
+      ・JS は [data-home-focus-slide] を数えるだけなので、HTML を足せばドット・ループ・モーダルも自動で追従します（js の修正は不要）。
+      ・画像: .home-focus__media--image の中に <img src="media/…" alt="…">（16:9 推奨。比率は CSS で固定）
+      ・動画: .home-focus__media--video の中に <video …><source src="media/….mp4" type="video/mp4"></video>
+      ・モーダル下の説明文: <p class="home-focus__caption" data-home-focus-caption>…</p>（カルーセル内では非表示）
+      ・is-current は先頭の1枚だけ付与（追加した新しい1枚目に付け替えても可。読み込み後は JS が付け替えます）
     -->
     <section class="home-focus" aria-labelledby="home-view-heading" data-home-focus data-home-focus-interval="6000">
       <div class="home-focus__bg" aria-hidden="true"></div>
