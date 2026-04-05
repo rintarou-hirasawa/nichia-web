@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="vite.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body data-page="contact">
@@ -29,7 +29,7 @@
   </header>
 
   <main>
-    <header class="page-hero wrap fade-in">
+    <header class="page-hero wrap page-hero--editorial fade-in">
       <p class="lead-en">Contact</p>
       <h1 class="reveal-heading">お問い合わせ</h1>
       <p class="sub">お問い合わせフォーム・所在地のご案内。</p>
@@ -37,13 +37,13 @@
 
     <section class="section">
       <div class="wrap">
-        <div class="fade-in panel contact-panel" id="contact" style="max-width:48rem; margin:0 auto;">
+        <div class="fade-in panel panel--elevated contact-panel" id="contact" style="max-width:48rem; margin:0 auto;">
           <!--
             Netlify Forms: data-netlify="true" のフォームは Netlify にデプロイしたときに検知されます。
             ダッシュボード「Forms」で送信を確認し、通知メールの設定を行ってください。
           -->
-          <h2 style="margin-bottom:0.75rem; font-size:1.25rem;">お問い合わせフォーム</h2>
-          <p style="font-size:0.875rem; line-height:1.7; color: var(--color-text-muted); margin:0 0 1.25rem;">
+          <h2 class="contact-section__title">お問い合わせフォーム</h2>
+          <p class="contact-section__lead">
             下記より送信いただけます。後日、担当よりメールまたはお電話にてご連絡いたします。
           </p>
           <form
@@ -83,7 +83,7 @@
             </p>
           </form>
 
-          <h2 style="margin: clamp(1.75rem, 4vw, 2.25rem) 0 0.75rem; font-size:1.125rem;">地図</h2>
+          <h2 class="contact-section__title contact-section__title--map">地図</h2>
           <div class="contact-map-wrap">
             <iframe
               title="株式会社日亜パートナーズ 所在地"
@@ -93,7 +93,7 @@
               allowfullscreen
               src="https://www.google.com/maps?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%8D%83%E4%BB%A3%E7%94%B0%E5%8C%BA%E4%B9%9D%E6%AE%B5%E5%8D%972%E4%B8%81%E7%9B%AE3%E7%95%AA22%E5%8F%B7&amp;z=18&amp;hl=ja&amp;output=embed"></iframe>
           </div>
-          <p style="font-size:0.8125rem; margin-top:0.75rem;"><a href="https://www.google.com/maps?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%8D%83%E4%BB%A3%E7%94%B0%E5%8C%BA%E4%B9%9D%E6%AE%B5%E5%8D%972%E4%B8%81%E7%9B%AE3%E7%95%AA22%E5%8F%B7&amp;z=18&amp;hl=ja" target="_blank" rel="noopener noreferrer">大きな地図で見る（Google マップ）</a></p>
+          <p class="contact-map-link"><a href="https://www.google.com/maps?q=%E6%9D%B1%E4%BA%AC%E9%83%BD%E5%8D%83%E4%BB%A3%E7%94%B0%E5%8C%BA%E4%B9%9D%E6%AE%B5%E5%8D%972%E4%B8%81%E7%9B%AE3%E7%95%AA22%E5%8F%B7&amp;z=18&amp;hl=ja" target="_blank" rel="noopener noreferrer">大きな地図で見る（Google マップ）</a></p>
         </div>
       </div>
     </section>

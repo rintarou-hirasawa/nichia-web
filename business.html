@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="vite.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body data-page="business">
@@ -43,22 +43,31 @@
       </header>
     </div>
 
-    <section class="section section--muted business-doc-section" aria-label="事業内容">
+    <section class="section section--muted business-doc-section" aria-labelledby="business-philosophy-heading">
       <div class="wrap">
-        <div class="business-doc prose fade-in">
-          <p>南洋材を専門とする貿易商社として、私たちは現地の生産者と深く向き合い、川上から川下まで一貫して責任ある設計を行っています。</p>
-          <p>私たちが何より重視しているのは、熱帯の豊かな恵みを次世代へ確かに引き継ぐことです。</p>
-          <p>厳格なトレーサビリティの確保と、持続可能な森林管理に基づく商品の徹底により、環境負荷を抑えた「責任ある調達」を実現しています。</p>
-          <p>限られた信頼のネットワークから生まれるのは、単なる木材製品ではありません。</p>
-          <p>それは、地球環境と調和しながら価値を創出するビジネスそのものです。</p>
-          <p>売り手、買い手、そして地球環境。</p>
-          <p>三者が手を取り合い、持続可能な喜びを分かち合う、公正で力強い循環を。</p>
-          <p>私たちは、その未来を世界へと広げていきます。</p>
+        <div class="business-doc-intro fade-in fade-in--business-intro">
+          <p class="business-doc-intro__eyebrow">Our philosophy</p>
+          <h2 class="business-doc-intro__title reveal-heading" id="business-philosophy-heading">南洋材の貿易と、持続可能な調達へ</h2>
+          <div class="business-doc-surround">
+            <div class="business-doc-surround__frame">
+              <div class="business-doc prose">
+                <p>南洋材を専門とする貿易商社として、私たちは現地の生産者と深く向き合い、川上から川下まで一貫して責任ある設計を行っています。</p>
+                <p>私たちが何より重視しているのは、熱帯の豊かな恵みを次世代へ確かに引き継ぐことです。</p>
+                <p>厳格なトレーサビリティの確保と、持続可能な森林管理に基づく商品の徹底により、環境負荷を抑えた「責任ある調達」を実現しています。</p>
+                <p>限られた信頼のネットワークから生まれるのは、単なる木材製品ではありません。</p>
+                <p>それは、地球環境と調和しながら価値を創出するビジネスそのものです。</p>
+                <p>売り手、買い手、そして地球環境。</p>
+                <p>三者が手を取り合い、持続可能な喜びを分かち合う、公正で力強い循環を。</p>
+                <p>私たちは、その未来を世界へと広げていきます。</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 丸アイコン: クライアント指定素材（合板・単板・LVL・製材・BB・アウトドア家具の順で対応） -->
-        <div class="business-products">
-          <h2 class="business-products__heading reveal-heading fade-in" id="products">取扱い商品</h2>
+        <div class="business-products fade-in">
+          <p class="business-products__eyebrow">Products</p>
+          <h2 class="business-products__heading reveal-heading" id="products">取扱い商品</h2>
           <div class="business-products__grid fade-in fade-in--stagger" role="list">
             <article class="card business-product-card" role="listitem">
               <div class="card__body business-product-card__inner">

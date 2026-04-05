@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="vite.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body data-page="home">
@@ -37,22 +37,38 @@
         </video>
       </div>
       <div class="hero__overlay hero__overlay--home hero__overlay--sumitomo"></div>
-      <div class="hero__content hero__content--sumitomo wrap">
+      <div class="hero__content hero__content--sumitomo wrap" id="hero-copy" aria-hidden="true">
         <p class="hero__en">Trading &amp; Forest Resources</p>
-        <h1 id="hero-title-main" class="hero__title-main">南洋材と、つながりを。</h1>
-        <p class="hero__lead-home">株式会社日亜パートナーズは、南洋材の貿易と海外支援で、持続可能な供給を支えます。</p>
+        <h1 id="hero-title-main" class="hero__title-main">森と海、つながりを。</h1>
+        <p class="hero__lead-home">株式会社日亜パートナーズは、木材の貿易と海外支援で、持続可能な供給を支えます。</p>
       </div>
-      <a href="#home-message" class="hero__scroll-hint">
+      <a href="#home-message" class="hero__scroll-hint" id="hero-scroll-hint" aria-hidden="true" tabindex="-1">
         <span class="hero__scroll-hint__text">Scroll</span>
         <span class="hero__scroll-hint__line" aria-hidden="true"></span>
       </a>
     </section>
+    <noscript>
+      <style>
+        .hero.hero--home .hero__overlay--home.hero__overlay--sumitomo {
+          background: linear-gradient(180deg, rgba(8, 12, 10, 0.22) 0%, rgba(10, 18, 14, 0.62) 72%, rgba(8, 14, 11, 0.82) 100%) !important;
+        }
+        .hero.hero--home .hero__content--sumitomo,
+        .hero.hero--home .hero__scroll-hint {
+          opacity: 1 !important;
+          visibility: visible !important;
+        }
+        .hero.hero--home .hero__en,
+        .hero.hero--home .hero__title-main,
+        .hero.hero--home .hero__lead-home {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
 
-    <!-- メッセージ（住友林業系：画像＋コピーの分割ブロック） -->
+    <!-- メッセージ -->
     <section class="home-message" id="home-message" aria-labelledby="home-message-heading">
-      <div class="home-message__media fade-in">
-        <img src="media/forest-aerial.jpg" alt="" width="1200" height="800" loading="lazy" decoding="async">
-      </div>
+      <div class="wrap">
       <div class="home-message__text fade-in fade-in--home-intro" id="home-intro" aria-labelledby="home-message-heading">
         <p class="home-message__eyebrow" id="home-message-heading">Our stance</p>
         <h2 class="home-message__title reveal-heading">南洋材の貿易と、海外とつなぐ支援</h2>
@@ -62,6 +78,7 @@
         <p class="home-message__more">
           <a href="business.html" class="home-intro__link">事業内容を見る</a>
         </p>
+      </div>
       </div>
     </section>
 
@@ -85,13 +102,6 @@
         </a>
       </div>
     </section>
-
-    <footer class="home-footer">
-      <div class="home-footer__inner wrap">
-        <p class="home-footer__name">株式会社日亜パートナーズ</p>
-        <p class="home-footer__en">NICHIA PARTNERS, INC.</p>
-      </div>
-    </footer>
   </main>
 
   <button type="button" class="back-top" aria-label="ページ上部へ">↑</button>

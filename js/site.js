@@ -106,6 +106,70 @@
     });
   }
 
+  function initHomeHeroCopyReveal() {
+    var hero = document.querySelector('.hero.hero--home');
+    if (!hero) return;
+    var content = document.getElementById('hero-copy');
+    var hint = document.getElementById('hero-scroll-hint');
+
+    function reveal() {
+      if (hero.classList.contains('hero--copy-revealed')) return;
+      hero.classList.add('hero--copy-revealed');
+      if (content) {
+        content.setAttribute('aria-hidden', 'false');
+      }
+      if (hint) {
+        hint.setAttribute('aria-hidden', 'false');
+        hint.removeAttribute('tabindex');
+      }
+    }
+
+    function detachHeroWheel() {
+      window.removeEventListener('wheel', onWheelHeroHold, wheelListenerOpts);
+      window.removeEventListener('scroll', onScrollHeroLock);
+    }
+
+    var scrollLocking = false;
+
+    /* トップでコピー未表示のときに少しスクロールしただけで下へ進ませない（動画画面でホールド） */
+    function onScrollHeroLock() {
+      if (hero.classList.contains('hero--copy-revealed')) {
+        detachHeroWheel();
+        return;
+      }
+      if (scrollLocking) return;
+      var y = window.scrollY;
+      if (y > 0 && y < 120) {
+        scrollLocking = true;
+        window.scrollTo(0, 0);
+        reveal();
+        scrollLocking = false;
+        detachHeroWheel();
+      }
+    }
+
+    var wheelListenerOpts = { passive: false };
+    function onWheelHeroHold(e) {
+      if (window.scrollY > 2) return;
+      if (e.deltaY <= 0) return;
+      if (hero.classList.contains('hero--copy-revealed')) {
+        detachHeroWheel();
+        return;
+      }
+      e.preventDefault();
+      reveal();
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      reveal();
+      return;
+    }
+
+    /* リロード時は常にコピー非表示から。scroll 位置が残っていても自動では開かない（ユーザーが再度ホイール等で開く） */
+    window.addEventListener('wheel', onWheelHeroHold, wheelListenerOpts);
+    window.addEventListener('scroll', onScrollHeroLock, { passive: true });
+  }
+
   function initHomeHeader() {
     var page = document.body.getAttribute('data-page');
     var header = document.querySelector('.site-header');
@@ -144,6 +208,7 @@
     initHomeHeroViewport();
     initNavActive();
     initMobileNav();
+    initHomeHeroCopyReveal();
     initHomeHeader();
     initHeroVideo();
     initFadeIn();

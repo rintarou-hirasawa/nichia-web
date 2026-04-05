@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="vite.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body data-page="contact">
@@ -29,15 +29,19 @@
   </header>
 
   <main>
+    <header class="page-hero wrap page-hero--editorial fade-in">
+      <p class="lead-en">Contact</p>
+      <h1 class="reveal-heading">お問い合わせを受け付けました</h1>
+      <p class="sub">このたびはお問い合わせいただきありがとうございます。</p>
+    </header>
+
     <section class="section section--tight">
       <div class="wrap">
-        <div class="fade-in panel contact-thanks" style="max-width: 40rem; margin: 0 auto;">
-          <p class="lead-en">Contact</p>
-          <h1 style="font-size: clamp(1.35rem, 3vw, 1.75rem); margin-bottom: 1rem;">お問い合わせを受け付けました</h1>
-          <p style="font-size: 0.9375rem; line-height: 1.8; color: var(--color-text-muted); margin: 0 0 1.5rem;">
-            このたびはお問い合わせいただきありがとうございます。内容を確認のうえ、担当よりご連絡いたします。
+        <div class="fade-in panel panel--elevated contact-thanks" style="max-width: 40rem; margin: 0 auto;">
+          <p class="contact-thanks__lead">
+            内容を確認のうえ、担当よりメールまたはお電話にてご連絡いたします。
           </p>
-          <p style="margin: 0; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+          <p class="contact-thanks__actions">
             <a href="index.html" class="btn btn--primary">トップへ戻る</a>
             <a href="contact.html" class="btn btn--outline">お問い合わせページへ</a>
           </p>
