@@ -14,7 +14,6 @@
   <header class="site-header">
     <div class="site-header__inner">
       <a href="index.html" class="site-logo">
-        <span class="site-logo__mark" aria-hidden="true"></span>
         <span class="site-logo__text">NICHIA PARTNERS, INC.</span>
       </a>
       <button type="button" class="nav-toggle" aria-label="メニュー" aria-expanded="false">
@@ -37,9 +36,9 @@
           <source src="media/business-hero-loop.mp4" type="video/mp4">
         </video>
       </div>
-      <header class="page-hero wrap business-page-hero__inner">
+      <header class="page-hero wrap business-page-hero__inner fade-in">
         <p class="lead-en">Business</p>
-        <h1>事業内容</h1>
+        <h1 class="reveal-heading">事業内容</h1>
         <p class="sub">森と海、そしてビジネスをつなぐ。</p>
       </header>
     </div>
@@ -57,16 +56,14 @@
           <p>私たちは、その未来を世界へと広げていきます。</p>
         </div>
 
-        <div class="business-products fade-in">
-          <h2 class="business-products__heading" id="products">取扱い商品</h2>
-          <div class="business-products__grid" role="list">
+        <!-- 丸アイコン: クライアント指定素材（合板・単板・LVL・製材・BB・アウトドア家具の順で対応） -->
+        <div class="business-products">
+          <h2 class="business-products__heading reveal-heading fade-in" id="products">取扱い商品</h2>
+          <div class="business-products__grid fade-in fade-in--stagger" role="list">
             <article class="card business-product-card" role="listitem">
               <div class="card__body business-product-card__inner">
-                <div class="card__icon" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="26" height="26">
-                    <path d="M8 18h32M8 24h32M8 30h32" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    <path d="M12 12h24v26H12V12z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                  </svg>
+                <div class="card__icon card__icon--photo" aria-hidden="true">
+                  <img src="media/product-icon-plywood.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </div>
                 <p class="business-product-card__cat">Panel &amp; Board</p>
                 <h3>合板</h3>
@@ -75,10 +72,8 @@
             </article>
             <article class="card business-product-card" role="listitem">
               <div class="card__body business-product-card__inner">
-                <div class="card__icon" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="26" height="26">
-                    <path d="M10 16h28v4H10v-4zM10 24h28v4H10v-4zM10 32h28v4H10v-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                  </svg>
+                <div class="card__icon card__icon--photo" aria-hidden="true">
+                  <img src="media/product-icon-veneer.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </div>
                 <p class="business-product-card__cat">Panel &amp; Board</p>
                 <h3>単板</h3>
@@ -87,10 +82,8 @@
             </article>
             <article class="card business-product-card" role="listitem">
               <div class="card__body business-product-card__inner">
-                <div class="card__icon" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="26" height="26">
-                    <path d="M10 14h28v6H10V14zM10 22h28v6H10v-6zM10 30h28v6H10v-6z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
-                  </svg>
+                <div class="card__icon card__icon--photo" aria-hidden="true">
+                  <img src="media/product-icon-lvl.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </div>
                 <p class="business-product-card__cat">Panel &amp; Board</p>
                 <h3>LVL</h3>
@@ -99,11 +92,8 @@
             </article>
             <article class="card business-product-card" role="listitem">
               <div class="card__body business-product-card__inner">
-                <div class="card__icon" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="26" height="26">
-                    <path d="M14 36V20l4-6h12l4 6v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M18 28h12M24 20v16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                  </svg>
+                <div class="card__icon card__icon--photo" aria-hidden="true">
+                  <img src="media/product-icon-timber.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </div>
                 <p class="business-product-card__cat">Timber &amp; Lumber</p>
                 <h3>製材品</h3>
@@ -112,12 +102,8 @@
             </article>
             <article class="card business-product-card" role="listitem">
               <div class="card__body business-product-card__inner">
-                <div class="card__icon" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="26" height="26">
-                    <rect x="12" y="14" width="24" height="22" rx="1" stroke="currentColor" stroke-width="1.5"/>
-                    <path d="M12 22h24M12 30h24" stroke="currentColor" stroke-width="1.5"/>
-                    <circle cx="24" cy="18" r="2" fill="currentColor"/>
-                  </svg>
+                <div class="card__icon card__icon--photo" aria-hidden="true">
+                  <img src="media/product-icon-blockboard.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </div>
                 <p class="business-product-card__cat">Timber &amp; Lumber</p>
                 <h3>BB</h3>
@@ -126,11 +112,8 @@
             </article>
             <article class="card business-product-card" role="listitem">
               <div class="card__body business-product-card__inner">
-                <div class="card__icon" aria-hidden="true">
-                  <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="26" height="26">
-                    <path d="M14 38V26l4-10h12l4 10v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M18 26h12" stroke="currentColor" stroke-width="1.5"/>
-                  </svg>
+                <div class="card__icon card__icon--photo" aria-hidden="true">
+                  <img src="media/product-icon-outdoor.png" alt="" width="40" height="40" loading="lazy" decoding="async">
                 </div>
                 <p class="business-product-card__cat">Finished Products</p>
                 <h3>アウトドア家具</h3>
@@ -142,34 +125,6 @@
       </div>
     </section>
   </main>
-
-  <footer class="site-footer">
-    <div class="wrap site-footer__grid">
-      <div>
-        <p class="site-footer__brand">株式会社日亜パートナーズ</p>
-      </div>
-      <div>
-        <p class="site-footer__brand" style="font-size:0.875rem;">ページ</p>
-        <ul class="footer-list" style="list-style:none;">
-          <li><a href="index.html">HOME</a></li>
-          <li><a href="business.html">事業内容</a></li>
-          <li><a href="about.html">会社概要</a></li>
-          <li><a href="contact.html">お問い合わせ</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="site-footer__brand" style="font-size:0.875rem;">連絡先</p>
-        <ul class="footer-list" style="list-style:none;">
-          <li>〒102-0074<br>東京都千代田区九段南2丁目3番22号 8階</li>
-          <li><a href="tel:0344559297">TEL 03-4455-9297</a></li>
-          <li>FAX 03-6800-6459</li>
-        </ul>
-      </div>
-    </div>
-    <div class="wrap site-footer__copy">
-      <p>&copy; 2026 株式会社日亜パートナーズ. All rights reserved.</p>
-    </div>
-  </footer>
 
   <button type="button" class="back-top" aria-label="ページ上部へ">↑</button>
   <script src="js/site.js"></script>

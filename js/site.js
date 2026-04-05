@@ -1,6 +1,30 @@
 (function () {
   'use strict';
 
+  function initHomeHeroViewport() {
+    if (document.body.getAttribute('data-page') !== 'home') return;
+
+    function setHeroHeight() {
+      var vv = window.visualViewport;
+      var h = vv && vv.height ? vv.height : window.innerHeight;
+      /* 端の小数・サブピクセルで下に 1px 白が出るのを抑える */
+      document.documentElement.style.setProperty('--home-hero-vh', Math.ceil(h) + 'px');
+    }
+
+    setHeroHeight();
+    window.addEventListener('resize', setHeroHeight, { passive: true });
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', setHeroHeight, { passive: true });
+    }
+    window.addEventListener(
+      'orientationchange',
+      function () {
+        requestAnimationFrame(setHeroHeight);
+      },
+      { passive: true }
+    );
+  }
+
   function initNavActive() {
     var page = document.body.getAttribute('data-page');
     if (!page) return;
@@ -22,7 +46,7 @@
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
     });
 
-    header.querySelectorAll('.site-nav a, .hero__nav a').forEach(function (link) {
+    header.querySelectorAll('.site-nav a').forEach(function (link) {
       link.addEventListener('click', function () {
         header.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
@@ -117,6 +141,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
+    initHomeHeroViewport();
     initNavActive();
     initMobileNav();
     initHomeHeader();

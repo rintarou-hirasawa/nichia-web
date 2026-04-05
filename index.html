@@ -7,20 +7,20 @@
   <link rel="icon" type="image/svg+xml" href="vite.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body data-page="home">
   <header class="site-header site-header--home">
     <div class="site-header__inner site-header__inner--home">
       <a href="index.html" class="site-logo">
-        <span class="site-logo__mark" aria-hidden="true"></span>
         <span class="site-logo__text">NICHIA PARTNERS, INC.</span>
       </a>
       <button type="button" class="nav-toggle" aria-label="メニュー" aria-expanded="false">
         <span></span><span></span><span></span>
       </button>
       <nav class="site-nav" aria-label="グローバルナビ">
+        <a href="index.html" data-nav="home">HOME</a>
         <a href="about.html" data-nav="about">ABOUT US</a>
         <a href="business.html" data-nav="business">BUSINESS</a>
         <a href="contact.html" data-nav="contact">CONTACT</a>
@@ -30,31 +30,26 @@
 
   <main>
     <section class="hero hero--home" aria-labelledby="hero-title">
+      <h1 id="hero-title" class="sr-only">株式会社日亜パートナーズ（NICHIA PARTNERS, INC.）</h1>
       <div class="hero__media" aria-hidden="true">
         <img src="media/forest-aerial.jpg" alt="" width="1920" height="1080" decoding="async" fetchpriority="high">
         <video autoplay muted loop playsinline poster="media/forest-aerial.jpg">
-          <source src="media/hero-people.mp4" type="video/mp4">
+          <source src="media/hero-main.mp4" type="video/mp4">
         </video>
       </div>
       <div class="hero__overlay hero__overlay--home"></div>
-      <div class="hero__content hero__content--home">
-        <h1 id="hero-title" class="hero__center-brand">
-          <span class="hero__center-brand__name">NICHIA PARTNERS, INC.</span>
-        </h1>
-        <nav class="hero__nav site-nav site-nav--boxed" aria-label="メインビジュアル内ナビ">
-          <a href="about.html" data-nav="about">ABOUT US</a>
-          <a href="business.html" data-nav="business">BUSINESS</a>
-          <a href="contact.html" data-nav="contact">CONTACT</a>
-        </nav>
-      </div>
+      <a href="#home-intro" class="hero__scroll-hint">
+        <span class="hero__scroll-hint__text">Scroll</span>
+        <span class="hero__scroll-hint__line" aria-hidden="true"></span>
+      </a>
     </section>
 
     <!-- 会社紹介（リンクは事業内容ページへ） -->
-    <section class="section home-intro" aria-labelledby="home-intro-heading">
+    <section class="section home-intro" id="home-intro" aria-labelledby="home-intro-heading">
       <div class="wrap">
-        <div class="home-intro__inner fade-in">
+        <div class="home-intro__inner fade-in fade-in--home-intro">
           <p class="home-intro__eyebrow">About</p>
-          <h2 id="home-intro-heading" class="home-intro__title">南洋材の貿易と、海外とつなぐ支援</h2>
+          <h2 id="home-intro-heading" class="home-intro__title reveal-heading">南洋材の貿易と、海外とつなぐ支援</h2>
           <p class="home-intro__lead">
             株式会社日亜パートナーズは、南洋材の輸入販売を専門とする貿易商社です。インドネシア・ガボン・マレーシア・中国などから合板・LVL・単板・製材を調達し、国内のメーカー・商社のお客様にお届けしています。製造拠点の移転や市場開拓、直輸入化といった海外進出支援に加え、商品開発と生産拠点開発を軸とした開発型の取り組みで、価値と供給体制を組み立てています。
           </p>
@@ -64,108 +59,9 @@
         </div>
       </div>
     </section>
-
-    <!--
-      OUR VIEW カルーセル（スライドの追加・削除）
-
-      ・枚数は自由です。下の <article class="home-focus__slide" …> を1枚分まるごとコピーして
-        </article> の直前に貼り付け、中身だけ差し替えてください。
-      ・JS は [data-home-focus-slide] を数えるだけなので、HTML を足せばドット・ループ・モーダルも自動で追従します（js の修正は不要）。
-      ・画像: .home-focus__media--image の中に <img src="media/…" alt="…">（16:9 推奨。比率は CSS で固定）
-      ・動画: .home-focus__media--video の中に <video …><source src="media/….mp4" type="video/mp4"></video>
-      ・モーダル下の説明文: <p class="home-focus__caption" data-home-focus-caption>…</p>（カルーセル内では非表示）
-      ・is-current は先頭の1枚だけ付与（追加した新しい1枚目に付け替えても可。読み込み後は JS が付け替えます）
-    -->
-    <section class="home-focus" aria-labelledby="home-view-heading" data-home-focus data-home-focus-interval="6000">
-      <div class="home-focus__bg" aria-hidden="true"></div>
-      <div class="wrap home-focus__wrap">
-        <h2 id="home-view-heading" class="home-focus__heading">Our view</h2>
-        <div class="home-focus__carousel" data-home-focus-viewport>
-          <div class="home-focus__track" data-home-focus-track>
-            <article class="home-focus__slide is-current" data-home-focus-slide>
-              <div class="home-focus__card">
-                <div class="home-focus__media home-focus__media--image">
-                  <img src="media/forest-aerial.jpg" alt="熱帯林の俯瞰" width="1920" height="1080" loading="lazy" decoding="async">
-                </div>
-                <p class="home-focus__caption" data-home-focus-caption>森林の上空からの写真（俯瞰）。</p>
-              </div>
-            </article>
-            <article class="home-focus__slide" data-home-focus-slide>
-              <div class="home-focus__card">
-                <div class="home-focus__media home-focus__media--video">
-                  <video muted playsinline loop preload="metadata" poster="media/forest-aerial.jpg">
-                    <source src="media/focus-01.mp4" type="video/mp4">
-                  </video>
-                </div>
-                <p class="home-focus__caption" data-home-focus-caption>森林と小川が写る、上空からの映像。</p>
-              </div>
-            </article>
-            <article class="home-focus__slide" data-home-focus-slide>
-              <div class="home-focus__card">
-                <div class="home-focus__media home-focus__media--video">
-                  <video muted playsinline loop preload="metadata">
-                    <source src="media/focus-02.mp4" type="video/mp4">
-                  </video>
-                </div>
-                <p class="home-focus__caption" data-home-focus-caption>樹冠が広がる森林を、上空から捉えた映像。</p>
-              </div>
-            </article>
-          </div>
-        </div>
-        <div class="home-focus__controls">
-          <button type="button" class="home-focus__arrow home-focus__arrow--prev" data-home-focus-prev aria-label="前のスライド">
-            <span aria-hidden="true">‹</span>
-          </button>
-          <div class="home-focus__dots" data-home-focus-dots role="tablist" aria-label="スライドの位置"></div>
-          <button type="button" class="home-focus__arrow home-focus__arrow--next" data-home-focus-next aria-label="次のスライド">
-            <span aria-hidden="true">›</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--muted home-map-block" id="network" aria-labelledby="map-heading">
-      <div class="wrap">
-        <header class="home-section-head home-section-head--narrow">
-          <p class="home-section-head__en">Network</p>
-          <h2 id="map-heading" class="home-section-head__title">グローバルネットワーク</h2>
-          <p class="home-section-head__sub">主要な仕入れエリアの位置の目安です。</p>
-        </header>
-        <div class="partner-map partner-map--home" data-partner-map aria-label="拠点マップ"></div>
-      </div>
-    </section>
   </main>
-
-  <footer class="site-footer">
-    <div class="wrap site-footer__grid">
-      <div>
-        <p class="site-footer__brand">株式会社日亜パートナーズ</p>
-      </div>
-      <div>
-        <p class="site-footer__brand" style="font-size:0.875rem;">ページ</p>
-        <ul class="footer-list" style="list-style:none;">
-          <li><a href="business.html">事業内容</a></li>
-          <li><a href="about.html">会社概要</a></li>
-          <li><a href="contact.html">お問い合わせ</a></li>
-        </ul>
-      </div>
-      <div>
-        <p class="site-footer__brand" style="font-size:0.875rem;">連絡先</p>
-        <ul class="footer-list" style="list-style:none;">
-          <li>〒102-0074<br>東京都千代田区九段南2丁目3番22号 8階</li>
-          <li><a href="tel:0344559297">TEL 03-4455-9297</a></li>
-          <li>FAX 03-6800-6459</li>
-        </ul>
-      </div>
-    </div>
-    <div class="wrap site-footer__copy">
-      <p>&copy; 2026 株式会社日亜パートナーズ. All rights reserved.</p>
-    </div>
-  </footer>
 
   <button type="button" class="back-top" aria-label="ページ上部へ">↑</button>
   <script src="js/site.js"></script>
-  <script src="js/home-focus.js" defer></script>
-  <script src="js/world-map.js" defer></script>
 </body>
 </html>
