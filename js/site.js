@@ -7,8 +7,8 @@
     function setHeroHeight() {
       var vv = window.visualViewport;
       var h = vv && vv.height ? vv.height : window.innerHeight;
-      /* 端の小数・サブピクセルで下に 1px 白が出るのを抑える */
-      document.documentElement.style.setProperty('--home-hero-vh', Math.ceil(h) + 'px');
+      /* ビューポート高さを整数化（dvh とのズレで上下に body 色の線が出るのを抑える） */
+      document.documentElement.style.setProperty('--home-hero-vh', Math.round(h) + 'px');
     }
 
     setHeroHeight();
@@ -67,6 +67,10 @@
     });
   }
 
+  function getHomeScrollTop() {
+    return window.scrollY || document.documentElement.scrollTop;
+  }
+
   function initFadeIn() {
     var els = document.querySelectorAll('.fade-in');
     if (!els.length || !('IntersectionObserver' in window)) {
@@ -95,7 +99,7 @@
     var btn = document.querySelector('.back-top');
     if (!btn) return;
     window.addEventListener('scroll', function () {
-      if (window.scrollY > 400) {
+      if (getHomeScrollTop() > 400) {
         btn.classList.add('is-visible');
       } else {
         btn.classList.remove('is-visible');
@@ -106,68 +110,75 @@
     });
   }
 
-  function initHomeHeroCopyReveal() {
+  function initHomeHeroReveal() {
+    if (document.body.getAttribute('data-page') !== 'home') return;
     var hero = document.querySelector('.hero.hero--home');
     if (!hero) return;
-    var content = document.getElementById('hero-copy');
-    var hint = document.getElementById('hero-scroll-hint');
 
-    function reveal() {
-      if (hero.classList.contains('hero--copy-revealed')) return;
-      hero.classList.add('hero--copy-revealed');
-      if (content) {
-        content.setAttribute('aria-hidden', 'false');
-      }
-      if (hint) {
-        hint.setAttribute('aria-hidden', 'false');
-        hint.removeAttribute('tabindex');
-      }
+    var copyBlock = document.querySelector('.hero__copy-block');
+    var centerStack = document.querySelector('.hero__center-stack');
+
+    function showCards() {
+      if (hero.classList.contains('hero--cards-visible')) return;
+      hero.classList.add('hero--cards-visible');
+      hero.classList.add('hero--cards-interactive');
     }
 
-    function detachHeroWheel() {
-      window.removeEventListener('wheel', onWheelHeroHold, wheelListenerOpts);
-      window.removeEventListener('scroll', onScrollHeroLock);
-    }
+    var cardsRevealTimer = null;
 
-    var scrollLocking = false;
-
-    /* トップでコピー未表示のときに少しスクロールしただけで下へ進ませない（動画画面でホールド） */
-    function onScrollHeroLock() {
-      if (hero.classList.contains('hero--copy-revealed')) {
-        detachHeroWheel();
+    function scheduleCardsReveal() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        showCards();
         return;
       }
-      if (scrollLocking) return;
-      var y = window.scrollY;
-      if (y > 0 && y < 120) {
-        scrollLocking = true;
-        window.scrollTo(0, 0);
-        reveal();
-        scrollLocking = false;
-        detachHeroWheel();
-      }
+      window.clearTimeout(cardsRevealTimer);
+      cardsRevealTimer = window.setTimeout(showCards, 280 + 1200 + 100);
     }
 
-    var wheelListenerOpts = { passive: false };
-    function onWheelHeroHold(e) {
-      if (window.scrollY > 2) return;
-      if (e.deltaY <= 0) return;
-      if (hero.classList.contains('hero--copy-revealed')) {
-        detachHeroWheel();
-        return;
-      }
+    function unlockHeroCopy() {
+      if (hero.classList.contains('hero--copy-visible')) return;
+      hero.classList.add('hero--copy-visible');
+      hero.style.setProperty('--home-scroll-reveal', '1');
+      if (copyBlock) copyBlock.setAttribute('aria-hidden', 'false');
+      if (centerStack) centerStack.setAttribute('aria-hidden', 'false');
+      scheduleCardsReveal();
+    }
+
+    function onWheel(e) {
+      if (hero.classList.contains('hero--copy-visible')) return;
       e.preventDefault();
-      reveal();
+      unlockHeroCopy();
     }
+
+    function onKeyDown(e) {
+      if (hero.classList.contains('hero--copy-visible')) return;
+      var k = e.key;
+      if (k !== ' ' && k !== 'Enter' && k !== 'ArrowDown' && k !== 'PageDown') return;
+      var tag = e.target && e.target.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON') return;
+      e.preventDefault();
+      unlockHeroCopy();
+    }
+
+    hero.addEventListener(
+      'click',
+      function (e) {
+        if (e.target.closest && e.target.closest('.site-header')) return;
+        unlockHeroCopy();
+      },
+      false
+    );
+
+    window.addEventListener('wheel', onWheel, { passive: false });
+    window.addEventListener('keydown', onKeyDown, false);
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      reveal();
-      return;
+      hero.style.setProperty('--home-scroll-reveal', '1');
+      hero.classList.add('hero--copy-visible');
+      if (copyBlock) copyBlock.setAttribute('aria-hidden', 'false');
+      if (centerStack) centerStack.setAttribute('aria-hidden', 'false');
+      showCards();
     }
-
-    /* リロード時は常にコピー非表示から。scroll 位置が残っていても自動では開かない（ユーザーが再度ホイール等で開く） */
-    window.addEventListener('wheel', onWheelHeroHold, wheelListenerOpts);
-    window.addEventListener('scroll', onScrollHeroLock, { passive: true });
   }
 
   function initHomeHeader() {
@@ -208,7 +219,7 @@
     initHomeHeroViewport();
     initNavActive();
     initMobileNav();
-    initHomeHeroCopyReveal();
+    initHomeHeroReveal();
     initHomeHeader();
     initHeroVideo();
     initFadeIn();

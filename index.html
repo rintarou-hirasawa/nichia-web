@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="vite.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600&family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Serif+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body data-page="home">
@@ -21,87 +21,77 @@
       </button>
       <nav class="site-nav" aria-label="グローバルナビ">
         <a href="index.html" data-nav="home">HOME</a>
-        <a href="about.html" data-nav="about">ABOUT US</a>
         <a href="business.html" data-nav="business">BUSINESS</a>
+        <a href="about.html" data-nav="about">ABOUT US</a>
         <a href="contact.html" data-nav="contact">CONTACT</a>
       </nav>
     </div>
   </header>
 
-  <main>
-    <section class="hero hero--home" aria-labelledby="hero-title-main">
+  <main class="home-main">
+    <section class="hero hero--home" aria-labelledby="hero-company-name hero-title-main">
       <div class="hero__media" aria-hidden="true">
-        <img src="media/forest-aerial.jpg" alt="" width="1920" height="1080" decoding="async" fetchpriority="high">
         <video autoplay muted loop playsinline poster="media/forest-aerial.jpg">
           <source src="media/hero-main.mp4" type="video/mp4">
         </video>
       </div>
       <div class="hero__overlay hero__overlay--home hero__overlay--sumitomo"></div>
-      <div class="hero__content hero__content--sumitomo wrap" id="hero-copy" aria-hidden="true">
-        <p class="hero__en">Trading &amp; Forest Resources</p>
-        <h1 id="hero-title-main" class="hero__title-main">森と海、つながりを。</h1>
-        <p class="hero__lead-home">株式会社日亜パートナーズは、木材の貿易と海外支援で、持続可能な供給を支えます。</p>
+      <div class="hero__center-stack wrap" aria-hidden="true">
+        <p class="hero__company-name" id="hero-company-name">NICHIA PARTNERS, INC.</p>
       </div>
-      <a href="#home-message" class="hero__scroll-hint" id="hero-scroll-hint" aria-hidden="true" tabindex="-1">
-        <span class="hero__scroll-hint__text">Scroll</span>
-        <span class="hero__scroll-hint__line" aria-hidden="true"></span>
-      </a>
+      <div class="hero__shell wrap" id="hero-copy">
+        <div class="hero__copy-block" aria-hidden="true">
+          <p class="hero__en">Trading &amp; Forest Resources</p>
+          <h1 id="hero-title-main" class="hero__title-main">森と海、<br>つながりを。</h1>
+        </div>
+        <nav class="hero__cards" aria-label="主なページ">
+          <a href="business.html" class="hero-card">
+            <span class="hero-card__en">Business</span>
+            <span class="hero-card__ja">事業内容</span>
+            <span class="hero-card__line" aria-hidden="true"></span>
+          </a>
+          <a href="about.html" class="hero-card">
+            <span class="hero-card__en">About</span>
+            <span class="hero-card__ja">会社概要</span>
+            <span class="hero-card__line" aria-hidden="true"></span>
+          </a>
+          <a href="contact.html" class="hero-card">
+            <span class="hero-card__en">Contact</span>
+            <span class="hero-card__ja">お問い合わせ</span>
+            <span class="hero-card__line" aria-hidden="true"></span>
+          </a>
+        </nav>
+      </div>
     </section>
     <noscript>
       <style>
-        .hero.hero--home .hero__overlay--home.hero__overlay--sumitomo {
-          background: linear-gradient(180deg, rgba(8, 12, 10, 0.22) 0%, rgba(10, 18, 14, 0.62) 72%, rgba(8, 14, 11, 0.82) 100%) !important;
+        .hero.hero--home {
+          --home-scroll-reveal: 1 !important;
         }
-        .hero.hero--home .hero__content--sumitomo,
-        .hero.hero--home .hero__scroll-hint {
-          opacity: 1 !important;
-          visibility: visible !important;
-        }
-        .hero.hero--home .hero__en,
-        .hero.hero--home .hero__title-main,
-        .hero.hero--home .hero__lead-home {
+        .hero.hero--home.hero--cards-visible .hero-card {
           opacity: 1 !important;
           transform: none !important;
         }
+        .hero.hero--home .hero__overlay--home.hero__overlay--sumitomo::after {
+          opacity: 1 !important;
+        }
+        .hero.hero--home .hero__cards {
+          pointer-events: auto !important;
+        }
+        .hero.hero--home .hero__copy-block .hero__en,
+        .hero.hero--home .hero__copy-block .hero__title-main {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .hero.hero--home .hero__company-name {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+        .hero.hero--home .hero__copy-block {
+          pointer-events: auto !important;
+        }
       </style>
     </noscript>
-
-    <!-- メッセージ -->
-    <section class="home-message" id="home-message" aria-labelledby="home-message-heading">
-      <div class="wrap">
-      <div class="home-message__text fade-in fade-in--home-intro" id="home-intro" aria-labelledby="home-message-heading">
-        <p class="home-message__eyebrow" id="home-message-heading">Our stance</p>
-        <h2 class="home-message__title reveal-heading">南洋材の貿易と、海外とつなぐ支援</h2>
-        <p class="home-message__lead">
-          インドネシア・ガボン・マレーシア・中国などから合板・LVL・単板・製材を調達し、国内のお客様にお届けしています。製造拠点の移転や市場開拓、直輸入化といった海外進出支援と、商品・生産拠点の開発で、価値と供給体制を組み立てています。
-        </p>
-        <p class="home-message__more">
-          <a href="business.html" class="home-intro__link">事業内容を見る</a>
-        </p>
-      </div>
-      </div>
-    </section>
-
-    <!-- トピックリンク（大型カード） -->
-    <section class="home-picks" aria-label="主なページ">
-      <div class="home-picks__grid fade-in fade-in--home-picks wrap">
-        <a href="about.html" class="home-pick">
-          <span class="home-pick__en">About</span>
-          <span class="home-pick__ja">会社概要</span>
-          <span class="home-pick__line" aria-hidden="true"></span>
-        </a>
-        <a href="business.html" class="home-pick">
-          <span class="home-pick__en">Business</span>
-          <span class="home-pick__ja">事業内容</span>
-          <span class="home-pick__line" aria-hidden="true"></span>
-        </a>
-        <a href="contact.html" class="home-pick">
-          <span class="home-pick__en">Contact</span>
-          <span class="home-pick__ja">お問い合わせ</span>
-          <span class="home-pick__line" aria-hidden="true"></span>
-        </a>
-      </div>
-    </section>
   </main>
 
   <button type="button" class="back-top" aria-label="ページ上部へ">↑</button>

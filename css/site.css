@@ -14,6 +14,8 @@
   /* 日本語の主見出し：明朝系（住友林業系サイトに近い「編集面＝明朝・本文＝ゴシック」の役割分担） */
   --font-display: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif;
   --header-h: 4.5rem;
+  /* ロゴ・ハンバーを画面端からおおよそこの距離に（ノッチは safe-area が優先） */
+  --header-edge-inset: 3cm;
   --max-w: 70rem;
   --max-readable: 40rem;
   --space-section: clamp(4.5rem, 10.5vw, 7.5rem);
@@ -46,10 +48,17 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* メインページは縦スクロールでヒーロー直下のセクションへ（他ページは従来どおり） */
+/* メインページ：全画面ヒーロー（スクロールスペーサーなし・操作は JS で検知） */
 body[data-page="home"] {
   overflow-x: hidden;
-  overflow-y: auto;
+  /* トップのみ明朝・英字セリフを使わず Noto Sans JP に統一 */
+  --font-display: var(--font-sans);
+  --font-en-display: var(--font-sans);
+  background-color: #0a0e0c;
+}
+
+body[data-page="home"] .home-main {
+  min-height: var(--home-hero-vh, 100dvh);
 }
 
 img {
@@ -81,14 +90,19 @@ a:hover {
   backdrop-filter: blur(8px);
 }
 
+/* ヘッダー全幅。ロゴは左端から、ハンバーは右端から約 --header-edge-inset（本文 .wrap とは独立） */
 .site-header__inner {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding-left: max(var(--header-edge-inset), env(safe-area-inset-left, 0px));
+  padding-right: max(var(--header-edge-inset), env(safe-area-inset-right, 0px));
   height: 100%;
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
+  gap: 0;
 }
 
 .site-logo {
@@ -119,11 +133,11 @@ a:hover {
   right: 0;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: flex-start;
   gap: 0;
   background: var(--color-bg);
   border-bottom: 1px solid var(--color-border);
-  padding: 1.25rem max(1.5rem, env(safe-area-inset-left, 0px)) 1.75rem max(1.5rem, env(safe-area-inset-right, 0px));
+  padding: 1.25rem max(var(--header-edge-inset), env(safe-area-inset-left, 0px)) 1.75rem max(var(--header-edge-inset), env(safe-area-inset-right, 0px));
   transform: translateY(-120%);
   opacity: 0;
   visibility: hidden;
@@ -189,21 +203,23 @@ a:hover {
 }
 
 .site-nav a {
+  display: inline-block;
+  width: auto;
+  max-width: 100%;
   color: var(--color-text);
   font-size: 0.84375rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   position: relative;
-  padding: 0.85rem 0;
-  border-bottom: 1px solid rgba(226, 229, 224, 0.95);
-  transition: color 0.2s var(--ease), background 0.2s var(--ease);
+  padding: 0.65rem 0;
+  border-bottom: none;
+  transition: color 0.2s var(--ease);
   opacity: 0;
   transform: translateY(-6px);
 }
 
 .site-nav a:last-child {
-  border-bottom: none;
-  padding-bottom: 0.15rem;
+  padding-bottom: 0.45rem;
 }
 
 .site-nav a:hover {
@@ -211,73 +227,56 @@ a:hover {
 }
 
 .site-nav a::after {
-  display: none;
+  content: "";
+  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0.2rem;
+  width: 0;
+  height: 2px;
+  background: var(--color-accent);
+  transition: width 0.22s var(--ease-out-snappy);
+}
+
+.site-header.is-open .site-nav a:hover::after,
+.site-header.is-open .site-nav a:focus-visible::after,
+.site-header.is-open .site-nav a.is-active::after {
+  width: 100%;
 }
 
 .site-nav a.is-active {
   color: var(--color-accent);
 }
 
-/* 枠付きナビ（トップは ABOUT US / BUSINESS / CONTACT。他ページのヘッダーは枠なし） */
-.site-nav--boxed {
-  gap: clamp(0.5rem, 1.5vw, 0.85rem);
-}
-
-.site-nav--boxed a {
-  padding: 0.45rem 0.85rem;
-  border: 1px solid rgba(26, 26, 26, 0.2);
-  border-radius: 2px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  transition:
-    background 0.25s var(--ease),
-    border-color 0.25s var(--ease),
-    color 0.25s var(--ease),
-    box-shadow 0.25s var(--ease);
-}
-
-.site-nav--boxed a::after {
-  display: none;
-}
-
-.site-nav--boxed a:hover {
-  border-color: var(--color-accent);
-  background: rgba(0, 106, 62, 0.06);
-  color: var(--color-accent);
-}
-
+/* トップ：社名非表示のためハンバーのみ → 右寄せ（狭い画面は余白を抑えて右上に近づける） */
 .site-header--home .site-header__inner--home {
-  justify-content: space-between;
+  justify-content: flex-end;
 }
 
-/* トップ：ヒーロー中もスクロール後もヘッダー左に社名（動画外と同じ見た目） */
+@media (max-width: 768px) {
+  body[data-page="home"] .site-header__inner--home {
+    justify-content: flex-end;
+    align-items: center;
+    padding-left: max(0.75rem, env(safe-area-inset-left, 0px));
+    padding-right: max(0.75rem, env(safe-area-inset-right, 0px));
+  }
+
+  body[data-page="home"] .nav-toggle {
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+}
+
+/* トップ：ヘッダー左上の社名ロゴは出さない（ヒーロー内の社名のみ）。ハンバー位置は .site-header__inner 共通 */
 body[data-page="home"] .site-header .site-logo {
-  display: flex;
-  animation: homeLogoReveal 0.45s var(--ease) forwards;
-}
-
-@keyframes homeLogoReveal {
-  from {
-    opacity: 0;
-    transform: translateY(-3px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body[data-page="home"] .site-header .site-logo {
-    animation: none;
-  }
+  display: none;
 }
 
 .nav-toggle {
   display: flex;
   width: 2.5rem;
   height: 2.5rem;
-  border: 1px solid var(--color-border);
+  border: none;
   background: var(--color-bg);
   border-radius: 4px;
   cursor: pointer;
@@ -285,6 +284,11 @@ body[data-page="home"] .site-header .site-logo {
   justify-content: center;
   flex-direction: column;
   gap: 5px;
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 .nav-toggle span {
@@ -310,7 +314,7 @@ body[data-page="home"] .site-header .site-logo {
 @media (max-width: 900px) {
   body[data-page="business"] .site-nav,
   body[data-page="about"] .site-nav {
-    padding: 1rem max(2rem, env(safe-area-inset-left, 0px)) 1.5rem max(2rem, env(safe-area-inset-right, 0px));
+    padding: 1rem max(var(--header-edge-inset), env(safe-area-inset-left, 0px)) 1.5rem max(var(--header-edge-inset), env(safe-area-inset-right, 0px));
   }
 }
 
@@ -345,16 +349,13 @@ main {
     padding-right: max(2rem, calc(0.55rem + env(safe-area-inset-right, 0px)));
   }
 
+  /* ヘッダー：狭い画面でも画面端からの距離は --header-edge-inset を基準に */
   body[data-page="business"] .site-header__inner,
   body[data-page="about"] .site-header__inner,
-  body[data-page="contact"] .site-header__inner {
-    padding-left: max(2rem, calc(0.25rem + env(safe-area-inset-left, 0px)));
-    padding-right: max(2rem, calc(0.25rem + env(safe-area-inset-right, 0px)));
-  }
-
+  body[data-page="contact"] .site-header__inner,
   .site-header__inner {
-    padding-left: max(1.5rem, calc(0.25rem + env(safe-area-inset-left, 0px)));
-    padding-right: max(1.5rem, calc(0.25rem + env(safe-area-inset-right, 0px)));
+    padding-left: max(var(--header-edge-inset), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--header-edge-inset), env(safe-area-inset-right, 0px));
   }
 
   .section {
@@ -489,6 +490,12 @@ h3 {
 @media (prefers-reduced-motion: reduce) {
   .hero__media video {
     display: none;
+  }
+
+  /* トップ：動画オフ時も img は使わず、背景のみ（二重表示を防ぐ） */
+  .hero.hero--home .hero__media {
+    background: url('../media/forest-aerial.jpg') center top / cover no-repeat;
+    background-color: #1a1f1c;
   }
 }
 
@@ -1116,7 +1123,7 @@ html.partner-map-modal-is-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fade-in:not(.fade-in--stagger):not(.fade-in--home-intro):not(.fade-in--home-picks):not(.fade-in--business-intro) {
+  .fade-in:not(.fade-in--stagger):not(.fade-in--business-intro) {
     opacity: 1;
     transform: none;
     transition: none;
@@ -1218,66 +1225,6 @@ html.partner-map-modal-is-open {
   }
 }
 
-/* —— トップ About ブロック：見出し〜リンクまで順に現れる —— */
-.fade-in.fade-in--home-intro {
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-}
-
-.fade-in.fade-in--home-intro:not(.is-visible) > * {
-  opacity: 0;
-  transform: translateY(14px);
-}
-
-.fade-in.fade-in--home-intro > * {
-  transition:
-    opacity 0.5s var(--ease-out-snappy),
-    transform 0.52s var(--ease-out-snappy);
-}
-
-.fade-in.fade-in--home-intro.is-visible > *:nth-child(1) {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.04s;
-}
-
-.fade-in.fade-in--home-intro.is-visible > *:nth-child(2) {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.12s;
-}
-
-.fade-in.fade-in--home-intro.is-visible > *:nth-child(3) {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.2s;
-}
-
-.fade-in.fade-in--home-intro.is-visible > *:nth-child(4) {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.28s;
-}
-
-/* 見出し下ラインはタイトル表示に合わせて少し遅らせる */
-.fade-in.fade-in--home-intro.is-visible .reveal-heading::after {
-  transition-delay: 0.14s;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .fade-in.fade-in--home-intro:not(.is-visible) > *,
-  .fade-in.fade-in--home-intro.is-visible > * {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
-  }
-
-  .fade-in.fade-in--home-intro.is-visible .reveal-heading::after {
-    transition-delay: 0s;
-  }
-}
-
 /* —— 事業ページ：理念（Our stance → 見出し → 本文枠の順に現れる） —— */
 .fade-in.fade-in--business-intro {
   opacity: 1 !important;
@@ -1328,51 +1275,6 @@ html.partner-map-modal-is-open {
 
   .fade-in.fade-in--business-intro.is-visible .reveal-heading::after {
     transition-delay: 0s;
-  }
-}
-
-/* —— トップ：トピックカード（3列・スタッガー） —— */
-.fade-in.fade-in--home-picks {
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-}
-
-.fade-in.fade-in--home-picks:not(.is-visible) .home-pick {
-  opacity: 0;
-  transform: translateY(18px);
-}
-
-.fade-in.fade-in--home-picks .home-pick {
-  transition:
-    opacity 0.48s var(--ease-out-snappy),
-    transform 0.5s var(--ease-out-snappy);
-}
-
-.fade-in.fade-in--home-picks.is-visible .home-pick:nth-child(1) {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.06s;
-}
-
-.fade-in.fade-in--home-picks.is-visible .home-pick:nth-child(2) {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.14s;
-}
-
-.fade-in.fade-in--home-picks.is-visible .home-pick:nth-child(3) {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.22s;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .fade-in.fade-in--home-picks:not(.is-visible) .home-pick,
-  .fade-in.fade-in--home-picks.is-visible .home-pick {
-    opacity: 1 !important;
-    transform: none !important;
-    transition: none !important;
   }
 }
 
@@ -1469,21 +1371,30 @@ body[data-page="home"] main {
 
 /*
  * ヒーロー高さ：--home-hero-vh は site.js が visualViewport / innerHeight（＝表示領域の高さ）に設定。
- * margin-top を -header-h だけ上にずらしているぶん、同じ高さのままだと下端がヘッダー分だけ手前で止まり、
- * 下に白（次セクションの背景）が帯状に見える。高さに header-h を足してビューポート下端まで届ける。
+ * トップでは固定ヘッダーを出さないため、ヒーローの高さはビューポートいっぱい（--home-hero-vh）でよい。
  */
 .hero.hero--home {
-  margin-top: calc(-1 * var(--header-h));
-  padding-top: var(--header-h);
+  --home-scroll-reveal: 0;
+  /* 住友林業系コーポレート：階層（小 EN → 中 社名 → 大 見出し → カード） */
+  --hero-type-en: clamp(0.5rem, 1.55vw, 0.65625rem);
+  --hero-type-company: clamp(0.71875rem, 1.95vw, 0.9375rem);
+  --hero-type-title: clamp(2.0625rem, 6.85vw, 3.4375rem);
+  --hero-type-card-en: 0.40625rem;
+  --hero-type-card-ja: clamp(0.75rem, 1.5vw, 0.875rem);
+  margin-top: 0;
+  padding-top: 0;
   box-sizing: border-box;
-  min-height: calc(var(--home-hero-vh, 100dvh) + var(--header-h));
-  height: calc(var(--home-hero-vh, 100dvh) + var(--header-h));
+  min-height: var(--home-hero-vh, 100dvh);
+  height: var(--home-hero-vh, 100dvh);
   width: 100%;
   max-width: 100%;
   align-items: center;
   justify-content: center;
-  position: relative;
+  position: sticky;
+  top: 0;
   z-index: 0;
+  overflow: hidden;
+  background-color: #0a0e0c;
 }
 
 /* メディア層はヒーロー全体を覆う（はみ出しはヒーローでクリップ） */
@@ -1493,17 +1404,6 @@ body[data-page="home"] main {
   height: 100%;
 }
 
-/* ポスター画像：グローバル img の max-width:100% が absolute 塗りつぶしを阻害しないよう上書き */
-.hero--home .hero__media > img {
-  z-index: 0;
-  max-width: none;
-  min-width: 100%;
-  min-height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  filter: brightness(0.98) saturate(0.92) contrast(1.03);
-}
-
 /* 動画：上側の構図を優先（中央基準だと空撮の上が切れやすい） */
 .hero--home .hero__media > video {
   min-width: 100%;
@@ -1511,6 +1411,7 @@ body[data-page="home"] main {
   object-fit: cover;
   object-position: center top;
   filter: brightness(0.98) saturate(0.92) contrast(1.03);
+  display: block;
 }
 
 .hero__overlay--home {
@@ -1523,221 +1424,376 @@ body[data-page="home"] main {
   );
 }
 
-/* ヒーロー下端：次セクションへの誘導（住友林業系のミニマルな Scroll 表現） */
-.hero__scroll-hint {
-  position: absolute;
-  bottom: calc(clamp(1.35rem, 3.5vw, 2.25rem) + env(safe-area-inset-bottom, 0px));
-  left: 50%;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.45rem;
-  color: rgba(255, 255, 255, 0.68);
-  text-decoration: none;
-  font-family: var(--font-en-display);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  transform: translateX(-50%);
-  transition: color 0.28s var(--ease);
-}
-
-.hero__scroll-hint:hover {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-.hero__scroll-hint:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.85);
-  outline-offset: 4px;
-}
-
-.hero__scroll-hint__line {
-  width: 1px;
-  height: 2.5rem;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0) 100%);
-  animation: hero-scroll-hint-line 2.4s ease-in-out infinite;
-}
-
-@keyframes hero-scroll-hint-line {
-  0%,
-  100% {
-    opacity: 0.45;
-    transform: scaleY(0.88);
-    transform-origin: top center;
-  }
-  50% {
-    opacity: 1;
-    transform: scaleY(1);
-    transform-origin: top center;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero__scroll-hint__line {
-    animation: none;
-    opacity: 0.75;
-    transform: none;
-  }
-}
-
-/* 住友林業系：下方向へ視線誘導するオーバーレイ＋左下にキャッチコピー */
+/* 住友林業系：オーバーレイ＋左下にコピーと3カード（動画が主役になるようやや抑えめ） */
 .hero__overlay--home.hero__overlay--sumitomo {
-  background: linear-gradient(
-    180deg,
-    rgba(8, 12, 10, 0.22) 0%,
-    rgba(10, 16, 12, 0.28) 38%,
-    rgba(10, 18, 14, 0.62) 72%,
-    rgba(8, 14, 11, 0.82) 100%
-  );
-}
-
-.hero__content--sumitomo {
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: var(--max-w);
-  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
-  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
-  padding-bottom: clamp(5.25rem, 13vw, 8.5rem);
-  padding-top: 2rem;
-  text-align: left;
-  pointer-events: none;
-}
-
-.hero__content--sumitomo * {
-  pointer-events: auto;
-}
-
-.hero__en {
-  font-family: var(--font-en-display);
-  font-size: clamp(0.75rem, 1.35vw, 0.875rem);
-  font-weight: 500;
-  letter-spacing: 0.38em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 1rem;
-}
-
-.hero__title-main {
-  font-family: var(--font-display);
-  font-size: clamp(1.9rem, 5.2vw, 3.45rem);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  line-height: 1.2;
-  color: #fff;
-  margin-bottom: 1.2rem;
-  max-width: 16em;
-}
-
-.hero__lead-home {
-  font-size: clamp(0.9375rem, 1.45vw, 1.0625rem);
-  line-height: 1.92;
-  color: rgba(255, 255, 255, 0.82);
-  max-width: 34rem;
-  font-weight: 400;
-}
-
-/* 初回：動画のみ全画面に近い見え方（オーバーレイ薄め）／スクロール後にコピー表示 */
-.hero.hero--home:not(.hero--copy-revealed) .hero__overlay--home.hero__overlay--sumitomo {
   background: linear-gradient(
     180deg,
     rgba(6, 10, 8, 0.06) 0%,
     rgba(10, 14, 12, 0.1) 42%,
     rgba(8, 12, 10, 0.16) 100%
   );
-  transition: background 0.65s var(--ease);
 }
 
-.hero.hero--home.hero--copy-revealed .hero__overlay--home.hero__overlay--sumitomo {
-  transition: background 0.65s var(--ease);
+.hero__overlay--home.hero__overlay--sumitomo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 12, 10, 0.14) 0%,
+    rgba(10, 16, 12, 0.26) 38%,
+    rgba(10, 18, 14, 0.52) 72%,
+    rgba(8, 14, 11, 0.66) 100%
+  );
+  opacity: var(--home-scroll-reveal, 0);
 }
 
-.hero.hero--home:not(.hero--copy-revealed) .hero__content--sumitomo {
+.hero.hero--home .hero__center-stack {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* 大きめ見出しでも下帯と干渉しないよう余白を確保 */
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  padding-top: max(env(safe-area-inset-top, 0px), 0.5rem);
+  padding-bottom: clamp(6.25rem, 24vh, 12.5rem);
+  pointer-events: none;
+  text-align: center;
+}
+
+.hero.hero--home .hero__company-name {
+  margin: 0;
+  font-family: var(--font-en-display);
+  font-size: var(--hero-type-company);
+  font-weight: 500;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.22);
+  max-width: min(36rem, 92vw);
+  line-height: 1.45;
+}
+
+/* トップ：初回は非表示 → ホイール・クリック・キーでゆっくりフェードイン */
+.hero.hero--home .hero__company-name,
+.hero.hero--home .hero__copy-block .hero__en,
+.hero.hero--home .hero__copy-block .hero__title-main {
   opacity: 0;
+  transform: translateY(-1.05rem);
+  transition:
+    opacity 1.15s var(--ease-out-snappy),
+    transform 1.2s var(--ease-out-snappy);
+}
+
+.hero.hero--home.hero--copy-visible .hero__company-name {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0s;
+}
+
+.hero.hero--home.hero--copy-visible .hero__copy-block .hero__en {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+.hero.hero--home.hero--copy-visible .hero__copy-block .hero__title-main {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.28s;
+}
+
+.hero.hero--home .hero__shell {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: var(--max-w);
+  padding-left: max(1.5rem, env(safe-area-inset-left, 0px));
+  padding-right: max(1.5rem, env(safe-area-inset-right, 0px));
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom, 0px));
+  padding-top: 0.5rem;
+  text-align: left;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.8vw, 1.7rem);
+}
+
+.hero.hero--home:not(.hero--copy-visible) .hero__copy-block,
+.hero.hero--home:not(.hero--copy-visible) .hero__copy-block * {
   pointer-events: none;
 }
 
-.hero.hero--home.hero--copy-revealed .hero__content--sumitomo {
-  opacity: 1;
-  transition: opacity 0.45s var(--ease-out-snappy);
+.hero.hero--home.hero--copy-visible .hero__copy-block,
+.hero.hero--home.hero--copy-visible .hero__copy-block * {
+  pointer-events: auto;
 }
 
-.hero.hero--home:not(.hero--copy-revealed) .hero__content--sumitomo .hero__en,
-.hero.hero--home:not(.hero--copy-revealed) .hero__content--sumitomo .hero__title-main,
-.hero.hero--home:not(.hero--copy-revealed) .hero__content--sumitomo .hero__lead-home {
+.hero.hero--home .hero__copy-block {
+  max-width: min(26em, 100%);
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding-left: clamp(0.75rem, 2vw, 1.05rem);
+}
+
+.hero.hero--home .hero__copy-block .hero__en {
+  font-family: var(--font-en-display);
+  font-size: var(--hero-type-en);
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  margin-bottom: clamp(0.7rem, 2.2vw, 1.1rem);
+  line-height: 1.5;
+}
+
+.hero.hero--home .hero__copy-block .hero__title-main {
+  font-family: var(--font-display);
+  font-size: var(--hero-type-title);
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 1.28;
+  color: #fff;
+  margin-bottom: 0;
+  max-width: 16em;
+}
+
+/* ヒーロー上の3ナビカード（テキスト表示のあと .hero--cards-visible で下から） */
+.hero__cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.45rem;
+  width: 100%;
+  pointer-events: none;
+}
+
+/* トップ：カード群をコピー帯より中央寄りに（スマホは下記で横3列） */
+.hero.hero--home .hero__cards {
+  align-self: center;
+  max-width: min(22rem, 100%);
+  gap: clamp(0.5rem, 2.5vw, 0.75rem);
+  justify-items: center;
+}
+
+/* スマホ：3カードを横並び（縦1列のデフォルトを上書き） */
+@media (max-width: 768px) {
+  .hero.hero--home .hero__cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    max-width: 100%;
+    width: 100%;
+    gap: clamp(0.3rem, 2vw, 0.55rem);
+    justify-items: stretch;
+  }
+
+  .hero.hero--home .hero-card {
+    padding: 0.4rem 0.3rem;
+    min-width: 0;
+  }
+
+  .hero.hero--home .hero-card__en {
+    font-size: clamp(0.4375rem, 2.1vw, 0.5rem);
+    letter-spacing: 0.14em;
+  }
+
+  .hero.hero--home .hero-card__ja {
+    font-size: clamp(0.625rem, 2.75vw, 0.75rem);
+    letter-spacing: 0.03em;
+  }
+}
+
+.hero.hero--home.hero--cards-interactive .hero__cards {
+  pointer-events: auto;
+}
+
+.hero.hero--home .hero-card {
+  gap: clamp(0.22rem, 1vw, 0.32rem);
   opacity: 0;
-  transform: translateY(16px);
+  transform: translateY(2.75rem);
+  /* コピー（1.15s / 1.2s）に近いテンポでゆっくり */
+  transition:
+    opacity 1.05s var(--ease-out-snappy),
+    transform 1.12s var(--ease-out-snappy);
+  transition-delay: 0s;
 }
 
-.hero.hero--home.hero--copy-revealed .hero__content--sumitomo .hero__en,
-.hero.hero--home.hero--copy-revealed .hero__content--sumitomo .hero__title-main,
-.hero.hero--home.hero--copy-revealed .hero__content--sumitomo .hero__lead-home {
+.hero.hero--home.hero--cards-visible .hero-card {
   opacity: 1;
   transform: translateY(0);
-  transition:
-    opacity 0.55s var(--ease-out-snappy),
-    transform 0.58s var(--ease-out-snappy);
 }
 
-.hero.hero--home.hero--copy-revealed .hero__content--sumitomo .hero__en {
-  transition-delay: 0.06s;
+.hero.hero--home.hero--cards-visible .hero-card:nth-child(1) {
+  transition-delay: 0s;
 }
 
-.hero.hero--home.hero--copy-revealed .hero__content--sumitomo .hero__title-main {
-  transition-delay: 0.14s;
+.hero.hero--home.hero--cards-visible .hero-card:nth-child(2) {
+  transition-delay: 0.12s;
 }
 
-.hero.hero--home.hero--copy-revealed .hero__content--sumitomo .hero__lead-home {
+.hero.hero--home.hero--cards-visible .hero-card:nth-child(3) {
   transition-delay: 0.24s;
 }
 
-.hero.hero--home:not(.hero--copy-revealed) .hero__scroll-hint {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+.hero-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.2rem;
+  padding: 0.55rem 0.75rem;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-decoration: none;
+  color: inherit;
+  border: none;
+  background: transparent;
+  overflow: hidden;
 }
 
-.hero.hero--home.hero--copy-revealed .hero__scroll-hint {
-  opacity: 1;
-  visibility: visible;
-  transition:
-    opacity 0.5s var(--ease-out-snappy) 0.32s,
-    color 0.28s var(--ease),
-    visibility 0s linear 0.32s;
+.hero-card:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.85);
+  outline-offset: 2px;
+}
+
+.hero.hero--home .hero-card__en {
+  font-family: var(--font-en-display);
+  font-size: var(--hero-type-card-en);
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(200, 235, 215, 0.92);
+  line-height: 1.35;
+}
+
+.hero.hero--home .hero-card__ja {
+  font-size: var(--hero-type-card-ja);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #fff;
+  line-height: 1.35;
+}
+
+.hero-card__line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 0;
+  background: rgba(255, 255, 255, 0.85);
+  transition: width 0.38s var(--ease-out-snappy);
+}
+
+.hero-card:hover .hero-card__line {
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  /* JS 未実行時もコピーが読めるよう、動きを減らす設定では常に表示扱い */
-  .hero.hero--home:not(.hero--copy-revealed) .hero__overlay--home.hero__overlay--sumitomo {
+  .hero.hero--home {
+    --home-scroll-reveal: 1;
+  }
+
+  .hero.hero--home .hero__overlay--home.hero__overlay--sumitomo::after {
+    opacity: 1;
+  }
+
+  .hero.hero--home.hero--cards-interactive .hero__cards,
+  .hero.hero--home .hero__cards {
+    pointer-events: auto;
+  }
+
+  .hero.hero--home .hero-card {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hero.hero--home .hero__company-name,
+  .hero.hero--home .hero__copy-block .hero__en,
+  .hero.hero--home .hero__copy-block .hero__title-main {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+}
+
+/* PC：オーバーレイをさらに薄く／タイポ階層は変数で再調整（見出しを主役に） */
+@media (min-width: 769px) {
+  .hero.hero--home {
+    --hero-type-en: clamp(0.46875rem, 0.68vw, 0.625rem);
+    --hero-type-company: clamp(0.65625rem, 0.95vw, 0.8125rem);
+    --hero-type-title: clamp(2rem, 3.75vw, 3.125rem);
+    --hero-type-card-en: 0.4375rem;
+    --hero-type-card-ja: 0.8125rem;
+  }
+
+  .hero.hero--home .hero__overlay--home.hero__overlay--sumitomo {
     background: linear-gradient(
       180deg,
-      rgba(8, 12, 10, 0.22) 0%,
-      rgba(10, 16, 12, 0.28) 38%,
-      rgba(10, 18, 14, 0.62) 72%,
-      rgba(8, 14, 11, 0.82) 100%
+      rgba(6, 10, 8, 0.04) 0%,
+      rgba(10, 14, 12, 0.08) 45%,
+      rgba(8, 12, 10, 0.12) 100%
     );
   }
 
-  .hero.hero--home:not(.hero--copy-revealed) .hero__content--sumitomo {
-    opacity: 1;
+  .hero.hero--home .hero__overlay--home.hero__overlay--sumitomo::after {
+    background: linear-gradient(
+      180deg,
+      rgba(8, 12, 10, 0.1) 0%,
+      rgba(10, 16, 12, 0.2) 38%,
+      rgba(10, 18, 14, 0.42) 72%,
+      rgba(8, 14, 11, 0.56) 100%
+    );
   }
 
-  .hero.hero--home:not(.hero--copy-revealed) .hero__content--sumitomo .hero__en,
-  .hero.hero--home:not(.hero--copy-revealed) .hero__content--sumitomo .hero__title-main,
-  .hero.hero--home:not(.hero--copy-revealed) .hero__content--sumitomo .hero__lead-home {
-    opacity: 1;
-    transform: none;
+  .hero.hero--home .hero__shell {
+    padding-bottom: max(1.65rem, env(safe-area-inset-bottom, 0px));
+    gap: clamp(1.05rem, 2.2vw, 1.5rem);
   }
 
-  .hero.hero--home:not(.hero--copy-revealed) .hero__scroll-hint {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+  .hero.hero--home .hero__center-stack {
+    padding-bottom: clamp(6.5rem, 20vh, 11rem);
+  }
+
+  .hero.hero--home .hero__company-name {
+    letter-spacing: 0.42em;
+  }
+
+  .hero.hero--home .hero__copy-block .hero__en {
+    letter-spacing: 0.38em;
+    margin-bottom: clamp(0.55rem, 1.2vw, 0.85rem);
+  }
+
+  .hero.hero--home .hero__copy-block .hero__title-main {
+    max-width: 15em;
+    letter-spacing: 0.12em;
+    line-height: 1.22;
+  }
+
+  .hero.hero--home .hero__cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.65rem, 2.2vw, 1.15rem);
+    max-width: min(46rem, 96%);
+  }
+
+  .hero.hero--home .hero-card {
+    padding: 0.55rem 0.7rem;
+    gap: 0.28rem;
+  }
+}
+
+@media (min-width: 620px) and (max-width: 768px) {
+  .hero.hero--home .hero__cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.5rem, 2.2vw, 0.9rem);
+    max-width: min(40rem, 94vw);
   }
 }
 
@@ -1845,10 +1901,6 @@ body[data-page="contact"] .site-nav a:hover {
   color: #fff;
 }
 
-body[data-page="contact"] .site-nav a::after {
-  background: rgba(255, 255, 255, 0.85);
-}
-
 body[data-page="contact"] .site-nav a.is-active {
   color: #fff;
 }
@@ -1905,12 +1957,6 @@ body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a {
   transition: color 0.3s var(--ease);
 }
 
-body[data-page="home"] .site-header .site-nav a::after,
-body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a::after,
-body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a::after {
-  background: #fff;
-}
-
 body[data-page="home"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
 body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a.is-active {
@@ -1921,12 +1967,6 @@ body[data-page="home"] .site-header--scrolled .site-nav a,
 body[data-page="business"] .site-header--scrolled .site-nav a,
 body[data-page="about"] .site-header--scrolled .site-nav a {
   color: rgba(255, 255, 255, 0.92);
-}
-
-body[data-page="home"] .site-header--scrolled .site-nav a::after,
-body[data-page="business"] .site-header--scrolled .site-nav a::after,
-body[data-page="about"] .site-header--scrolled .site-nav a::after {
-  background: rgba(255, 255, 255, 0.85);
 }
 
 body[data-page="home"] .site-header--scrolled .site-nav a.is-active,
@@ -1961,235 +2001,42 @@ body[data-page="about"] .site-header--scrolled .nav-toggle {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* モバイルメニュー展開時 */
-body[data-page="home"] .site-header.is-open .site-nav a,
+/* メインページ：メニュー展開時はヒーロー動画の邪魔にならないよう半透明＋ブラー（白パネルは使わない） */
+body[data-page="home"] .site-header.is-open .site-nav {
+  background: rgba(10, 14, 12, 0.48);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+}
+
+/* モバイルメニュー展開時（サブページは白パネル・暗い文字） */
 body[data-page="business"] .site-header.is-open .site-nav a,
 body[data-page="about"] .site-header.is-open .site-nav a {
   color: var(--color-text);
 }
 
-body[data-page="home"] .site-header.is-open .site-nav a.is-active,
 body[data-page="business"] .site-header.is-open .site-nav a.is-active,
 body[data-page="about"] .site-header.is-open .site-nav a.is-active {
   color: var(--color-accent);
 }
 
-body[data-page="home"] .site-header.is-open .site-nav a::after,
 body[data-page="business"] .site-header.is-open .site-nav a::after,
 body[data-page="about"] .site-header.is-open .site-nav a::after {
   background: var(--color-accent);
 }
 
-/* —— トップ：メッセージ分割／旧 home-intro ユーティリティ —— */
-#home-message,
-#home-intro {
-  scroll-margin-top: calc(var(--header-h) + 1rem);
+/* トップ：展開時もヒーロー上と同じ明るいリンク色 */
+body[data-page="home"] .site-header.is-open .site-nav a {
+  color: rgba(255, 255, 255, 0.94);
 }
 
-.home-intro {
-  position: relative;
-  z-index: 1;
-  margin-top: 0;
-  padding-top: clamp(4.25rem, 10.5vw, 6.25rem);
-  padding-bottom: clamp(3.25rem, 7.5vw, 5rem);
-  background: linear-gradient(180deg, var(--color-bg-subtle) 0%, var(--color-bg) 42%);
-  border-top: 1px solid rgba(226, 229, 224, 0.55);
+body[data-page="home"] .site-header.is-open .site-nav a.is-active {
+  color: #fff;
 }
 
-/* 可読幅に収め、ジャンプ率を明確に */
-.home-intro__inner {
-  max-width: var(--max-readable);
-  margin: 0;
-  text-align: left;
-}
-
-.home-message {
-  border-top: 1px solid var(--color-border);
-  background: linear-gradient(180deg, var(--color-bg-subtle) 0%, var(--color-bg) 42%);
-}
-
-.home-message__text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: min(56rem, 100%);
-  margin: 0 auto;
-  padding: clamp(2.5rem, 6vw, 4.5rem) 0;
-}
-
-.home-message__eyebrow {
-  font-family: var(--font-en-display);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: 1rem;
-}
-
-.home-message__title {
-  font-family: var(--font-display);
-  font-size: clamp(1.65rem, 3.6vw, 2.35rem);
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  line-height: 1.32;
-  margin-bottom: 1.35rem;
-  color: var(--color-text);
-}
-
-.home-message__lead {
-  font-size: clamp(0.9375rem, 1.45vw, 1.0625rem);
-  line-height: 1.92;
-  color: var(--color-text-muted);
-  margin: 0 0 1.75rem;
-  max-width: none;
-}
-
-.home-message__more {
-  margin: 0;
-}
-
-.home-intro__eyebrow {
-  font-family: var(--font-en-display);
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: 1rem;
-}
-
-.home-intro__title {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 4.4vw, 2.5rem);
-  font-weight: 500;
-  letter-spacing: 0.03em;
-  line-height: 1.3;
-  margin-bottom: 1.5rem;
-  color: var(--color-text);
-}
-
-.home-intro__lead {
-  font-size: clamp(0.9375rem, 1.45vw, 1.0625rem);
-  line-height: 1.92;
-  color: var(--color-text-muted);
-  margin: 0 0 1.85rem;
-}
-
-.home-intro__more {
-  margin: 0;
-}
-
-.home-intro__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  border-bottom: 1px solid rgba(0, 106, 62, 0.28);
-  padding-bottom: 0.15rem;
-  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), gap 0.2s var(--ease);
-}
-
-.home-intro__link::after {
-  content: "";
-  display: inline-block;
-  width: 0.35rem;
-  height: 0.35rem;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(-45deg);
-  margin-bottom: 0.05rem;
-  opacity: 0.85;
-  transition: transform 0.2s var(--ease);
-}
-
-.home-intro__link:hover {
-  color: var(--color-accent-hover);
-  border-bottom-color: var(--color-accent-hover);
-  gap: 0.55rem;
-}
-
-.home-intro__link:hover::after {
-  transform: rotate(-45deg) translateX(2px);
-}
-
-/* —— トップ：トピックリンク（住友林業系の大型カード） —— */
-.home-picks {
-  padding: clamp(3rem, 8vw, 5rem) 0;
-  background: var(--color-bg-subtle);
-  border-top: 1px solid var(--color-border);
-}
-
-.home-picks__grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(1rem, 2.5vw, 1.75rem);
-}
-
-.home-pick {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.45rem;
-  padding: clamp(1.65rem, 3.5vw, 2.35rem);
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
-  text-decoration: none;
-  color: inherit;
-  position: relative;
-  overflow: hidden;
-  transition:
-    border-color 0.28s var(--ease),
-    box-shadow 0.28s var(--ease);
-}
-
-.home-pick:hover {
-  border-color: rgba(0, 106, 62, 0.32);
-  box-shadow: 0 14px 44px rgba(26, 26, 26, 0.07);
-}
-
-.home-pick:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-}
-
-.home-pick__en {
-  font-family: var(--font-en-display);
-  font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-}
-
-.home-pick__ja {
-  font-size: clamp(1.05rem, 1.9vw, 1.2rem);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-.home-pick__line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
+body[data-page="home"] .site-header.is-open .site-nav a::after {
   background: var(--color-accent);
-  transition: width 0.4s var(--ease-out-snappy);
-}
-
-.home-pick:hover .home-pick__line {
-  width: 100%;
-}
-
-@media (max-width: 768px) {
-  .home-picks__grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* —— トップ：OUR VIEW カルーセル（横スクロール＋矢印・ドット・自動送り） —— */
@@ -3306,6 +3153,11 @@ body[data-page="about"] .site-header.is-open .site-nav a::after {
 .business-doc.prose {
   max-width: none;
   margin: 0;
+  line-height: 1.48;
+}
+
+.business-doc.prose p + p {
+  margin-top: 0.72rem;
 }
 
 @media (max-width: 640px) {
@@ -3320,9 +3172,9 @@ body[data-page="about"] .site-header.is-open .site-nav a::after {
   }
 }
 
-/* 事業内容：取扱い商品カード */
+/* 事業内容：取扱い商品カード（浅いビジュアル帯＋編集面っぽいタイポ） */
 .business-products {
-  max-width: min(56rem, 100%);
+  max-width: min(60rem, 100%);
   margin: clamp(2.5rem, 6vw, 3.5rem) auto 0;
   padding-top: clamp(2rem, 5vw, 2.75rem);
   border-top: 1px solid var(--color-border);
@@ -3347,107 +3199,261 @@ body[data-page="about"] .site-header.is-open .site-nav a::after {
 
 .business-products__grid {
   display: grid;
-  gap: clamp(1rem, 2.5vw, 1.35rem);
+  gap: clamp(1.25rem, 3vw, 1.75rem);
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .business-product-card {
-  height: 100%;
-}
-
-.business-product-card__inner {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   height: 100%;
-  padding: clamp(1.15rem, 2.5vw, 1.4rem);
+  border-radius: 1px;
+  background: var(--color-bg);
+  border-color: rgba(0, 0, 0, 0.07);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.65) inset;
+  transition:
+    border-color 0.32s var(--ease),
+    box-shadow 0.38s var(--ease),
+    transform 0.38s var(--ease),
+    background 0.32s var(--ease);
 }
 
-.business-product-card .card__icon {
-  margin-bottom: 0.85rem;
-  flex-shrink: 0;
+.business-product-card:hover {
+  border-color: rgba(0, 106, 62, 0.18);
+  background: linear-gradient(180deg, #fff 0%, var(--color-bg-subtle) 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.65) inset,
+    0 12px 40px rgba(0, 48, 32, 0.055);
+  transform: translateY(-1px);
 }
 
-/* 写真アイコン：丸内をトリミング（SVG 用の緑背景は控えめに） */
-.business-product-card .card__icon--photo {
-  padding: 0;
+.business-product-card__media {
+  position: relative;
+  /* 16:10 より低く、画像帯の面積を抑える（横長のシネマ比率に近い） */
+  aspect-ratio: 2.5 / 1;
   overflow: hidden;
-  background: rgba(0, 106, 62, 0.06);
+  flex-shrink: 0;
+  background: linear-gradient(152deg, rgba(0, 106, 62, 0.045) 0%, rgba(30, 40, 36, 0.04) 100%);
 }
 
-.business-product-card .card__icon--photo img {
+.business-product-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.04) 0%,
+    transparent 35%,
+    rgba(0, 30, 20, 0.07) 100%
+  );
+  opacity: 0.85;
+  transition: opacity 0.35s var(--ease);
+}
+
+.business-product-card:hover .business-product-card__media::after {
+  opacity: 0.65;
+}
+
+.business-product-card__media img {
   display: block;
   width: 100%;
   height: 100%;
-  max-width: none;
   object-fit: cover;
   object-position: center;
-  border-radius: 50%;
-  filter: brightness(0.99) saturate(0.95) contrast(1.02);
-  transition: transform 0.32s var(--ease);
+  filter: brightness(0.98) saturate(0.95) contrast(1.04);
+  transition: transform 0.55s var(--ease), filter 0.45s var(--ease);
+}
+
+.business-product-card:hover .business-product-card__media img {
+  transform: scale(1.022);
+  filter: brightness(1) saturate(0.98) contrast(1.05);
 }
 
 /* 商品ごとに質感が伝わるようトリミング位置を微調整（合板→アウトドアの順） */
-.business-products__grid .business-product-card:nth-child(1) .card__icon--photo img {
+.business-products__grid .business-product-card:nth-child(1) .business-product-card__media img {
   object-position: 48% 42%;
 }
 
-.business-products__grid .business-product-card:nth-child(2) .card__icon--photo img {
+.business-products__grid .business-product-card:nth-child(2) .business-product-card__media img {
   object-position: 50% 46%;
 }
 
-.business-products__grid .business-product-card:nth-child(3) .card__icon--photo img {
+.business-products__grid .business-product-card:nth-child(3) .business-product-card__media img {
   object-position: 50% 38%;
 }
 
-.business-products__grid .business-product-card:nth-child(4) .card__icon--photo img {
+.business-products__grid .business-product-card:nth-child(4) .business-product-card__media img {
   object-position: 50% 44%;
 }
 
-.business-products__grid .business-product-card:nth-child(5) .card__icon--photo img {
+.business-products__grid .business-product-card:nth-child(5) .business-product-card__media img {
   object-position: 52% 48%;
 }
 
-.business-products__grid .business-product-card:nth-child(6) .card__icon--photo img {
+.business-products__grid .business-product-card:nth-child(6) .business-product-card__media img {
   object-position: 50% 46%;
+}
+
+.business-product-card__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: flex-start;
+  padding: clamp(0.95rem, 2vw, 1.15rem) clamp(1rem, 2.2vw, 1.25rem) clamp(1.15rem, 2.5vw, 1.4rem);
+  padding-left: clamp(0.85rem, 2vw, 1rem);
+  border-top: 1px solid rgba(0, 106, 62, 0.1);
+}
+
+.business-product-card__body::before {
+  content: "";
+  position: absolute;
+  left: 0.35rem;
+  top: 0.85rem;
+  bottom: 0.85rem;
+  width: 2px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 106, 62, 0.45) 0%,
+    rgba(0, 106, 62, 0.12) 55%,
+    transparent 100%
+  );
+  opacity: 0.9;
+  transition: opacity 0.3s var(--ease);
+}
+
+.business-product-card:hover .business-product-card__body::before {
+  opacity: 1;
 }
 
 .business-product-card__cat {
   margin: 0 0 0.4rem;
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-family: var(--font-en-display);
+  font-size: 0.5625rem;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: rgba(0, 106, 62, 0.88);
 }
 
 .business-product-card h3 {
   margin: 0 0 0.35rem;
-  font-size: clamp(1rem, 1.8vw, 1.125rem);
-  font-weight: 600;
-  line-height: 1.35;
+  font-family: var(--font-display);
+  font-size: clamp(1rem, 1.75vw, 1.12rem);
+  font-weight: 500;
+  line-height: 1.38;
+  letter-spacing: 0.1em;
   color: var(--color-text);
 }
 
 .business-product-card__en {
   margin: 0;
-  font-size: 0.8125rem;
+  padding-top: 0.35rem;
+  font-family: var(--font-en-display);
+  font-size: 0.6875rem;
+  font-style: italic;
+  font-weight: 500;
   line-height: 1.5;
+  letter-spacing: 0.06em;
+  color: var(--color-gray-soft);
+}
+
+.business-product-card__desc {
+  margin: 0;
+  margin-top: clamp(0.5rem, 1.4vw, 0.7rem);
+  max-width: 36em;
+  font-size: clamp(0.8125rem, 1.15vw, 0.875rem);
+  font-weight: 400;
+  line-height: 1.75;
+  letter-spacing: 0.02em;
   color: var(--color-text-muted);
 }
 
-.business-product-card:hover .card__icon--photo {
-  background: rgba(0, 106, 62, 0.1);
+.business-product-card__desc:empty {
+  display: none;
 }
 
-.business-product-card:hover .card__icon--photo img {
-  transform: scale(1.04);
+.business-product-card__desc p {
+  margin: 0;
 }
 
-/* スマホ（〜768px）も 2 列のまま（6 枚 → 2×3）。480px 以下で 1 列に落とさない */
+.business-product-card__desc p + p {
+  margin-top: 0.45em;
+}
+
 @media (max-width: 768px) {
+  /* スマホ：縦スクロールを抑えるため2列と薄い画像帯。読みやすさは字色・ゴシックラベルで維持 */
   .business-products__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(0.75rem, 2.8vw, 1rem);
+  }
+
+  .business-products {
+    margin-top: clamp(1.75rem, 4.5vw, 2.5rem);
+    padding-top: clamp(1.35rem, 3.8vw, 1.9rem);
+  }
+
+  .business-products__heading {
+    margin-bottom: clamp(0.95rem, 2.8vw, 1.25rem);
+  }
+
+  .business-product-card__media {
+    aspect-ratio: 2.85 / 1;
+  }
+
+  .business-product-card__body {
+    padding: clamp(0.72rem, 2.2vw, 0.88rem) clamp(0.72rem, 2.4vw, 0.9rem) clamp(0.85rem, 2.5vw, 1rem);
+    padding-left: clamp(0.78rem, 2.3vw, 0.92rem);
+  }
+
+  .business-product-card__body::before {
+    left: 0.32rem;
+    top: 0.72rem;
+    bottom: 0.72rem;
+  }
+
+  .business-product-card__cat {
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1.35;
+    margin-bottom: 0.28rem;
+  }
+
+  .business-product-card h3 {
+    font-size: clamp(0.92rem, 3.4vw, 1.05rem);
+    letter-spacing: 0.07em;
+    line-height: 1.36;
+    margin-bottom: 0.28rem;
+  }
+
+  .business-product-card__en {
+    font-size: clamp(0.65625rem, 2.2vw, 0.75rem);
+    line-height: 1.45;
+    padding-top: 0.2rem;
+  }
+
+  .business-product-card__desc {
+    font-size: clamp(0.75rem, 2.35vw, 0.84375rem);
+    line-height: 1.68;
+    letter-spacing: 0.01em;
+    margin-top: clamp(0.38rem, 1.5vw, 0.5rem);
+    max-width: none;
+    color: var(--color-text);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .business-product-card:hover {
+    transform: none;
+  }
+
+  .business-product-card:hover .business-product-card__media img {
+    transform: none;
   }
 }
 
