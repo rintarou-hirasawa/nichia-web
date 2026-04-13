@@ -9,20 +9,19 @@
   --color-gray-soft: #8a8f88;
   --color-accent: #006a3e;
   --color-accent-hover: #005432;
-  /* 本文・UI：ゴシック（読みやすさ） */
+  /* 全ページ Noto Sans JP に統一（見出し・英字ラベルも同じスタック） */
   --font-sans: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-  /* 日本語の主見出し：明朝系（住友林業系サイトに近い「編集面＝明朝・本文＝ゴシック」の役割分担） */
-  --font-display: "Noto Serif JP", "Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif;
+  --font-display: var(--font-sans);
   --header-h: 4.5rem;
   /* ロゴ・ハンバーを画面端からおおよそこの距離に（ノッチは safe-area が優先） */
   --header-edge-inset: 3cm;
+  --header-edge-inset-mobile: 1rem;
   --max-w: 70rem;
   --max-readable: 40rem;
   --space-section: clamp(4.5rem, 10.5vw, 7.5rem);
   --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-out-snappy: cubic-bezier(0.33, 1, 0.68, 1);
-  /* 英字キッカー・ラベル：セリフで品格（本文の Noto Sans とは役割を分ける） */
-  --font-en-display: "Cormorant Garamond", "Times New Roman", serif;
+  --font-en-display: var(--font-sans);
   --home-map-green: #2d5a27;
 }
 
@@ -51,9 +50,6 @@ body {
 /* メインページ：全画面ヒーロー（スクロールスペーサーなし・操作は JS で検知） */
 body[data-page="home"] {
   overflow-x: hidden;
-  /* トップのみ明朝・英字セリフを使わず Noto Sans JP に統一 */
-  --font-display: var(--font-sans);
-  --font-en-display: var(--font-sans);
   background-color: #0a0e0c;
 }
 
@@ -349,13 +345,24 @@ main {
     padding-right: max(2rem, calc(0.55rem + env(safe-area-inset-right, 0px)));
   }
 
-  /* ヘッダー：狭い画面でも画面端からの距離は --header-edge-inset を基準に */
+  /* ヘッダー：スマホは --header-edge-inset-mobile（PC の 3cm は��持） */
   body[data-page="business"] .site-header__inner,
   body[data-page="about"] .site-header__inner,
   body[data-page="contact"] .site-header__inner,
   .site-header__inner {
-    padding-left: max(var(--header-edge-inset), env(safe-area-inset-left, 0px));
-    padding-right: max(var(--header-edge-inset), env(safe-area-inset-right, 0px));
+    padding-left: max(var(--header-edge-inset-mobile), env(safe-area-inset-left, 0px));
+    padding-right: max(var(--header-edge-inset-mobile), env(safe-area-inset-right, 0px));
+  }
+
+  .site-nav {
+    padding: 1.25rem max(var(--header-edge-inset-mobile), env(safe-area-inset-left, 0px)) 1.75rem
+      max(var(--header-edge-inset-mobile), env(safe-area-inset-right, 0px));
+  }
+
+  body[data-page="business"] .site-nav,
+  body[data-page="about"] .site-nav {
+    padding: 1rem max(var(--header-edge-inset-mobile), env(safe-area-inset-left, 0px)) 1.5rem
+      max(var(--header-edge-inset-mobile), env(safe-area-inset-right, 0px));
   }
 
   .section {
@@ -717,7 +724,7 @@ h3 {
   border: 1px solid var(--color-border);
 }
 
-/* 地図の縦横比（image_0.png / 2048×1024）— 差し替え時は aspect-ratio を画像に合わせて変更 */
+/* 地図の縦横比（2:1 想定）— 差し替え時は aspect-ratio を画像に合わせて変更 */
 .partner-map__canvas {
   position: relative;
   width: 100%;
