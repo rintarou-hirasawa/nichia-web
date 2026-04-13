@@ -2722,7 +2722,6 @@ body[data-page="home"] .site-header.is-open .site-nav a::after {
   background-color: #111;
 }
 
-.business-page-hero__media > img,
 .business-page-hero__media > video,
 .about-page-hero__media > img {
   position: absolute;
@@ -2741,6 +2740,13 @@ body[data-page="home"] .site-header.is-open .site-nav a::after {
 @media (prefers-reduced-motion: reduce) {
   .business-page-hero__media > video {
     display: none;
+  }
+
+  .business-page-hero__media {
+    background-image: url("../media/forest-aerial.jpg");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 }
 
