@@ -1572,6 +1572,9 @@ body[data-page="home"] main {
   color: #fff;
   margin-bottom: 0;
   max-width: 16em;
+  /* 語の途中改行（例: つな／ぐ）を抑える */
+  line-break: strict;
+  word-break: keep-all;
 }
 
 /* ヒーロー上の3ナビカード（テキスト表示のあと .hero--cards-visible で下から） */
@@ -1614,6 +1617,11 @@ body[data-page="home"] main {
   .hero.hero--home .hero-card__ja {
     font-size: clamp(0.625rem, 2.75vw, 0.75rem);
     letter-spacing: 0.03em;
+  }
+
+  .hero.hero--home .hero__copy-block .hero__title-main {
+    letter-spacing: 0.06em;
+    line-height: 1.34;
   }
 }
 
