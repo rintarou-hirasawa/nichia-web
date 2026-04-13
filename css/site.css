@@ -50,7 +50,7 @@ body {
 /* メインページ：全画面ヒーロー（スクロールスペーサーなし・操作は JS で検知） */
 body[data-page="home"] {
   overflow-x: hidden;
-  background-color: #0a0e0c;
+  background-color: #ffffff;
 }
 
 body[data-page="home"] .home-main {
@@ -502,7 +502,7 @@ h3 {
   /* トップ：動画オフ時も img は使わず、背景のみ（二重表示を防ぐ） */
   .hero.hero--home .hero__media {
     background: url('../media/forest-aerial.jpg') center top / cover no-repeat;
-    background-color: #1a1f1c;
+    background-color: #ffffff;
   }
 }
 
@@ -1401,7 +1401,7 @@ body[data-page="home"] main {
   top: 0;
   z-index: 0;
   overflow: hidden;
-  background-color: #0a0e0c;
+  background-color: #ffffff;
 }
 
 /* メディア層はヒーロー全体を覆う（はみ出しはヒーローでクリップ） */
@@ -1409,6 +1409,7 @@ body[data-page="home"] main {
   min-height: 100%;
   width: 100%;
   height: 100%;
+  background-color: #ffffff;
 }
 
 /* 動画：上側の構図を優先（中央基準だと空撮の上が切れやすい） */
@@ -1419,6 +1420,7 @@ body[data-page="home"] main {
   object-position: center top;
   filter: brightness(0.98) saturate(0.92) contrast(1.03);
   display: block;
+  background-color: #ffffff;
 }
 
 .hero__overlay--home {
