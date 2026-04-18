@@ -1,0 +1,5 @@
+# https://nichiahp.netlify.app/
+User-agent: *
+Allow: /
+
+Sitemap: https://nichiahp.netlify.app/sitemap.xml
