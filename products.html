@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>取扱い商品 | 株式会社日亜パートナーズ</title>
+  <link rel="icon" type="image/svg+xml" href="vite.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body data-page="products">
+  <div class="fsc-corner" role="img" aria-label="FSC 認証">
+    <img
+      class="fsc-corner__img"
+      src="media/fsc-logo.png"
+      width="499"
+      height="608"
+      alt=""
+      decoding="async"
+      fetchpriority="low"
+    >
+  </div>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a href="index.html" class="site-logo">
+        <span class="site-logo__text">NICHIA PARTNERS, INC.</span>
+      </a>
+      <button type="button" class="nav-toggle" aria-label="メニュー" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" aria-label="グローバルナビ">
+        <a href="index.html" data-nav="home">HOME</a>
+        <a href="business.html" data-nav="business">BUSINESS</a>
+        <a href="products.html" data-nav="products">PRODUCTS</a>
+        <a href="about.html" data-nav="about">ABOUT US</a>
+        <a href="contact.html" data-nav="contact">CONTACT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="business-page-hero">
+      <div class="business-page-hero__media" aria-hidden="true">
+        <video autoplay muted loop playsinline>
+          <source src="media/products-hero-loop.mp4" type="video/mp4">
+        </video>
+      </div>
+      <header class="page-hero wrap business-page-hero__inner fade-in">
+        <p class="lead-en">Products</p>
+        <h1 class="reveal-heading" id="products-page-heading">取扱い商品</h1>
+        <p class="sub">森と海、そしてビジネスをつなぐ。</p>
+      </header>
+    </div>
+
+    <section class="section section--muted" aria-labelledby="products-page-heading">
+      <div class="wrap">
+        <div class="business-products business-products--page fade-in">
+          <div class="business-products__grid fade-in fade-in--stagger" role="list">
+            <article class="card business-product-card" role="listitem">
+              <div class="business-product-card__media" aria-hidden="true">
+                <img src="media/product-icon-plywood.png" alt="" width="640" height="400" loading="lazy" decoding="async">
+              </div>
+              <div class="business-product-card__body">
+                <p class="business-product-card__cat">Panel &amp; Board</p>
+                <h3>合板</h3>
+                <p class="business-product-card__en">Plywood</p>
+              </div>
+            </article>
+            <article class="card business-product-card" role="listitem">
+              <div class="business-product-card__media" aria-hidden="true">
+                <img src="media/product-icon-veneer.png" alt="" width="640" height="400" loading="lazy" decoding="async">
+              </div>
+              <div class="business-product-card__body">
+                <p class="business-product-card__cat">Panel &amp; Board</p>
+                <h3>単板</h3>
+                <p class="business-product-card__en">Veneer</p>
+              </div>
+            </article>
+            <article class="card business-product-card" role="listitem">
+              <div class="business-product-card__media" aria-hidden="true">
+                <img src="media/product-icon-lvl.png" alt="" width="640" height="400" loading="lazy" decoding="async">
+              </div>
+              <div class="business-product-card__body">
+                <p class="business-product-card__cat">Panel &amp; Board</p>
+                <h3>LVL</h3>
+                <p class="business-product-card__en">Laminated Veneer Lumber</p>
+              </div>
+            </article>
+            <article class="card business-product-card" role="listitem">
+              <div class="business-product-card__media" aria-hidden="true">
+                <img src="media/product-icon-timber.png" alt="" width="640" height="400" loading="lazy" decoding="async">
+              </div>
+              <div class="business-product-card__body">
+                <p class="business-product-card__cat">Timber &amp; Lumber</p>
+                <h3>製材品</h3>
+                <p class="business-product-card__en">Sawn Timber</p>
+              </div>
+            </article>
+            <article class="card business-product-card" role="listitem">
+              <div class="business-product-card__media" aria-hidden="true">
+                <img src="media/product-icon-blockboard.png" alt="" width="640" height="400" loading="lazy" decoding="async">
+              </div>
+              <div class="business-product-card__body">
+                <p class="business-product-card__cat">Timber &amp; Lumber</p>
+                <h3>BB</h3>
+                <p class="business-product-card__en">Blockboard</p>
+              </div>
+            </article>
+            <article class="card business-product-card" role="listitem">
+              <div class="business-product-card__media" aria-hidden="true">
+                <img src="media/product-icon-outdoor.png" alt="" width="640" height="400" loading="lazy" decoding="async">
+              </div>
+              <div class="business-product-card__body">
+                <p class="business-product-card__cat">Finished Products</p>
+                <h3>アウトドア家具</h3>
+                <p class="business-product-card__en">Outdoor Furniture</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <button type="button" class="back-top" aria-label="ページ上部へ">↑</button>
+  <script src="js/site.js"></script>
+</body>
+</html>

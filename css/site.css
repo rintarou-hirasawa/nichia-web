@@ -13,6 +13,8 @@
   --font-sans: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
   --font-display: var(--font-sans);
   --header-h: 4.5rem;
+  /* FSC コーナーマークの高さ（top 計算と揃える） */
+  --fsc-corner-img-h: clamp(1.5rem, 3.5vw, 2.25rem);
   /* ロゴ・ハンバーを画面端からおおよそこの距離に（ノッチは safe-area が優先） */
   --header-edge-inset: 3cm;
   --header-edge-inset-mobile: 1rem;
@@ -121,6 +123,26 @@ a:hover {
   color: var(--color-accent);
 }
 
+/* FSC マーク：全ページ・左上（ヘッダー内のロゴ文字と同じくらいの高さに縦中央） */
+.fsc-corner {
+  position: fixed;
+  z-index: 1001;
+  top: calc(env(safe-area-inset-top, 0px) + (var(--header-h) - var(--fsc-corner-img-h)) / 2);
+  left: max(0.65rem, env(safe-area-inset-left, 0px));
+  line-height: 0;
+  opacity: 0.96;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.32));
+  pointer-events: none;
+}
+
+.fsc-corner__img {
+  display: block;
+  height: var(--fsc-corner-img-h);
+  width: auto;
+  aspect-ratio: 499 / 608;
+  object-fit: contain;
+}
+
 /* 全幅：グローバルナビはハンバーガー展開時の固定パネル */
 .site-nav {
   position: fixed;
@@ -138,7 +160,7 @@ a:hover {
   opacity: 0;
   visibility: hidden;
   transition: transform 0.25s var(--ease-out-snappy), opacity 0.25s var(--ease-out-snappy), visibility 0.25s;
-  z-index: 1000;
+  z-index: 1002;
   box-shadow: 0 12px 40px rgba(26, 26, 26, 0.06);
 }
 
@@ -177,6 +199,10 @@ a:hover {
 
 .site-header.is-open .site-nav a:nth-child(4) {
   animation-delay: 0.24s;
+}
+
+.site-header.is-open .site-nav a:nth-child(5) {
+  animation-delay: 0.3s;
 }
 
 .site-header:not(.is-open) .site-nav a {
@@ -309,6 +335,7 @@ body[data-page="home"] .site-header .site-logo {
 
 @media (max-width: 900px) {
   body[data-page="business"] .site-nav,
+  body[data-page="products"] .site-nav,
   body[data-page="about"] .site-nav {
     padding: 1rem max(var(--header-edge-inset), env(safe-area-inset-left, 0px)) 1.5rem max(var(--header-edge-inset), env(safe-area-inset-right, 0px));
   }
@@ -340,15 +367,23 @@ main {
   /* 事業内容・会社概要・お問い合わせ：メインと同系の横余白（やや広め） */
   body[data-page="business"] .wrap,
   body[data-page="about"] .wrap,
-  body[data-page="contact"] .wrap {
+  body[data-page="contact"] .wrap,
+  body[data-page="products"] .wrap {
     padding-left: max(2rem, calc(0.55rem + env(safe-area-inset-left, 0px)));
     padding-right: max(2rem, calc(0.55rem + env(safe-area-inset-right, 0px)));
   }
 
-  /* ヘッダー：スマホは --header-edge-inset-mobile（PC の 3cm は��持） */
+  /* ヘッダー：スマホ。FSC 固定表示と社名が重ならないよう左に空ける（ホームはロゴ非表示のため下の共通値） */
   body[data-page="business"] .site-header__inner,
   body[data-page="about"] .site-header__inner,
   body[data-page="contact"] .site-header__inner,
+  body[data-page="products"] .site-header__inner {
+    padding-left: calc(
+      max(0.65rem, env(safe-area-inset-left, 0px)) + (var(--fsc-corner-img-h) * 499 / 608) + 0.5rem
+    );
+    padding-right: max(var(--header-edge-inset-mobile), env(safe-area-inset-right, 0px));
+  }
+
   .site-header__inner {
     padding-left: max(var(--header-edge-inset-mobile), env(safe-area-inset-left, 0px));
     padding-right: max(var(--header-edge-inset-mobile), env(safe-area-inset-right, 0px));
@@ -360,6 +395,7 @@ main {
   }
 
   body[data-page="business"] .site-nav,
+  body[data-page="products"] .site-nav,
   body[data-page="about"] .site-nav {
     padding: 1rem max(var(--header-edge-inset-mobile), env(safe-area-inset-left, 0px)) 1.5rem
       max(var(--header-edge-inset-mobile), env(safe-area-inset-right, 0px));
@@ -1577,7 +1613,7 @@ body[data-page="home"] main {
   word-break: keep-all;
 }
 
-/* ヒーロー上の3ナビカード（テキスト表示のあと .hero--cards-visible で下から） */
+/* ヒーロー上のナビカード（テキスト表示のあと .hero--cards-visible で下から） */
 .hero__cards {
   display: grid;
   grid-template-columns: 1fr;
@@ -1586,7 +1622,7 @@ body[data-page="home"] main {
   pointer-events: none;
 }
 
-/* トップ：カード群をコピー帯より中央寄りに（スマホは下記で横3列） */
+/* トップ：カード群をコピー帯より中央寄りに（スマホは下記で横4列） */
 .hero.hero--home .hero__cards {
   align-self: center;
   max-width: min(22rem, 100%);
@@ -1594,10 +1630,10 @@ body[data-page="home"] main {
   justify-items: center;
 }
 
-/* スマホ：3カードを横並び（縦1列のデフォルトを上書き） */
+/* スマホ：4カードを横並び（縦1列のデフォルトを上書き） */
 @media (max-width: 768px) {
   .hero.hero--home .hero__cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     max-width: 100%;
     width: 100%;
     gap: clamp(0.3rem, 2vw, 0.55rem);
@@ -1655,6 +1691,10 @@ body[data-page="home"] main {
 
 .hero.hero--home.hero--cards-visible .hero-card:nth-child(3) {
   transition-delay: 0.24s;
+}
+
+.hero.hero--home.hero--cards-visible .hero-card:nth-child(4) {
+  transition-delay: 0.36s;
 }
 
 .hero-card {
@@ -1795,9 +1835,9 @@ body[data-page="home"] main {
   }
 
   .hero.hero--home .hero__cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: clamp(0.65rem, 2.2vw, 1.15rem);
-    max-width: min(46rem, 96%);
+    max-width: min(56rem, 96%);
   }
 
   .hero.hero--home .hero-card {
@@ -1808,9 +1848,9 @@ body[data-page="home"] main {
 
 @media (min-width: 620px) and (max-width: 768px) {
   .hero.hero--home .hero__cards {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: clamp(0.5rem, 2.2vw, 0.9rem);
-    max-width: min(40rem, 94vw);
+    max-width: min(48rem, 94vw);
   }
 }
 
@@ -1883,6 +1923,7 @@ body[data-page="home"] main {
 /* ヒーローメディア上：バナーは --header-solid（0〜1）で透明→深緑を段階的に（site.js がスクロールで更新） */
 body[data-page="home"] .site-header,
 body[data-page="business"] .site-header,
+body[data-page="products"] .site-header,
 body[data-page="about"] .site-header {
   --header-solid: 0;
   background: rgba(26, 61, 42, var(--header-solid, 0));
@@ -1945,30 +1986,35 @@ body[data-page="contact"] .site-header.is-open .site-nav a::after {
 
 /* サブページ：ヒーロー上はロゴを明るく */
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo,
+body[data-page="products"] .site-header:not(.site-header--scrolled) .site-logo,
 body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo {
   color: #fff;
   transition: color 0.3s var(--ease);
 }
 
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-logo:hover,
+body[data-page="products"] .site-header:not(.site-header--scrolled) .site-logo:hover,
 body[data-page="about"] .site-header:not(.site-header--scrolled) .site-logo:hover {
   color: rgba(255, 255, 255, 0.85);
 }
 
 body[data-page="home"] .site-header .site-logo,
 body[data-page="business"] .site-header--scrolled .site-logo,
+body[data-page="products"] .site-header--scrolled .site-logo,
 body[data-page="about"] .site-header--scrolled .site-logo {
   color: rgba(255, 255, 255, 0.96);
 }
 
 body[data-page="home"] .site-header .site-logo:hover,
 body[data-page="business"] .site-header--scrolled .site-logo:hover,
+body[data-page="products"] .site-header--scrolled .site-logo:hover,
 body[data-page="about"] .site-header--scrolled .site-logo:hover {
   color: #fff;
 }
 
 body[data-page="home"] .site-header .site-nav a,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a,
+body[data-page="products"] .site-header:not(.site-header--scrolled) .site-nav a,
 body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a {
   color: rgba(255, 255, 255, 0.92);
   transition: color 0.3s var(--ease);
@@ -1976,36 +2022,42 @@ body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a {
 
 body[data-page="home"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
+body[data-page="products"] .site-header:not(.site-header--scrolled) .site-nav a.is-active,
 body[data-page="about"] .site-header:not(.site-header--scrolled) .site-nav a.is-active {
   color: #fff;
 }
 
 body[data-page="home"] .site-header--scrolled .site-nav a,
 body[data-page="business"] .site-header--scrolled .site-nav a,
+body[data-page="products"] .site-header--scrolled .site-nav a,
 body[data-page="about"] .site-header--scrolled .site-nav a {
   color: rgba(255, 255, 255, 0.92);
 }
 
 body[data-page="home"] .site-header--scrolled .site-nav a.is-active,
 body[data-page="business"] .site-header--scrolled .site-nav a.is-active,
+body[data-page="products"] .site-header--scrolled .site-nav a.is-active,
 body[data-page="about"] .site-header--scrolled .site-nav a.is-active {
   color: #fff;
 }
 
 body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle span,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .nav-toggle span,
+body[data-page="products"] .site-header:not(.site-header--scrolled) .nav-toggle span,
 body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle span {
   background: #fff;
 }
 
 body[data-page="home"] .site-header--scrolled .nav-toggle span,
 body[data-page="business"] .site-header--scrolled .nav-toggle span,
+body[data-page="products"] .site-header--scrolled .nav-toggle span,
 body[data-page="about"] .site-header--scrolled .nav-toggle span {
   background: #fff;
 }
 
 body[data-page="home"] .site-header:not(.site-header--scrolled) .nav-toggle,
 body[data-page="business"] .site-header:not(.site-header--scrolled) .nav-toggle,
+body[data-page="products"] .site-header:not(.site-header--scrolled) .nav-toggle,
 body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle {
   border-color: rgba(255, 255, 255, 0.45);
   background: transparent;
@@ -2013,6 +2065,7 @@ body[data-page="about"] .site-header:not(.site-header--scrolled) .nav-toggle {
 
 body[data-page="home"] .site-header--scrolled .nav-toggle,
 body[data-page="business"] .site-header--scrolled .nav-toggle,
+body[data-page="products"] .site-header--scrolled .nav-toggle,
 body[data-page="about"] .site-header--scrolled .nav-toggle {
   border-color: rgba(255, 255, 255, 0.35);
   background: rgba(255, 255, 255, 0.1);
@@ -2029,16 +2082,19 @@ body[data-page="home"] .site-header.is-open .site-nav {
 
 /* モバイルメニュー展開時（サブページは白パネル・暗い文字） */
 body[data-page="business"] .site-header.is-open .site-nav a,
+body[data-page="products"] .site-header.is-open .site-nav a,
 body[data-page="about"] .site-header.is-open .site-nav a {
   color: var(--color-text);
 }
 
 body[data-page="business"] .site-header.is-open .site-nav a.is-active,
+body[data-page="products"] .site-header.is-open .site-nav a.is-active,
 body[data-page="about"] .site-header.is-open .site-nav a.is-active {
   color: var(--color-accent);
 }
 
 body[data-page="business"] .site-header.is-open .site-nav a::after,
+body[data-page="products"] .site-header.is-open .site-nav a::after,
 body[data-page="about"] .site-header.is-open .site-nav a::after {
   background: var(--color-accent);
 }
@@ -3097,6 +3153,28 @@ body[data-page="home"] .site-header.is-open .site-nav a::after {
   z-index: 1;
 }
 
+.business-products-cta {
+  margin: clamp(2rem, 5vw, 3rem) auto 0;
+  text-align: center;
+  max-width: min(56rem, 100%);
+}
+
+.business-products-cta__link {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.2rem;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+
+.business-products-cta__link:hover {
+  color: var(--color-accent-hover);
+}
+
 .business-doc-intro {
   max-width: min(56rem, 100%);
   margin: 0 auto;
@@ -3201,6 +3279,13 @@ body[data-page="home"] .site-header.is-open .site-nav a::after {
   margin: clamp(2.5rem, 6vw, 3.5rem) auto 0;
   padding-top: clamp(2rem, 5vw, 2.75rem);
   border-top: 1px solid var(--color-border);
+}
+
+/* 取扱商品専用ページ：見出しは page-hero 側のため帯の区切りを付けない */
+.business-products--page {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .business-products__heading {

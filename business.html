@@ -11,6 +11,17 @@
   <link rel="stylesheet" href="css/site.css">
 </head>
 <body data-page="business">
+  <div class="fsc-corner" role="img" aria-label="FSC 認証">
+    <img
+      class="fsc-corner__img"
+      src="media/fsc-logo.png"
+      width="499"
+      height="608"
+      alt=""
+      decoding="async"
+      fetchpriority="low"
+    >
+  </div>
   <header class="site-header">
     <div class="site-header__inner">
       <a href="index.html" class="site-logo">
@@ -22,6 +33,7 @@
       <nav class="site-nav" aria-label="グローバルナビ">
         <a href="index.html" data-nav="home">HOME</a>
         <a href="business.html" data-nav="business">BUSINESS</a>
+        <a href="products.html" data-nav="products">PRODUCTS</a>
         <a href="about.html" data-nav="about">ABOUT US</a>
         <a href="contact.html" data-nav="contact">CONTACT</a>
       </nav>
@@ -63,91 +75,9 @@
           </div>
         </div>
 
-        <!-- 取扱い商品：横長ビジュアル＋タイポ -->
-        <div class="business-products fade-in">
-          <p class="business-products__eyebrow">Products</p>
-          <h2 class="business-products__heading reveal-heading" id="products">取扱い商品</h2>
-          <div class="business-products__grid fade-in fade-in--stagger" role="list">
-            <article class="card business-product-card" role="listitem">
-              <div class="business-product-card__media" aria-hidden="true">
-                <img src="media/product-icon-plywood.png" alt="" width="640" height="400" loading="lazy" decoding="async">
-              </div>
-              <div class="business-product-card__body">
-                <p class="business-product-card__cat">Panel &amp; Board</p>
-                <h3>合板</h3>
-                <p class="business-product-card__en">Plywood</p>
-                <div class="business-product-card__desc">
-                  <p>南洋材を主としたベニヤを接着した板材です。建築内装・什器など、用途に応じたグレードをご提案します。</p>
-                </div>
-              </div>
-            </article>
-            <article class="card business-product-card" role="listitem">
-              <div class="business-product-card__media" aria-hidden="true">
-                <img src="media/product-icon-veneer.png" alt="" width="640" height="400" loading="lazy" decoding="async">
-              </div>
-              <div class="business-product-card__body">
-                <p class="business-product-card__cat">Panel &amp; Board</p>
-                <h3>単板</h3>
-                <p class="business-product-card__en">Veneer</p>
-                <div class="business-product-card__desc">
-                  <p>薄くスライスした木材シートです。合板や化粧板など、表面の質感や木目を活かす用途に適しています。</p>
-                </div>
-              </div>
-            </article>
-            <article class="card business-product-card" role="listitem">
-              <div class="business-product-card__media" aria-hidden="true">
-                <img src="media/product-icon-lvl.png" alt="" width="640" height="400" loading="lazy" decoding="async">
-              </div>
-              <div class="business-product-card__body">
-                <p class="business-product-card__cat">Panel &amp; Board</p>
-                <h3>LVL</h3>
-                <p class="business-product-card__en">Laminated Veneer Lumber</p>
-                <div class="business-product-card__desc">
-                  <p>単板を積層接着した構造用材です。曲げ強度に優れ、梁・土台などへの利用を想定したラインアップです。</p>
-                </div>
-              </div>
-            </article>
-            <article class="card business-product-card" role="listitem">
-              <div class="business-product-card__media" aria-hidden="true">
-                <img src="media/product-icon-timber.png" alt="" width="640" height="400" loading="lazy" decoding="async">
-              </div>
-              <div class="business-product-card__body">
-                <p class="business-product-card__cat">Timber &amp; Lumber</p>
-                <h3>製材品</h3>
-                <p class="business-product-card__en">Sawn Timber</p>
-                <div class="business-product-card__desc">
-                  <p>原木から製材した木材です。寸法や樹種・乾燥条件など、現場の要件に合わせた調達が可能です。</p>
-                </div>
-              </div>
-            </article>
-            <article class="card business-product-card" role="listitem">
-              <div class="business-product-card__media" aria-hidden="true">
-                <img src="media/product-icon-blockboard.png" alt="" width="640" height="400" loading="lazy" decoding="async">
-              </div>
-              <div class="business-product-card__body">
-                <p class="business-product-card__cat">Timber &amp; Lumber</p>
-                <h3>BB</h3>
-                <p class="business-product-card__en">Blockboard</p>
-                <div class="business-product-card__desc">
-                  <p>芯材に角材を配した合板で、軽量化と加工性のバランスが取れた板材です。内装・家具向けにご提供します。</p>
-                </div>
-              </div>
-            </article>
-            <article class="card business-product-card" role="listitem">
-              <div class="business-product-card__media" aria-hidden="true">
-                <img src="media/product-icon-outdoor.png" alt="" width="640" height="400" loading="lazy" decoding="async">
-              </div>
-              <div class="business-product-card__body">
-                <p class="business-product-card__cat">Finished Products</p>
-                <h3>アウトドア家具</h3>
-                <p class="business-product-card__en">Outdoor Furniture</p>
-                <div class="business-product-card__desc">
-                  <p>屋外利用を想定した家具・什器です。木材の耐候性やメンテナンス性を踏まえ、用途に応じた製品をご案内します。</p>
-                </div>
-              </div>
-            </article>
-          </div>
-        </div>
+        <p class="business-products-cta fade-in">
+          <a href="products.html" class="business-products-cta__link">取扱い商品</a>
+        </p>
       </div>
     </section>
   </main>

@@ -56,9 +56,10 @@
 
   function initHeroVideo() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.querySelectorAll('.hero__media video, .business-page-hero__media video').forEach(function (video) {
+    document.querySelectorAll('main video').forEach(function (video) {
       video.muted = true;
       video.loop = true;
+      video.setAttribute('loop', '');
       video.play().catch(function () {});
       video.addEventListener('ended', function () {
         video.currentTime = 0;
@@ -188,6 +189,7 @@
     var hero = null;
     if (page === 'home') hero = document.querySelector('.hero--home');
     else if (page === 'business') hero = document.querySelector('.business-page-hero');
+    else if (page === 'products') hero = document.querySelector('.business-page-hero');
     else if (page === 'about') hero = document.querySelector('.about-page-hero');
     else return;
     if (!hero) return;
